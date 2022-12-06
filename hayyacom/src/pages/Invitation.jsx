@@ -59,7 +59,9 @@ const Wrapone = styled.div`
 const Invitation = () => {
 
   const [image, setimage] = useState();
+  const [totalguest,setTotalguest] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [value,setValue] = useState()
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -79,8 +81,13 @@ const Invitation = () => {
   const data = async () => {
     let res = await axios.get(`${API_URL}invitationPage/invitation-page-details/400`)
     setimage(res.data.CardData.invitation);
+    setTotalguest(res.data.invitationData.total_guest)
+    setValue(res.data.invitationData.total_guest)
+    console.log(res)
   }
-
+  const display = (e) => {
+   setValue(e.target.value)
+  }
   return (
     <>
       <CardContainer>
@@ -104,10 +111,17 @@ const Invitation = () => {
         </ul>
       </Wrapper>
       
-      <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+      <Modal 
+      title="Select the number of invitees they wish to attend" 
+      centered
+      width={500}
+      open={isModalOpen} 
+      onOk={handleOk} 
+      onCancel={handleCancel}
+      >
+        <p >Total guests to invite: <input type="number" onChange={display} value={value} min="0" max={totalguest} /> </p>
+     
+        
       </Modal>
      <Footer />
     </>
