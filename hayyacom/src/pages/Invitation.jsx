@@ -2,12 +2,13 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai'
-import { Button, ConfigProvider } from 'antd'
-import arEG from 'antd/locale/ar_EG';
+import { Button } from 'antd'
 import { Modal } from 'antd';
 import Footer from '../Component/Footer'
 import { API_URL } from '../Config/api'
 import QRCode from "react-qr-code";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 // css
@@ -89,19 +90,64 @@ const Invitation = () => {
     const [totalguest, setTotalguest] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpentwo, setIsModalOpentwo] = useState(false);
+    const [invite, setInvite] = useState({})
     const [value, setValue] = useState()
     const [values, setValues] = useState({})
     const [udata, setData] = useState([])
+    const [demo, setDemo] = useState([])
+
     const [visible, setVisible] = useState(false);
 
-    const showModal = () => {
+    const cancleToast = () => {
+        toast.error("Change Details Successfully !")
+    };
+
+    const googleTranslateElementInit = () => {
+        new window.google.translate.TranslateElement(
+            {
+                pageLanguage: "en",
+                autoDisplay: false
+            },
+            "google_translate_element"
+        );
+    };
+    useEffect(() => {
+        var addScript = document.createElement("script");
+        addScript.setAttribute(
+            "src",
+            "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+        );
+        document.body.appendChild(addScript);
+        window.googleTranslateElementInit = googleTranslateElementInit;
+    }, []);
+    const showModal = async (type) => {
+        let data = {
+            InvitationId: demo.id,
+            status: type,
+            total_guest: totalguest,
+        }
         if (totalguest === 1) {
-            console.log("11111")
-            setIsModalOpen(true);
+                console.log("11111")
+                setIsModalOpen(true);
+            }
+            else {
+                   setIsModalOpentwo(true);
+            }
+        console.log(data)
+        const response = await axios.put(`${API_URL}invitationPage/update-status`,(data))
+        console.log(response)
+        if(response.status===200){
+            toast.info(response.data.message)
         }
-        else {
-            setIsModalOpentwo(true);
-        }
+
+
+        // if (totalguest === 2) {
+        //     console.log("11111")
+        //     setIsModalOpen(true);
+        // }
+        // else {
+        //     setIsModalOpentwo(true);
+        // }
     };
 
     const handleOk = () => {
@@ -125,14 +171,31 @@ const Invitation = () => {
         setValue(res.data.invitationData.total_guest)
         setData(res.data.ContactData)
         setValues(res.data.DesignData)
+        setInvite(res.data.QRData)
+        setDemo(res.data.invitationData)
+        console.log(res);
     }
     const display = (e) => {
         setValue(e.target.value)
     }
+
+    // const invitationAction = () => {
+    //         let data = {
+    //             InvitationId: 400,
+    //             status : Accepted 
+    //         }
+    // }
+
     return (
         <>
-            <CardContainer>
+            <CardContainer id='google_translate_element'>
             </CardContainer>
+            <ToastContainer
+                autoClose={2000}
+                position="top-center"
+                className="toast-container"
+                toastClassName="dark-toast"
+                theme="colored" />
             <Wrapper>
                 <div className='nav' >
                     <span>Home /</span>
@@ -145,8 +208,8 @@ const Invitation = () => {
                     <div className='text' > Please review the invitation details, and then respond with acceptance or apology</div>
                 </Wrapone>
                 <ul>
-                    <li><p onClick={() => { showModal(setVisible(true)) }}><AiOutlineCheck style={{ marginBottom: '-2px' }} />Acceptance</p></li>
-                    <li><p><AiOutlineClose style={{ marginBottom: '-2px' }} />Apology</p></li>
+                    <li><p onClick={() => showModal("Accepted")}><AiOutlineCheck style={{ marginBottom: '-2px' }} />Acceptance</p></li>
+                    <li><p onClick={() => showModal("Rejected")}><AiOutlineClose style={{ marginBottom: '-2px' }} />Apology</p></li>
                 </ul>
             </Wrapper>
             <Modal
@@ -176,7 +239,7 @@ const Invitation = () => {
                 <InviteBody>
                     <QRContainer>
                         <QRCode
-                            value="QRcode"
+                            value={JSON.stringify(invite)}
                             size={values.QRsize}
                             color={values.QRcolor}
                         />
@@ -194,7 +257,7 @@ const Invitation = () => {
                     </InfoContainer>
                 </InviteBody>
             </Modal>
-            <Footer />
+            <Footer udata={udata} />
         </>
     )
 }

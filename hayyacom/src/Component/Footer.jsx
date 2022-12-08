@@ -12,13 +12,14 @@ const FooterBar = styled.footer`
      text-decoration: none;
   }`
 
-const Footer = () => {
+const Footer = ({udata}) => {
+  const url = `https://api.whatsapp.com/send/?phone=${udata.phoneNumber}&text&type=phone_number&app_absent=0whatsApp`
   return (
     <>
      <FooterBar>
         <div>
           <p>
-            For assistance and more information, please <a href="/"> click here to contact via WhatsApp</a>
+            For assistance and more information, please <a href={url}> click here to contact via WhatsApp</a>
           </p>
           <p>All rights reserved to Hayyakum Foundation</p>
         </div>
