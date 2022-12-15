@@ -1,10 +1,16 @@
 import React from 'react'
+import { Route, Routes } from 'react-router-dom'
 import Invitation from './pages/Invitation'
 
 const App = () => {
-  
+
   return (
-    <Invitation />
+    <>
+    {/* <Invitation /> */}
+    <Routes>
+      <Route path="/mobile/invite/:id/:lang" element={<Invitation />}></Route>
+    </Routes>
+    </>
   )
 }
 

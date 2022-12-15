@@ -9,6 +9,7 @@ import { API_URL } from '../Config/api'
 import QRCode from "react-qr-code";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useParams } from 'react-router-dom'
 
 
 // css
@@ -84,7 +85,7 @@ const InfoContainer = styled.div`
   
 `
 
-const Invitation = () => {
+const  Invitation = () => {
 
     const [image, setimage] = useState([]);
     const [totalguest, setTotalguest] = useState([]);
@@ -97,6 +98,10 @@ const Invitation = () => {
     const [demo, setDemo] = useState([])
 
     const [visible, setVisible] = useState(false);
+    const params = useParams();
+    console.log(params.lang)
+    const id = params.id;
+
 
     const cancleToast = () => {
         toast.error("Change Details Successfully !")
@@ -127,16 +132,16 @@ const Invitation = () => {
             total_guest: totalguest,
         }
         if (totalguest === 1) {
-                console.log("11111")
-                setIsModalOpen(true);
-            }
-            else {
-                   setIsModalOpentwo(true);
-            }
+            console.log("11111")
+            setIsModalOpen(true);
+        }
+        else {
+            setIsModalOpentwo(true);
+        }
         console.log(data)
-        const response = await axios.put(`${API_URL}invitationPage/update-status`,(data))
+        const response = await axios.put(`${API_URL}invitationPage/update-status`, (data))
         console.log(response)
-        if(response.status===200){
+        if (response.status === 200) {
             toast.info(response.data.message)
         }
 
@@ -165,7 +170,7 @@ const Invitation = () => {
     }, [])
 
     const data = async () => {
-        let res = await axios.get(`${API_URL}invitationPage/invitation-page-details/400`)
+        let res = await axios.get(`${API_URL}invitationPage/invitation-page-details/${id}`)
         setimage(res.data.CardData);
         setTotalguest(res.data.invitationData.total_guest)
         setValue(res.data.invitationData.total_guest)
@@ -221,7 +226,10 @@ const Invitation = () => {
                 onOk={handleOk}
             >
                 <div>
-                    <p>Total guests to invite: <input type="number" onChange={display} value={value} min="0" max={totalguest} /> </p>
+                    <p>Total guests to invite: <input type="number" onChange={display} value={value} min="0" max={totalguest} style={{ width: '200px' }} />
+                        <small>you can select max: {totalguest}</small>
+                    </p>
+                    <br />
                     <Button type="primary">Ok</Button>
                 </div>
             </Modal>
