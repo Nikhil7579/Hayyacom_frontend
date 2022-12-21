@@ -8,6 +8,7 @@ const App = () => {
     <>
       <Routes>
         <Route path="/mobile/invite/:id/:lang" element={<Invitation />}></Route>
+        {/* <Route path="/new_invite/:id/:lang" element={<Invitation />}></Route> */}
       </Routes>
     </>
   )

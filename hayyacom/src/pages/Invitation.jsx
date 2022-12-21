@@ -62,7 +62,7 @@ const QRContainer = styled.div`
 const InfoContainer = styled.div`
     text-align: center;
     padding: 10px;
-    font-size: 14px;
+
   
 `
 
@@ -150,7 +150,7 @@ const Invitation = () => {
     const [optionfive, setOptionfive] = useState('')
     // const [datacontact, setDatacontact] = useState([])
     // const { height, width } = useWindowDimensions();
-      console.log("color", values)
+    console.log("color", values)
     // console.log(height + "*" + width)
 
     const [isrejectedModalOpen, setIsRjectedModalOpen] = useState(false);
@@ -206,6 +206,10 @@ const Invitation = () => {
         toast.error("Invitation has been Rejected, You cannot change invitation status. Please contact inviter to modify your status")
     };
 
+    const rejectarabic = () => {
+        toast.error("تم رفض الدعوة ، لا يمكنك تغيير حالة الدعوة. يرجى الاتصال بالدعوة لتعديل حالتك")
+    };
+
     const showModal = async (type) => {
         if (change === 2) {
             setOptiontwo(true)
@@ -245,7 +249,12 @@ const Invitation = () => {
         }
         else if (demo.status === "Rejected") {
             setIsModalOpen(false);
-            reject();
+            if (params.lang === "ar") {
+                rejectarabic();
+            }
+            else {
+                reject();
+            }
         }
 
         console.log(data)
@@ -312,6 +321,7 @@ const Invitation = () => {
         setInvite(res.data.QRData)
         setDemo(res.data.invitationData)
         console.log(res);
+        console.log(values.NumberW)
 
     }
 
@@ -398,7 +408,7 @@ const Invitation = () => {
                                 <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
                                     changeData(e.target.value)
                                 }}>
-                                    
+
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                 </select>
@@ -444,10 +454,10 @@ const Invitation = () => {
                         <p>Total Guest &nbsp;
                             {optiontwo
                                 &&
-                                <select name="number" id="cars" className='cars' value={change} 
-                                onChange={(e) => {
-                                    changeData(e.target.value)
-                                }}>
+                                <select name="number" id="cars" className='cars' value={change}
+                                    onChange={(e) => {
+                                        changeData(e.target.value)
+                                    }}>
                                     {/* <optionWrapper> */}
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -456,10 +466,10 @@ const Invitation = () => {
                             }
                             {optionthree
                                 &&
-                                <select name="number" id="cars" className='cars' value={change} 
-                                onChange={(e) => {
-                                    changeData(e.target.value)
-                                }}>
+                                <select name="number" id="cars" className='cars' value={change}
+                                    onChange={(e) => {
+                                        changeData(e.target.value)
+                                    }}>
                                     {/* <optionWrapper> */}
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -482,14 +492,14 @@ const Invitation = () => {
                             }
                             {optionfive
                                 &&
-                                <select style={{ width:'27px'}}   name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                <select style={{ width: '27px' }} name="number" id="cars" className='cars' value={change} onChange={(e) => {
                                     changeData(e.target.value)
                                 }}>
-                                    <option  value="1">1</option>
-                                    <option  value="2">2</option>
-                                    <option  value="3">3</option>
-                                    <option  value="4">4</option>
-                                    <option  value="5">5</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
                                 </select>
 
                             }
@@ -526,7 +536,7 @@ const Invitation = () => {
             >
                 <img src="/closeicon1.png" alt="" width={20} height={20} style={{ margin: '6px', marginLeft: '8px' }} onClick={handleCancel} />
                 {/* <AiOutlineClose style={{ color: '#6F0A12', width: '30px', height: '30px', cursor: 'pointer', fontWeight: 'bold' }} onClick={handleCancel} /> */}
-                <p style={{ fontSize:"18px", marginTop:'-20px',marginBottom:2}}>&nbsp;&nbsp;&nbsp;{msgdata.save_qr_message}&nbsp;&nbsp;&nbsp;</p>
+                <p style={{ fontSize: "18px", marginTop: '-20px', marginBottom: 2, textAlign: 'center' }}>&nbsp;&nbsp;&nbsp;{msgdata.save_qr_message}&nbsp;&nbsp;&nbsp;</p>
                 <InviteImage src={image.entrance} />
                 <InviteBody>
                     <QRContainer>
@@ -535,36 +545,40 @@ const Invitation = () => {
                             value={" invitationId " + invite.invitationId}
                             size={values.QRsize}
                             fgColor={values.QRcolor}
-                           
+                            style={{ height: values.QRH, width: values.QRW }}
+                            bgColor={values.bgcolorQ}
+
+
                         />
                     </QRContainer>
                     <InfoContainer style={{ fontWeight: values.fontweight, color: values.textcolor, fontFamily: values.fontfamily }}>
-                        <div>
-                            <label >{msgdata.Guest_name_title}</label><span>   {udata.name}</span>
+                        <div style={{ fontSize: values.fontsize + "px" }}>
+                            <lable >{msgdata.Guest_name_title}</lable > <span style={{ fontSize: values.fontsize + "px" }}>  {udata.name}</span>
                         </div>
-                        {params.lang==="ar" ?   <div>
-                        <label >مجموع الضيف</label>  <span>{udata.totalGuest}</span>
-                           
-                        </div>:
-                        <div>
-                            <label>Total Guest</label> : 
-                            {/* <span>{change || udata.totalGuest} */}
-                            <span> {change || udata.totalGuest}
-                            </span>
-                            {/* <label >مجموع الضيف</label> : <span>{udata.totalGuest}</span> */}
-                        </div>}
+
+                        {params.lang === "ar" ?
+                            <div style={{ fontSize: values.fontsize + "px" }}>
+                                <label >{values.numberMessage}</label>  <h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}>{udata.totalGuest}</h6>
+                            </div> :
+                            <div style={{ fontSize: values.fontsize + "px" }}>
+                                <label >{values.numberMessage}</label>
+                                {/* <span>{change || udata.totalGuest} */}
+                                <h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}> {change || udata.totalGuest}
+                                </h6>
+                                {/* <label >مجموع الضيف</label> : <span>{udata.totalGuest}</span> */}
+                            </div>}
                         {udata.totalChildren === 0 ?
                             ""
                             :
-                            params.lang==="ar" ?
-                            <div>
-                            {/*  */}
-                            <label>عدد الأطفال</label> : <span>{udata.totalChildren}</span>
-                        </div>
-                        :
-                            <div>
-                                <label> Total Children </label> : <span>{udata.totalChildren}</span>
-                            </div>
+                            params.lang === "ar" ?
+                                <div style={{ fontSize: values.fontsize + "px" }}>
+                                    {/*  */}
+                                    <label >عدد الأطفال</label> <h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}> {udata.totalChildren}</h6>
+                                </div>
+                                :
+                                <div style={{ fontSize: values.fontsize + "px" }}>
+                                    <label >Total Children </label><h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}>{udata.totalChildren}</h6>
+                                </div>
                         }
 
                     </InfoContainer>
@@ -581,20 +595,18 @@ const Invitation = () => {
                 <img src="/closeicon.png" alt="" width={30} height={30} style={{ margin: '5px' }} onClick={handleCancelreject} />
                 {/* <AiOutlineClose style={{ color: '#6F0A12', width: '30px', height: '30px', cursor: 'pointer' }} onClick={handleCancelreject} /> */}
                 {params.lang === "ar" ?
-                <div>
-                <p>تم حفظ وضعك كما</p>
-                <p>مرفوض </p>
-                <p>شكرا لردكم     </p>
-                <br />
-                <br />
-            </div>:
-                <div>
-                    <p>Your status has been saved as</p>
-                    <p>Rejected !</p>
-                    <p>Thank you for your response !    </p>
-                    <br />
-                    <br />
-                </div>}
+                    <div>
+                        <p>تم حفظ حالة الدعوة برفض</p>
+                        <p>شكراً لردكم</p>
+                        <br />
+                        <br />
+                    </div> :
+                    <div>
+                        <p>Your status has been saved as Rejected !</p>
+                        <p>Thank you for your response !    </p>
+                        <br />
+                        <br />
+                    </div>}
             </Modal>
         </>
     )

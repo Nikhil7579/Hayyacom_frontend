@@ -52,20 +52,3 @@ code {
   padding: 0px;
 }
 
-.qrcodeModal .ant-modal-content p {
-  margin: 0px;
-  font-size: 15px;
-  text-align: center;
-  margin-bottom:-5px;
-  /* margin-top:-5px; */
-}
-
-
-/* @media only screen and (max-width: 767px) {
-  
-  .newmodel{
-  background-color: black;
-  width: '250px'
-  }
-
-} */
