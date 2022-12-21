@@ -1,73 +1,54 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { AiOutlineCheck, AiOutlineClose } from 'react-icons/ai'
+// import { AiOutlineClose } from 'react-icons/ai'
 import { Button } from 'antd'
 import { Modal } from 'antd';
-import Footer from '../Component/Footer'
 import { API_URL } from '../Config/api'
 import QRCode from "react-qr-code";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom'
+import '../index.css';
 
 
 // css
-const CardContainer = styled.div`
-    
-  height: 64px;
-  padding:0 50px;
-`
 const Wrapper = styled.div`
-padding:0px 50px;
+padding:0px 0px;
 font-family:sans-serif;
-.nav{
-  margin:16px 0px;
-  font-size:14px
+@media only screen and (max-width: 480px) {
+    max-height:1000px;
+    min-height:450px;
+.toast-container{
+background:#6f0a12;
 }
-.nav span{
-  color:rgba(0,0,0,.45);
-  line-height: 1.5715
-}
-ul{
-  list-style:none;
-  color:rgba(0,0,0,.45);
-  font-size:14px;
-  height:47px
-}
-li{
-  float:left;
-  margin:12px 0;
-  text-align:center;
-  width:50%;
-  cursor:pointer;
-      &:hover
-        {
-          color:#1890ff;
-        }
-}  
+
   `
 const Image = styled.img`
   display:block;
-  width:100%
-  `
-const Wrapone = styled.div`
-  padding:24px;
-  .text{
-    color:rgba(0,0,0,.45);
-    font-size:14px
-  }
+  margin-top:20px;
+  width:96%;
+  margin:22px;
+  @media only screen and (max-width: 480px) {
+  max-width:94%;
+  margin-top:20px;
+  margin:12px;
+  min-height:350px;
+  max-height:750px;
+      }
+
   `
 const InviteImage = styled.img`
-  max-width: 100%;
+  max-width: 95%;
   width: 100%;
+  margin:8px;
 `
 const InviteBody = styled.div`
     position: absolute;
     z-index: 1;
     width: 100%;
     height: 100%;
-    top: 0px;
+    top: 30px;
     left:2px;
     display: flex;
     justify-content: center;
@@ -85,187 +66,536 @@ const InfoContainer = styled.div`
   
 `
 
-const  Invitation = () => {
+const FooterBar = styled.footer`
+
+  font-size:14px;
+  color:rgba(0,0,0,.85);
+  text-align:center;
+  @media only screen and (max-width: 480px) {
+   width:100%;
+   font-size:10px;
+  }
+  a{
+     color:#1890ff;
+     text-decoration: none;
+  }`
+
+const WrapperButton = styled.div`
+.btn1{
+    margin: 10px; color: white; background-color: #145629; width:48%;height:50px;
+}
+.btn2{
+    margin: 10px; color: white; background-color: #6f0a12; width:48%;height:50px;
+}
+.btn3{
+    margin: 10px; color: white; background-color: #145629; width:48%;height:50px;
+}
+.btn4{
+    margin: 10px; color: white; background-color: #6f0a12; width:48%;height:50px;
+}
+@media only screen and (max-width: 480px) {
+    display:flex;
+    align-items: center;
+
+    .btn1{
+     max-width:40%;
+     margin:10px 0px 10px 30px;
+     margin-top:25px;
+     height:40px;
+     font-weight:bold;
+    }
+    .btn2{
+        max-width:40%;
+        height:40px;
+        margin:10px;
+        margin-top:25px;
+        font-weight:bold;
+       }
+       .btn3{
+        max-width:40%;
+        margin:10px;
+        margin-top:25px;
+        height:40px;
+        font-weight:bold;
+       }
+       .btn4{
+           max-width:40%;
+           height:40px;
+           margin:10px 0px 10px 30px;
+           margin-top:25px;
+           font-weight:bold;
+
+          }
+   }
+`
+
+
+const Invitation = () => {
 
     const [image, setimage] = useState([]);
     const [totalguest, setTotalguest] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpentwo, setIsModalOpentwo] = useState(false);
-    const [invite, setInvite] = useState({})
+    const [invite, setInvite] = useState([])
     const [value, setValue] = useState()
     const [values, setValues] = useState({})
     const [udata, setData] = useState([])
     const [demo, setDemo] = useState([])
+    const [msgdata, setMsgdata] = useState([])
+    const [datadata, setdatadata] = useState()
+    const [change, changeData] = useState('');
+    const [optiontwo, setOptiontwo] = useState('')
+    const [optionthree, setOptionthree] = useState('')
+    const [optionfour, setOptionfour] = useState('')
+    const [optionfive, setOptionfive] = useState('')
+    // const [datacontact, setDatacontact] = useState([])
+    // const { height, width } = useWindowDimensions();
+      console.log("color", values)
+    // console.log(height + "*" + width)
 
-    const [visible, setVisible] = useState(false);
+    const [isrejectedModalOpen, setIsRjectedModalOpen] = useState(false);
+    const handleOkreject = () => {
+        setIsRjectedModalOpen(false);
+    };
+    const handleCancelreject = () => {
+        setIsRjectedModalOpen(false);
+    };
+
+
     const params = useParams();
-    console.log(params.lang)
     const id = params.id;
+    const lang = params.lang;
+
+    const url = `https://api.whatsapp.com/send/?phone=${udata.phoneNumber}&text&type=phone_number&app_absent=0whatsApp`
+
+    // if (params.lang === "ar") {
+    //     console.log("hello")
+    // }
+
+    // console.log(id + "" + lang);
+
+    // function getWindowDimensions() {
+    //     const { innerWidth: width, innerHeight: height } = window;
+    //     return {
+    //         width,
+    //         height
+    //     };
+    // }
 
 
-    const cancleToast = () => {
-        toast.error("Change Details Successfully !")
+
+    // function useWindowDimensions() {
+    //     const [windowDimensions, setWindowDimensions] = useState(
+    //         getWindowDimensions()
+    //     );
+
+    //     useEffect(() => {
+    //         function handleResize() {
+    //             setWindowDimensions(getWindowDimensions());
+    //         }
+
+    //         window.addEventListener("resize", handleResize);
+    //         return () => window.removeEventListener("resize", handleResize);
+    //     }, []);
+
+    //     return windowDimensions;
+    // }
+
+
+    const reject = () => {
+        toast.error("Invitation has been Rejected, You cannot change invitation status. Please contact inviter to modify your status")
     };
 
-    const googleTranslateElementInit = () => {
-        new window.google.translate.TranslateElement(
-            {
-                pageLanguage: "en",
-                autoDisplay: false
-            },
-            "google_translate_element"
-        );
-    };
-    useEffect(() => {
-        var addScript = document.createElement("script");
-        addScript.setAttribute(
-            "src",
-            "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-        );
-        document.body.appendChild(addScript);
-        window.googleTranslateElementInit = googleTranslateElementInit;
-    }, []);
     const showModal = async (type) => {
+        if (change === 2) {
+            setOptiontwo(true)
+        }
+        else if (change === 3) {
+            setOptionthree(true)
+        }
+        else if (change === 4) {
+            setOptionfour(true)
+
+        }
+        else if (change === 5) {
+            setOptionfive(true)
+
+        }
+        // console.log(type)
+        setdatadata(type)
         let data = {
             InvitationId: demo.id,
             status: type,
             total_guest: totalguest,
         }
-        if (totalguest === 1) {
-            console.log("11111")
+        console.log(datadata)
+        console.log(demo.status)
+        if (totalguest < 2 && type === "Accepted" && demo.status === null) {
             setIsModalOpen(true);
+            const response = await axios.put(`${API_URL}invitationPage/update-status`, (data))
+            console.log(response)
         }
-        else {
+        else if (totalguest > 1 && type === "Accepted" && demo.status === null) {
+
             setIsModalOpentwo(true);
+        } else if (demo.status === "Accepted") {
+            // console.log(true)
+            setIsModalOpen(true);
+
+        }
+        else if (demo.status === "Rejected") {
+            setIsModalOpen(false);
+            reject();
+        }
+
+        console.log(data)
+    };
+    const statusApi = async (datadata, type) => {
+        console.log(change)
+        console.log(datadata)
+        console.log(type)
+        let data = {
+            InvitationId: demo.id,
+            status: "Accepted",
+            total_guest: change,
         }
         console.log(data)
+
         const response = await axios.put(`${API_URL}invitationPage/update-status`, (data))
         console.log(response)
+
         if (response.status === 200) {
-            toast.info(response.data.message)
+            // toast.info(response.data.message)
+            InvitationApidata();
+            setIsModalOpentwo(false);
+            setIsModalOpen(true);
+
         }
 
+    }
+    const showModalRejected = async (type) => {
+        let reject = {
+            InvitationId: demo.id,
+            status: "Rejected",
+            total_guest: change,
+        }
+        const response = await axios.put(`${API_URL}invitationPage/update-status`, (reject))
+        console.log(response)
+        setIsRjectedModalOpen(true)
+        InvitationApidata()
 
-        // if (totalguest === 2) {
-        //     console.log("11111")
-        //     setIsModalOpen(true);
-        // }
-        // else {
-        //     setIsModalOpentwo(true);
-        // }
-    };
-
+    }
     const handleOk = () => {
         setIsModalOpen(false);
         setIsModalOpentwo(false);
 
     };
-
     const handleCancel = () => {
         setIsModalOpen(false);
         setIsModalOpentwo(false);
     };
     useEffect(() => {
-        data();
-    }, [])
+        InvitationApidata();
+    }, [totalguest])
 
-    const data = async () => {
+    const InvitationApidata = async () => {
         let res = await axios.get(`${API_URL}invitationPage/invitation-page-details/${id}`)
         setimage(res.data.CardData);
-        setTotalguest(res.data.invitationData.total_guest)
+        setTotalguest(res.data.ContactData.totalGuest)
+        const article = res.data.ContactData
+        changeData(article.totalGuest)
+        // setDatacontact(res.data.ContactData.totalGuest)
         setValue(res.data.invitationData.total_guest)
         setData(res.data.ContactData)
+        setMsgdata(res.data.MessageData)
         setValues(res.data.DesignData)
         setInvite(res.data.QRData)
         setDemo(res.data.invitationData)
         console.log(res);
-    }
-    const display = (e) => {
-        setValue(e.target.value)
-    }
 
-    // const invitationAction = () => {
-    //         let data = {
-    //             InvitationId: 400,
-    //             status : Accepted 
-    //         }
-    // }
+    }
 
     return (
         <>
-            <CardContainer id='google_translate_element'>
-            </CardContainer>
             <ToastContainer
                 autoClose={2000}
-                position="top-center"
+                position="top-right"
                 className="toast-container"
                 toastClassName="dark-toast"
-                theme="colored" />
-            <Wrapper>
-                <div className='nav' >
-                    <span>Home /</span>
-                    <span style={{ color: 'black' }}>&nbsp;invitation</span>
-                </div>
+                theme="colored"
+                width='400px'
+            />
+
+            <Wrapper >
                 <div>
-                    <Image src={image.invitation} alt="" />
+                    <Image src={image.invitation} alt="/" />
                 </div>
-                <Wrapone >
-                    <div className='text' > Please review the invitation details, and then respond with acceptance or apology</div>
-                </Wrapone>
-                <ul>
-                    <li><p onClick={() => showModal("Accepted")}><AiOutlineCheck style={{ marginBottom: '-2px' }} />Acceptance</p></li>
-                    <li><p onClick={() => showModal("Rejected")}><AiOutlineClose style={{ marginBottom: '-2px' }} />Apology</p></li>
-                </ul>
+                {params.lang === "ar" ?
+                    <WrapperButton>
+                        <Button type="none" className='btn4' onClick={() => showModalRejected("Rejected")} >رفض</Button>
+                        <Button type="none" className='btn3' onClick={() => showModal("Accepted")} >قبول</Button>
+                    </WrapperButton>
+                    :
+                    <WrapperButton>
+                        <Button type="none" className='btn1' onClick={() => showModal("Accepted")} >Accept</Button>
+                        <Button type="none" className='btn2' onClick={() => showModalRejected("Rejected")} >Reject</Button>
+                    </WrapperButton>
+                }
+                {params.lang === "ar" ?
+                    <FooterBar>
+                        <div>
+                            <p>
+                                لمزيد من المعلومات ، يرجى الاتصال عبر  <a href={url}>WhatsApp</a><br />
+                                جميع الحقوق محفوظة  @ Hayyacomapp
+
+                            </p>
+                        </div>
+                    </FooterBar>
+                    :
+                    <FooterBar>
+                        <div>
+                            <p>
+                                For more information, please contact via <a href={url}>WhatsApp</a><br />
+                                all rights reserved @ Hayyacomapp
+                            </p>
+                        </div>
+                    </FooterBar>
+                }
             </Wrapper>
             <Modal
-                title="Select the number of invitees they wish to attend"
                 open={isModalOpentwo}
                 onCancel={handleCancel}
                 footer={[]}
                 centered
                 onOk={handleOk}
+                closable={false}
+                className="newStylemodeltwo"
             >
                 <div>
-                    <p>Total guests to invite: <input type="number" onChange={display} value={value} min="0" max={totalguest} style={{ width: '200px' }} />
-                        <small>you can select max: {totalguest}</small>
-                    </p>
                     <br />
-                    <Button type="primary">Ok</Button>
+                    {params.lang === "ar" ?
+                        <p>فضلاً اختر عدد المدعوين القادمين</p>
+                        :
+                        <p>Please select total guest coming !&nbsp;</p>}
+                    {/* <p>Total guest
+                            <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                changeData(e.target.value)
+                                console.log(change)
+                            }}>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </p> */}
+                    {params.lang === "ar"
+                        ?
+                        <p>عدد القادمين
+                            &nbsp;
+                            {optiontwo
+                                &&
+                                <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                    changeData(e.target.value)
+                                }}>
+                                    
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                </select>
+                            }
+                            {optionthree
+                                &&
+                                <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                    changeData(e.target.value)
+                                }}>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            }
+                            {optionfour
+                                &&
+                                <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                    changeData(e.target.value)
+                                }}>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            }
+                            {optionfive
+                                &&
+                                <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                    changeData(e.target.value)
+                                }}>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            }
+                            {/* </p> */}
+                            {/* <input type="number" name='number' onChange={(e) => changeData(e.target.value)} value={change} min="0" max={totalguest} style={{ width: '40px' }} /> */}
+                            {/* <small>you can select max: {totalguest}</small> */}
+                        </p>
+                        :
+                        <p>Total Guest &nbsp;
+                            {optiontwo
+                                &&
+                                <select name="number" id="cars" className='cars' value={change} 
+                                onChange={(e) => {
+                                    changeData(e.target.value)
+                                }}>
+                                    {/* <optionWrapper> */}
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    {/* </optionWrapper> */}
+                                </select>
+                            }
+                            {optionthree
+                                &&
+                                <select name="number" id="cars" className='cars' value={change} 
+                                onChange={(e) => {
+                                    changeData(e.target.value)
+                                }}>
+                                    {/* <optionWrapper> */}
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    {/* </optionWrapper> */}
+                                </select>
+                            }
+                            {optionfour
+                                &&
+                                <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                    changeData(e.target.value)
+                                }}>
+                                    {/* <optionWrapper> */}
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    {/* </optionWrapper> */}
+                                </select>
+                            }
+                            {optionfive
+                                &&
+                                <select style={{ width:'27px'}}   name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                    changeData(e.target.value)
+                                }}>
+                                    <option  value="1">1</option>
+                                    <option  value="2">2</option>
+                                    <option  value="3">3</option>
+                                    <option  value="4">4</option>
+                                    <option  value="5">5</option>
+                                </select>
+
+                            }
+                            {/* <br/>
+                            <select className='newmodel' style={{width:'25px'}}>
+                            <option  value="1">1</option>
+                                    <option  value="2">2</option>
+                                    <option  value="3">3</option>
+                                    <option  value="4">4</option>
+                                    <option  value="5">5</option>
+                            </select> */}
+                            {/* </p> */}
+                            {/* <input type="number" name='number' onChange={(e) => changeData(e.target.value)} value={change} min="0" max={totalguest} style={{ width: '40px' }} /> */}
+                            {/* <small>you can select max: {totalguest}</small> */}
+                        </p>
+                    }
+                    <br />
+                    {params.lang === "ar" ?
+                        <Button
+                            style={{ width: '100%', height: '50px', backgroundColor: '#6F0A12', color: 'white', borderRadius: '0px', fontWeight: 'bold' }} type="none" onClick={statusApi}><p style={{ lineHeight: "0px" }}>حفظ</p></Button>
+                        :
+                        <Button
+                            style={{ width: '100%', height: '50px', backgroundColor: '#6F0A12', color: 'white', borderRadius: '0px', fontWeight: 'bold' }} type="none" onClick={statusApi}><p style={{ lineHeight: "0px" }}>Send</p></Button>
+                    }
                 </div>
             </Modal>
             <Modal
-                // title="Select the number of invitees they wish to attend"
                 centered
-                // width={500}
                 open={isModalOpen}
-                // onOk={handleOk}
                 onCancel={handleCancel}
                 footer={[]}
-
+                closable={false}
+                className="qrcodeModal"
             >
+                <img src="/closeicon1.png" alt="" width={20} height={20} style={{ margin: '6px', marginLeft: '8px' }} onClick={handleCancel} />
+                {/* <AiOutlineClose style={{ color: '#6F0A12', width: '30px', height: '30px', cursor: 'pointer', fontWeight: 'bold' }} onClick={handleCancel} /> */}
+                <p style={{ fontSize:"18px", marginTop:'-20px',marginBottom:2}}>&nbsp;&nbsp;&nbsp;{msgdata.save_qr_message}&nbsp;&nbsp;&nbsp;</p>
                 <InviteImage src={image.entrance} />
                 <InviteBody>
                     <QRContainer>
                         <QRCode
-                            value={JSON.stringify(invite)}
+                            // value={JSON.stringify(invite, demo.InvitationId)}
+                            value={" invitationId " + invite.invitationId}
                             size={values.QRsize}
-                            color={values.QRcolor}
+                            fgColor={values.QRcolor}
+                           
                         />
                     </QRContainer>
-                    <InfoContainer style={{ fontWeight: values.fontweight, color: values.infocolor, fontFamily: values.fontfamily }}>
+                    <InfoContainer style={{ fontWeight: values.fontweight, color: values.textcolor, fontFamily: values.fontfamily }}>
                         <div>
-                            <label>Name</label>: <span>{udata.name}</span>
+                            <label >{msgdata.Guest_name_title}</label><span>   {udata.name}</span>
                         </div>
+                        {params.lang==="ar" ?   <div>
+                        <label >مجموع الضيف</label>  <span>{udata.totalGuest}</span>
+                           
+                        </div>:
                         <div>
-                            <label>Total Guests</label>: <span>{udata.totalGuest}</span>
+                            <label>Total Guest</label> : 
+                            {/* <span>{change || udata.totalGuest} */}
+                            <span> {change || udata.totalGuest}
+                            </span>
+                            {/* <label >مجموع الضيف</label> : <span>{udata.totalGuest}</span> */}
+                        </div>}
+                        {udata.totalChildren === 0 ?
+                            ""
+                            :
+                            params.lang==="ar" ?
+                            <div>
+                            {/*  */}
+                            <label>عدد الأطفال</label> : <span>{udata.totalChildren}</span>
                         </div>
-                        <div>
-                            <label>Childrens</label>: <span>{udata.totalChildren}</span>
-                        </div>
+                        :
+                            <div>
+                                <label> Total Children </label> : <span>{udata.totalChildren}</span>
+                            </div>
+                        }
+
                     </InfoContainer>
                 </InviteBody>
             </Modal>
-            <Footer udata={udata} />
+            <Modal open={isrejectedModalOpen}
+                centered
+                onOk={handleOkreject}
+                onCancel={handleCancelreject}
+                closable={false}
+                footer={[]}
+                className="newStyle"
+            >
+                <img src="/closeicon.png" alt="" width={30} height={30} style={{ margin: '5px' }} onClick={handleCancelreject} />
+                {/* <AiOutlineClose style={{ color: '#6F0A12', width: '30px', height: '30px', cursor: 'pointer' }} onClick={handleCancelreject} /> */}
+                {params.lang === "ar" ?
+                <div>
+                <p>تم حفظ وضعك كما</p>
+                <p>مرفوض </p>
+                <p>شكرا لردكم     </p>
+                <br />
+                <br />
+            </div>:
+                <div>
+                    <p>Your status has been saved as</p>
+                    <p>Rejected !</p>
+                    <p>Thank you for your response !    </p>
+                    <br />
+                    <br />
+                </div>}
+            </Modal>
         </>
     )
 }

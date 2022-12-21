@@ -6,10 +6,9 @@ const App = () => {
 
   return (
     <>
-    {/* <Invitation /> */}
-    <Routes>
-      <Route path="/mobile/invite/:id/:lang" element={<Invitation />}></Route>
-    </Routes>
+      <Routes>
+        <Route path="/mobile/invite/:id/:lang" element={<Invitation />}></Route>
+      </Routes>
     </>
   )
 }

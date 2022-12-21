@@ -11,3 +11,61 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.newStyle .ant-modal-header,
+
+.newStyle .ant-modal-content {
+  border-radius: 0px;
+  padding: 0px 0px;
+}
+
+.newStyle .ant-modal-content p {
+  padding: 0px;
+  text-align: center;
+  margin: 0px;
+  font-size: 18px;
+
+}
+
+.newStylemodeltwo .ant-modal-content {
+  border-radius: 0px;
+  padding: 0px 0px;
+  margin-right: 5px;
+ 
+}
+.newStylemodeltwo .ant-modal-content p {
+  text-align: center;
+  font-size: 18px;
+
+}
+
+.newStylemodeltwo .ant-modal-content select {
+  border: none;
+  outline: none;
+  background-color: white;
+}
+
+
+.qrcodeModal .ant-modal-content {
+  border-radius: 0px;
+  padding: 0px;
+}
+
+.qrcodeModal .ant-modal-content p {
+  margin: 0px;
+  font-size: 15px;
+  text-align: center;
+  margin-bottom:-5px;
+  /* margin-top:-5px; */
+}
+
+
+/* @media only screen and (max-width: 767px) {
+  
+  .newmodel{
+  background-color: black;
+  width: '250px'
+  }
+
+} */

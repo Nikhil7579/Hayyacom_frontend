@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 const FooterBar = styled.footer`
-  padding:48px 50px;
+
   font-size:14px;
   color:rgba(0,0,0,.85);
   text-align:center;
@@ -19,9 +19,9 @@ const Footer = ({udata}) => {
      <FooterBar>
         <div>
           <p>
-            For assistance and more information, please <a href={url}> click here to contact via WhatsApp</a>
+            For more information, please contact via <a href={url}>WhatsApp</a>
           </p>
-          <p>All rights reserved to Hayyakum Foundation</p>
+          <p>all rights reserved @ Hayyacomapp</p>
         </div>
       </FooterBar>
     </>
