@@ -148,10 +148,6 @@ const Invitation = () => {
     const [optionthree, setOptionthree] = useState('')
     const [optionfour, setOptionfour] = useState('')
     const [optionfive, setOptionfive] = useState('')
-    // const [datacontact, setDatacontact] = useState([])
-    // const { height, width } = useWindowDimensions();
-    console.log("color", values)
-    // console.log(height + "*" + width)
 
     const [isrejectedModalOpen, setIsRjectedModalOpen] = useState(false);
     const handleOkreject = () => {
@@ -167,40 +163,6 @@ const Invitation = () => {
     const lang = params.lang;
 
     const url = `https://api.whatsapp.com/send/?phone=${udata.phoneNumber}&text&type=phone_number&app_absent=0whatsApp`
-
-    // if (params.lang === "ar") {
-    //     console.log("hello")
-    // }
-
-    // console.log(id + "" + lang);
-
-    // function getWindowDimensions() {
-    //     const { innerWidth: width, innerHeight: height } = window;
-    //     return {
-    //         width,
-    //         height
-    //     };
-    // }
-
-
-
-    // function useWindowDimensions() {
-    //     const [windowDimensions, setWindowDimensions] = useState(
-    //         getWindowDimensions()
-    //     );
-
-    //     useEffect(() => {
-    //         function handleResize() {
-    //             setWindowDimensions(getWindowDimensions());
-    //         }
-
-    //         window.addEventListener("resize", handleResize);
-    //         return () => window.removeEventListener("resize", handleResize);
-    //     }, []);
-
-    //     return windowDimensions;
-    // }
-
 
     const reject = () => {
         toast.error("Invitation has been Rejected, You cannot change invitation status. Please contact inviter to modify your status")
@@ -387,18 +349,6 @@ const Invitation = () => {
                         <p>فضلاً اختر عدد المدعوين القادمين</p>
                         :
                         <p>Please select total guest coming !&nbsp;</p>}
-                    {/* <p>Total guest
-                            <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
-                                changeData(e.target.value)
-                                console.log(change)
-                            }}>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                        </p> */}
                     {params.lang === "ar"
                         ?
                         <p>عدد القادمين
@@ -458,10 +408,8 @@ const Invitation = () => {
                                     onChange={(e) => {
                                         changeData(e.target.value)
                                     }}>
-                                    {/* <optionWrapper> */}
                                     <option value="1">1</option>
                                     <option value="2">2</option>
-                                    {/* </optionWrapper> */}
                                 </select>
                             }
                             {optionthree
@@ -470,11 +418,9 @@ const Invitation = () => {
                                     onChange={(e) => {
                                         changeData(e.target.value)
                                     }}>
-                                    {/* <optionWrapper> */}
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
-                                    {/* </optionWrapper> */}
                                 </select>
                             }
                             {optionfour
@@ -482,12 +428,10 @@ const Invitation = () => {
                                 <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
                                     changeData(e.target.value)
                                 }}>
-                                    {/* <optionWrapper> */}
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
                                     <option value="4">4</option>
-                                    {/* </optionWrapper> */}
                                 </select>
                             }
                             {optionfive
@@ -534,9 +478,17 @@ const Invitation = () => {
                 closable={false}
                 className="qrcodeModal"
             >
-                <img src="/closeicon1.png" alt="" width={20} height={20} style={{ margin: '6px', marginLeft: '8px' }} onClick={handleCancel} />
+                <img src="/closeicon1.png" alt=""
+                    width={20}
+                    height={20}
+                    style={{ margin: '6px', marginLeft: '8px' }}
+                    onClick={handleCancel}
+                />
                 {/* <AiOutlineClose style={{ color: '#6F0A12', width: '30px', height: '30px', cursor: 'pointer', fontWeight: 'bold' }} onClick={handleCancel} /> */}
-                <p style={{ fontSize: "18px", marginTop: '-20px', marginBottom: 2, textAlign: 'center' }}>&nbsp;&nbsp;&nbsp;{msgdata.save_qr_message}&nbsp;&nbsp;&nbsp;</p>
+                <p style={{ fontSize: "18px", marginTop: '-20px', marginBottom: 2, textAlign: 'center' }}
+                >
+                    &nbsp;&nbsp;&nbsp;{msgdata.save_qr_message}&nbsp;&nbsp;&nbsp;
+                </p>
                 <InviteImage src={image.entrance} />
                 <InviteBody>
                     <QRContainer>
@@ -546,22 +498,24 @@ const Invitation = () => {
                             size={values.QRsize}
                             fgColor={values.QRcolor}
                             style={{ height: values.QRH, width: values.QRW }}
-                            bgColor={values.bgcolorQ}
+                            bgColor={values.bgcolorQR}
 
 
                         />
                     </QRContainer>
                     <InfoContainer style={{ fontWeight: values.fontweight, color: values.textcolor, fontFamily: values.fontfamily }}>
                         <div style={{ fontSize: values.fontsize + "px" }}>
-                            <lable >{msgdata.Guest_name_title}</lable > <span style={{ fontSize: values.fontsize + "px" }}>  {udata.name}</span>
+                            <label>{msgdata.Guest_name_title}</label >
+                            <span style={{ fontSize: values.fontsize + "px" }}>  {udata.name}</span>
                         </div>
 
                         {params.lang === "ar" ?
                             <div style={{ fontSize: values.fontsize + "px" }}>
-                                <label >{values.numberMessage}</label>  <h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}>{udata.totalGuest}</h6>
+                                <label>{values.numberMessage}</label>
+                                <h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}>{udata.totalGuest}</h6>
                             </div> :
                             <div style={{ fontSize: values.fontsize + "px" }}>
-                                <label >{values.numberMessage}</label>
+                                <label>{values.numberMessage}</label>
                                 {/* <span>{change || udata.totalGuest} */}
                                 <h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}> {change || udata.totalGuest}
                                 </h6>
@@ -573,11 +527,13 @@ const Invitation = () => {
                             params.lang === "ar" ?
                                 <div style={{ fontSize: values.fontsize + "px" }}>
                                     {/*  */}
-                                    <label >عدد الأطفال</label> <h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}> {udata.totalChildren}</h6>
+                                    <label >عدد الأطفال</label>
+                                    <h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}> {udata.totalChildren}</h6>
                                 </div>
                                 :
                                 <div style={{ fontSize: values.fontsize + "px" }}>
-                                    <label >Total Children </label><h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}>{udata.totalChildren}</h6>
+                                    <label >Total Children </label>
+                                    <h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}>{udata.totalChildren}</h6>
                                 </div>
                         }
 
@@ -592,7 +548,12 @@ const Invitation = () => {
                 footer={[]}
                 className="newStyle"
             >
-                <img src="/closeicon.png" alt="" width={30} height={30} style={{ margin: '5px' }} onClick={handleCancelreject} />
+                <img src="/closeicon.png" alt=""
+                    width={30}
+                    height={30}
+                    style={{ margin: '5px' }}
+                    onClick={handleCancelreject}
+                />
                 {/* <AiOutlineClose style={{ color: '#6F0A12', width: '30px', height: '30px', cursor: 'pointer' }} onClick={handleCancelreject} /> */}
                 {params.lang === "ar" ?
                     <div>
