@@ -4,7 +4,7 @@ import styled from 'styled-components'
 // import { AiOutlineClose } from 'react-icons/ai'
 import { Button } from 'antd'
 import { Modal } from 'antd';
-import { API_URL } from '../Config/api'
+import { API_URL, BASE_URL } from '../Config/api'
 import QRCode from "react-qr-code";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,7 +15,7 @@ import '../index.css';
 // css
 const Wrapper = styled.div`
 padding:0px 0px;
-font-family:sans-serif;
+// font-family:sans-serif;
 @media only screen and (max-width: 480px) {
     max-height:1000px;
     min-height:450px;
@@ -27,12 +27,12 @@ background:#6f0a12;
 const Image = styled.img`
   display:block;
   margin-top:20px;
-  width:96%;
+  width:97%;
   margin:22px;
   @media only screen and (max-width: 480px) {
-  max-width:94%;
+  max-width:93%;
   margin-top:20px;
-  margin:12px;
+  margin:10px;
   min-height:350px;
   max-height:750px;
       }
@@ -132,6 +132,7 @@ const WrapperButton = styled.div`
 
 const Invitation = () => {
 
+
     const [image, setimage] = useState([]);
     const [totalguest, setTotalguest] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -149,6 +150,8 @@ const Invitation = () => {
     const [optionfour, setOptionfour] = useState('')
     const [optionfive, setOptionfive] = useState('')
 
+
+    // Reject Modal State
     const [isrejectedModalOpen, setIsRjectedModalOpen] = useState(false);
     const handleOkreject = () => {
         setIsRjectedModalOpen(false);
@@ -157,13 +160,16 @@ const Invitation = () => {
         setIsRjectedModalOpen(false);
     };
 
-
+    // Param
     const params = useParams();
     const id = params.id;
     const lang = params.lang;
 
+    // whatsapp link
     const url = `https://api.whatsapp.com/send/?phone=${udata.phoneNumber}&text&type=phone_number&app_absent=0whatsApp`
 
+
+    // reject toast language wise
     const reject = () => {
         toast.error("Invitation has been Rejected, You cannot change invitation status. Please contact inviter to modify your status")
     };
@@ -171,6 +177,16 @@ const Invitation = () => {
     const rejectarabic = () => {
         toast.error("تم رفض الدعوة ، لا يمكنك تغيير حالة الدعوة. يرجى الاتصال بالدعوة لتعديل حالتك")
     };
+
+
+    const attendToast = () => {
+        toast.error("Invitation has been attend you can not change the invitation status !")
+    };
+
+    const arabicattendToast = () => {
+        toast.error("تم حضور الدعوة ولا يمكنك تغيير حالة الدعوة")
+    };
+
 
     const showModal = async (type) => {
         if (change === 2) {
@@ -194,11 +210,11 @@ const Invitation = () => {
             status: type,
             total_guest: totalguest,
         }
-        console.log(datadata)
-        console.log(demo.status)
+        // console.log(datadata)
+        // console.log(demo.status)
         if (totalguest < 2 && type === "Accepted" && demo.status === null) {
             setIsModalOpen(true);
-            const response = await axios.put(`${API_URL}invitationPage/update-status`, (data))
+            const response = await axios.put(`${BASE_URL}invitationPage/update-status`, (data))
             console.log(response)
         }
         else if (totalguest > 1 && type === "Accepted" && demo.status === null) {
@@ -218,21 +234,34 @@ const Invitation = () => {
                 reject();
             }
         }
+        else if (demo.status === "Attend") {
+            setIsModalOpen(false)
+            setIsModalOpentwo(false)
+            setIsRjectedModalOpen(false)
+            if (params.lang === "ar") {
+                arabicattendToast();
+            }
+            else {
+                attendToast();
+            }
 
-        console.log(data)
+
+        }
+
+        // console.log(data)
     };
     const statusApi = async (datadata, type) => {
-        console.log(change)
-        console.log(datadata)
-        console.log(type)
+        // console.log(change)
+        // console.log(datadata)
+        // console.log(type)
         let data = {
             InvitationId: demo.id,
             status: "Accepted",
             total_guest: change,
         }
-        console.log(data)
+        // console.log(data)
 
-        const response = await axios.put(`${API_URL}invitationPage/update-status`, (data))
+        const response = await axios.put(`${BASE_URL}invitationPage/update-status`, (data))
         console.log(response)
 
         if (response.status === 200) {
@@ -250,7 +279,7 @@ const Invitation = () => {
             status: "Rejected",
             total_guest: change,
         }
-        const response = await axios.put(`${API_URL}invitationPage/update-status`, (reject))
+        const response = await axios.put(`${BASE_URL}invitationPage/update-status`, (reject))
         console.log(response)
         setIsRjectedModalOpen(true)
         InvitationApidata()
@@ -269,8 +298,11 @@ const Invitation = () => {
         InvitationApidata();
     }, [totalguest])
 
+
+    // invitation data api Integration
     const InvitationApidata = async () => {
-        let res = await axios.get(`${API_URL}invitationPage/invitation-page-details/${id}`)
+        let res = await axios.get(`${BASE_URL}invitationPage/invitation-page-details/${id}`)
+        // http://178.128.35.221:6000/invitationPage/invitation-page-details/2100
         setimage(res.data.CardData);
         setTotalguest(res.data.ContactData.totalGuest)
         const article = res.data.ContactData
@@ -282,8 +314,8 @@ const Invitation = () => {
         setValues(res.data.DesignData)
         setInvite(res.data.QRData)
         setDemo(res.data.invitationData)
-        console.log(res);
-        console.log(values.NumberW)
+        // console.log(res);
+        // console.log(values.NumberW)
 
     }
 
@@ -334,11 +366,15 @@ const Invitation = () => {
                     </FooterBar>
                 }
             </Wrapper>
+
+            {/*  select guest modal start */}
+
             <Modal
                 open={isModalOpentwo}
                 onCancel={handleCancel}
                 footer={[]}
                 centered
+                // width="100%"
                 onOk={handleOk}
                 closable={false}
                 className="newStylemodeltwo"
@@ -470,13 +506,23 @@ const Invitation = () => {
                     }
                 </div>
             </Modal>
+
+            {/*  select guest modal end */}
+
+
+            {/*  QR Code modal start */}
+
             <Modal
                 centered
                 open={isModalOpen}
                 onCancel={handleCancel}
                 footer={[]}
+                // width="100%"
+                // width={'100vw'}
+
                 closable={false}
                 className="qrcodeModal"
+
             >
                 <img src="/closeicon1.png" alt=""
                     width={20}
@@ -485,7 +531,7 @@ const Invitation = () => {
                     onClick={handleCancel}
                 />
                 {/* <AiOutlineClose style={{ color: '#6F0A12', width: '30px', height: '30px', cursor: 'pointer', fontWeight: 'bold' }} onClick={handleCancel} /> */}
-                <p style={{ fontSize: "18px", marginTop: '-20px', marginBottom: 2, textAlign: 'center' }}
+                <p style={{ fontSize: "16px", marginTop: '-14px', marginBottom: 2, textAlign: 'center' }}
                 >
                     &nbsp;&nbsp;&nbsp;{msgdata.save_qr_message}&nbsp;&nbsp;&nbsp;
                 </p>
@@ -494,7 +540,7 @@ const Invitation = () => {
                     <QRContainer>
                         <QRCode
                             // value={JSON.stringify(invite, demo.InvitationId)}
-                            value={" invitationId " + invite.invitationId}
+                            value={" Invitation Id - " + invite.invitationId}
                             size={values.QRsize}
                             fgColor={values.QRcolor}
                             style={{ height: values.QRH, width: values.QRW }}
@@ -540,6 +586,12 @@ const Invitation = () => {
                     </InfoContainer>
                 </InviteBody>
             </Modal>
+
+            {/*  QR Code modal end */}
+
+
+            {/*  reject modal start */}
+
             <Modal open={isrejectedModalOpen}
                 centered
                 onOk={handleOkreject}
@@ -547,6 +599,7 @@ const Invitation = () => {
                 closable={false}
                 footer={[]}
                 className="newStyle"
+
             >
                 <img src="/closeicon.png" alt=""
                     width={30}
@@ -569,6 +622,9 @@ const Invitation = () => {
                         <br />
                     </div>}
             </Modal>
+
+            {/*  reject modal end */}
+
         </>
     )
 }
