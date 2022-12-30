@@ -1,14 +1,16 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
 // import { AiOutlineClose } from 'react-icons/ai'
-import { Button } from 'antd'
+import { Button, Space } from 'antd'
 import { Modal } from 'antd';
 import { API_URL, BASE_URL } from '../Config/api'
 import QRCode from "react-qr-code";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
+import ReactPlayer from 'react-player';
+
 import '../index.css';
 
 
@@ -38,6 +40,19 @@ const Image = styled.img`
       }
 
   `
+const Video = styled.video`
+  display:block;
+  margin-top:20px;
+  width:97%;
+  margin:22px;
+  @media only screen and (max-width: 480px) {
+  max-width:93%;
+  margin-top:20px;
+  margin:10px;
+  min-height:350px;
+  max-height:750px;
+      }
+`
 const InviteImage = styled.img`
   max-width: 95%;
   width: 100%;
@@ -45,7 +60,7 @@ const InviteImage = styled.img`
 `
 const InviteBody = styled.div`
     position: absolute;
-    z-index: 1;
+    // z-index: 1;
     width: 100%;
     height: 100%;
     top: 30px;
@@ -61,7 +76,11 @@ const QRContainer = styled.div`
 `
 const InfoContainer = styled.div`
     text-align: center;
-    padding: 10px;
+    display: inline;
+    // padding: 10px;
+    justify-content:center;
+    align-items:center;
+    
 
   
 `
@@ -139,7 +158,7 @@ const Invitation = () => {
     const [isModalOpentwo, setIsModalOpentwo] = useState(false);
     const [invite, setInvite] = useState([])
     const [value, setValue] = useState()
-    const [values, setValues] = useState({})
+    const [values, setValues] = useState([])
     const [udata, setData] = useState([])
     const [demo, setDemo] = useState([])
     const [msgdata, setMsgdata] = useState([])
@@ -149,6 +168,7 @@ const Invitation = () => {
     const [optionthree, setOptionthree] = useState('')
     const [optionfour, setOptionfour] = useState('')
     const [optionfive, setOptionfive] = useState('')
+    const [footer, setFooter] = useState([]);
 
 
     // Reject Modal State
@@ -236,16 +256,14 @@ const Invitation = () => {
         }
         else if (demo.status === "Attend") {
             setIsModalOpen(false)
-            setIsModalOpentwo(false)
             setIsRjectedModalOpen(false)
+            setIsModalOpentwo(false)
             if (params.lang === "ar") {
                 arabicattendToast();
             }
             else {
                 attendToast();
             }
-
-
         }
 
         // console.log(data)
@@ -266,9 +284,10 @@ const Invitation = () => {
 
         if (response.status === 200) {
             // toast.info(response.data.message)
-            InvitationApidata();
             setIsModalOpentwo(false);
             setIsModalOpen(true);
+            InvitationApidata();
+
 
         }
 
@@ -314,10 +333,15 @@ const Invitation = () => {
         setValues(res.data.DesignData)
         setInvite(res.data.QRData)
         setDemo(res.data.invitationData)
-        // console.log(res);
+        console.log(res);
+        setFooter(res.data.InvitationPageData);
+        console.log(invite.invitationId)
+        // const css = {fontSize: values.fontsize + "px", height: values.TextH + "px", width: values.TextW + "px", float: 'left'}
         // console.log(values.NumberW)
-
+        console.log('values',values);
+        console.log(values.QRsize)
     }
+
 
     return (
         <>
@@ -328,11 +352,24 @@ const Invitation = () => {
                 toastClassName="dark-toast"
                 theme="colored"
                 width='400px'
+                toastStyle={{ backgroundColor: '#6F0A12' }}
             />
 
             <Wrapper >
                 <div>
-                    <Image src={image.invitation} alt="/" />
+                    {image.media === "video" ?
+                        <div>
+
+                            {/* <ReactPlayer width={400} height={400} playing url={image.invitation ? image.invitation : ""}  /> */}
+                            <Video controls>
+                                <source src={image.invitation} type="video/mp4" />
+                                <source src={image.invitation} type="video/ogg" />
+                            </Video>
+                            {/* <Video controls src={image.invitation} type="video/ogg" autoPlay muted="true" playsInline/> */}
+                        </div>
+                        :
+                        <Image src={image.invitation} alt="/" />
+                    }
                 </div>
                 {params.lang === "ar" ?
                     <WrapperButton>
@@ -346,22 +383,35 @@ const Invitation = () => {
                     </WrapperButton>
                 }
                 {params.lang === "ar" ?
+                    // <FooterBar>
+                    //     <div>
+                    //         <p>
+                    //             لمزيد من المعلومات ، يرجى الاتصال عبر  <a href={url}>WhatsApp</a><br />
+                    //             جميع الحقوق محفوظة  @ Hayyacomapp
+
+                    //         </p>
+                    //     </div>
+                    // </FooterBar>
+                    // :
+                    // <FooterBar>
+                    //     <div>
+                    //         <p>
+                    //             For more information, please contact via <a href={url}>WhatsApp</a><br />
+                    //             all rights reserved @ Hayyacomapp
+                    //         </p>
+                    //     </div>
+                    // </FooterBar>
                     <FooterBar>
                         <div>
-                            <p>
-                                لمزيد من المعلومات ، يرجى الاتصال عبر  <a href={url}>WhatsApp</a><br />
-                                جميع الحقوق محفوظة  @ Hayyacomapp
-
-                            </p>
+                            لمزيد من المعلومات ، يرجى الاتصال عبر  <a href={url}>WhatsApp</a><br />
+                            <p>{footer.FooterAR} @Hayyacomapp</p>
                         </div>
                     </FooterBar>
                     :
                     <FooterBar>
                         <div>
-                            <p>
-                                For more information, please contact via <a href={url}>WhatsApp</a><br />
-                                all rights reserved @ Hayyacomapp
-                            </p>
+                            For more information, please contact via <a href={url}>WhatsApp</a><br />
+                            <p>{footer.FooterEN} @Hayyacomapp</p>
                         </div>
                     </FooterBar>
                 }
@@ -537,52 +587,67 @@ const Invitation = () => {
                 </p>
                 <InviteImage src={image.entrance} />
                 <InviteBody>
-                    <QRContainer>
+                    <Space
+                        direction="horizontal"
+                        style={{
+                            // justifyContent: 'center',
+                            // width: values.QRW + "px" ,
+                            // height: values.QRH + "px",
+                            width:'100px',
+                            height:'100px',
+                        }}
+                    >
                         <QRCode
-                            // value={JSON.stringify(invite, demo.InvitationId)}
-                            value={" Invitation Id - " + invite.invitationId}
+                            value={"" + invite.invitationId}
                             size={values.QRsize}
+                            // style ={{margin:"0"}}
                             fgColor={values.QRcolor}
-                            style={{ height: values.QRH, width: values.QRW }}
-                            bgColor={values.bgcolorQR}
-
-
+                            bgColor={values.bgcolorQR === null ? 'white' : values.bgcolorQR}
                         />
-                    </QRContainer>
-                    <InfoContainer style={{ fontWeight: values.fontweight, color: values.textcolor, fontFamily: values.fontfamily }}>
-                        <div style={{ fontSize: values.fontsize + "px" }}>
-                            <label>{msgdata.Guest_name_title}</label >
-                            <span style={{ fontSize: values.fontsize + "px" }}>  {udata.name}</span>
-                        </div>
+                    </Space>
 
+                    <InfoContainer style={{ fontSize: values.fontsize + 'px', fontWeight: values.fontweight, color: values.textcolor, fontFamily: values.fontfamily }}>
+                        <div style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center' }}>
+                            {msgdata.Guest_name_title}&nbsp;&nbsp;
+                            {udata.name}
+                        </div>
                         {params.lang === "ar" ?
-                            <div style={{ fontSize: values.fontsize + "px" }}>
-                                <label>{values.numberMessage}</label>
-                                <h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}>{udata.totalGuest}</h6>
-                            </div> :
-                            <div style={{ fontSize: values.fontsize + "px" }}>
-                                <label>{values.numberMessage}</label>
-                                {/* <span>{change || udata.totalGuest} */}
-                                <h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}> {change || udata.totalGuest}
-                                </h6>
-                                {/* <label >مجموع الضيف</label> : <span>{udata.totalGuest}</span> */}
-                            </div>}
+                            // <div style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center',display:'grid' ,gridTemplateColumns: "auto auto"}}>
+                            //     {values.numberMessage}&nbsp;&nbsp;
+                            // <div style={{width:values.NumberW + "px",height:values.NumberH + "px",gridTemplateColumns: "auto "}}>{udata.totalGuest}</div>
+
+
+                            // </div>
+                            <div>
+                                <div style={{height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center',float:'left'}}>{values.numberMessage}</div>
+                                <div style={{width:values.NumberW + "px",height:values.NumberH + "px", textAlign: 'center',float:'left'}}>{udata.totalGuest}</div>
+                            </div> 
+                            
+
+
+                            :
+                                <div style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center'}}>
+                                    {values.numberMessage}&nbsp;&nbsp;{change || udata.totalGuest}
+                                </div>
+                        }
                         {udata.totalChildren === 0 ?
                             ""
                             :
                             params.lang === "ar" ?
-                                <div style={{ fontSize: values.fontsize + "px" }}>
-                                    {/*  */}
-                                    <label >عدد الأطفال</label>
-                                    <h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}> {udata.totalChildren}</h6>
-                                </div>
-                                :
-                                <div style={{ fontSize: values.fontsize + "px" }}>
-                                    <label >Total Children </label>
-                                    <h6 style={{ width: values.NumberW + "px", height: values.NumberH + "px", display: 'inline' }}>{udata.totalChildren}</h6>
-                                </div>
-                        }
+                                    <div style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center' }}>
+                                        عدد الأطفال&nbsp;&nbsp;{udata.totalChildren}
+                                    {/* <div style={{ height: values.NumberH + "px", width: values.NumberW + "px", display: 'inline' }}>{udata.totalChildren}</div> */}
 
+                                    </div>
+                                :
+                                <>
+                                    <div style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center' }}>
+                                        Total Children&nbsp;&nbsp;{udata.totalChildren}
+                                    {/* <div style={{ height: values.NumberH + "px", width: values.NumberW + "px", display: 'inline' }}>{udata.totalChildren}</div> */}
+
+                                    </div>
+                                </>
+                        }
                     </InfoContainer>
                 </InviteBody>
             </Modal>
