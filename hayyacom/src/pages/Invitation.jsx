@@ -585,7 +585,7 @@ const Invitation = () => {
                 >
                     &nbsp;&nbsp;&nbsp;{msgdata.save_qr_message}&nbsp;&nbsp;&nbsp;
                 </p>
-                <InviteImage src={image.entrance} />
+                <InviteImage className="ivitecard-img" src={image.entrance} />
                 <InviteBody>
                     <Space
                         direction="horizontal"
@@ -607,8 +607,8 @@ const Invitation = () => {
                     </Space>
 
                     <InfoContainer style={{ fontSize: values.fontsize + 'px', fontWeight: values.fontweight, color: values.textcolor, fontFamily: values.fontfamily }}>
-                        <div style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center' }}>
-                            {msgdata.Guest_name_title}&nbsp;&nbsp;
+                        <div className="invitename" style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center' }}>
+                            {msgdata.Guest_name_title}&nbsp;
                             {udata.name}
                         </div>
                         {params.lang === "ar" ?
@@ -618,15 +618,15 @@ const Invitation = () => {
 
 
                             // </div>
-                            <div>
-                                <div style={{height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center',float:'left'}}>{values.numberMessage}</div>
-                                <div style={{width:values.NumberW + "px",height:values.NumberH + "px", textAlign: 'center',float:'left'}}>{udata.totalGuest}</div>
+                            <div className="invitename-1">
+                                <div className="guestname" style={{height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center',float:'left'}}>{values.numberMessage}: {udata.totalGuest}</div>
+									{/*<div className="guestname" style={{width:values.NumberW + "px",height:values.NumberH + "px", textAlign: 'center',float:'left'}}></div>*/}
                             </div> 
                             
 
 
                             :
-                                <div style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center'}}>
+                                <div className="invitename" style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center'}}>
                                     {values.numberMessage}&nbsp;&nbsp;{change || udata.totalGuest}
                                 </div>
                         }
@@ -634,15 +634,15 @@ const Invitation = () => {
                             ""
                             :
                             params.lang === "ar" ?
-                                    <div style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center' }}>
-                                        عدد الأطفال&nbsp;&nbsp;{udata.totalChildren}
+                                    <div className="child-box " style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center' }}>
+                                        عدد الأطفال&nbsp;{udata.totalChildren}
                                     {/* <div style={{ height: values.NumberH + "px", width: values.NumberW + "px", display: 'inline' }}>{udata.totalChildren}</div> */}
 
                                     </div>
                                 :
                                 <>
-                                    <div style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center' }}>
-                                        Total Children&nbsp;&nbsp;{udata.totalChildren}
+                                    <div className="child-box " style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center' }}>
+                                        Total Children&nbsp;{udata.totalChildren}
                                     {/* <div style={{ height: values.NumberH + "px", width: values.NumberW + "px", display: 'inline' }}>{udata.totalChildren}</div> */}
 
                                     </div>
