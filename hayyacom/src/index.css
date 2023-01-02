@@ -110,7 +110,7 @@ select{
     text-align: center !important;
     padding-top: 10px !important;
     font-size: 20px !important;
-    /* font-family: sans-serif !important; */
+        font-family: sans-serif !important;
 }
 .invitename-1 {
     height: auto !important;
@@ -118,12 +118,12 @@ select{
     text-align: center !important;
     padding-bottom: 18px !important;
     font-size: 20px !important;
-    /* font-family: sans-serif !important; */
+        font-family: sans-serif !important;
 }
 .guestname {
     height: auto !important;
     width: 100% !important;
-    text-align: cente !important;
+    text-align: center !important;
     padding-top: 0px !important;
     font-size: 20px !important;
     font-family: sans-serif !important;
@@ -149,4 +149,8 @@ select{
     max-width: 100% !important;
     width: 100% !important;
     margin: 0px !important;
+}
+
+.sc-gKPRtg {
+	width: 100% !important;
 }
