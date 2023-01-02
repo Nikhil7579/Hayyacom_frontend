@@ -605,6 +605,7 @@ const Invitation = () => {
                             bgColor={values.bgcolorQR === null ? 'white' : values.bgcolorQR}
                         />
                     </Space>
+                    <div style={{color: values.textcolor}}>{demo.id}</div>
 
                     <InfoContainer style={{ fontSize: values.fontsize + 'px', fontWeight: values.fontweight, color: values.textcolor, fontFamily: values.fontfamily }}>
                         <div className="invitename" style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center' }}>

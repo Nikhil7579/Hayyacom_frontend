@@ -8,10 +8,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
+/* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-}
+} */
 
 
 .newStyle .ant-modal-header,
@@ -110,7 +110,7 @@ select{
     text-align: center !important;
     padding-top: 10px !important;
     font-size: 20px !important;
-    font-family: sans-serif !important;
+    /* font-family: sans-serif !important; */
 }
 .invitename-1 {
     height: auto !important;
@@ -118,7 +118,7 @@ select{
     text-align: center !important;
     padding-bottom: 18px !important;
     font-size: 20px !important;
-    font-family: sans-serif !important;
+    /* font-family: sans-serif !important; */
 }
 .guestname {
     height: auto !important;
