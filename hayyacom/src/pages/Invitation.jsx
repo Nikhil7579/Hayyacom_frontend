@@ -4,7 +4,7 @@ import styled from 'styled-components'
 // import { AiOutlineClose } from 'react-icons/ai'
 import { Button, Space } from 'antd'
 import { Modal } from 'antd';
-import { API_URL, BASE_URL } from '../Config/api'
+import { BASE_URL } from '../Config/api'
 import QRCode from "react-qr-code";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -54,9 +54,9 @@ const Video = styled.video`
       }
 `
 const InviteImage = styled.img`
-  max-width: 95%;
+//   max-width: 95%;
   width: 100%;
-  margin:8px;
+//   margin:8px;
 `
 const InviteBody = styled.div`
     position: absolute;
@@ -73,6 +73,7 @@ const InviteBody = styled.div`
 const QRContainer = styled.div`
     display: flex;
     justify-content: center;
+    align-items: center;
 `
 const InfoContainer = styled.div`
     text-align: center;
@@ -186,7 +187,7 @@ const Invitation = () => {
     const lang = params.lang;
 
     // whatsapp link
-    const url = `https://api.whatsapp.com/send/?phone=${udata.phoneNumber}&text&type=phone_number&app_absent=0whatsApp`
+    const url = `https://api.whatsapp.com/send/?phone=${footer.WhatsappnumberURL}&text&type=phone_number&app_absent=0whatsApp`
 
 
     // reject toast language wise
@@ -335,205 +336,239 @@ const Invitation = () => {
         setDemo(res.data.invitationData)
         console.log(res);
         setFooter(res.data.InvitationPageData);
-        console.log(invite.invitationId)
-        // const css = {fontSize: values.fontsize + "px", height: values.TextH + "px", width: values.TextW + "px", float: 'left'}
-        // console.log(values.NumberW)
-        console.log('values',values);
-        console.log(values.QRsize)
+        // console.log(invite.invitationId)
+        // console.log('values', values);
+        // console.log(values.QRsize)
+    }
+
+    // const mystyle = {
+    //     position: 'absolute',
+    //     top: '150px',
+    //     left: '170px',
+    //     display: 'flex',
+    //     alignItems: 'center',
+    //     fontSize: values.fontsize,
+    // }
+
+    const qrcss = {
+        position: 'absolute',
+        // top: '150px',
+        margin:'auto',
+        top: values.QRH + "px",
+        // left: '170px',
+        left: values.QRW + "px",
+        display: 'flex',
+        alignItems: 'center',
     }
 
 
-    return (
-        <>
-            <ToastContainer
-                autoClose={2000}
-                position="top-right"
-                className="toast-container"
-                toastClassName="dark-toast"
-                theme="colored"
-                width='400px'
-                toastStyle={{ backgroundColor: '#6F0A12' }}
-            />
 
-            <Wrapper >
-                <div>
-                    {image.media === "video" ?
-                        <div>
+const sncss = {
+    position: 'absolute',
+    // top: '300px',
+    top: values.SNH + "px",
+    // left: '210px',
+    left: values.SNW + "px",
+    color: values.textcolor,
 
-                            {/* <ReactPlayer width={400} height={400} playing url={image.invitation ? image.invitation : ""}  /> */}
-                            <Video controls>
-                                <source src={image.invitation} type="video/mp4" />
-                                <source src={image.invitation} type="video/ogg" />
-                            </Video>
-                            {/* <Video controls src={image.invitation} type="video/ogg" autoPlay muted="true" playsInline/> */}
-                        </div>
-                        :
-                        <Image src={image.invitation} alt="/" />
-                    }
-                </div>
-                {params.lang === "ar" ?
-                    <WrapperButton>
-                        <Button type="none" className='btn4' onClick={() => showModalRejected("Rejected")} >رفض</Button>
-                        <Button type="none" className='btn3' onClick={() => showModal("Accepted")} >قبول</Button>
-                    </WrapperButton>
+}
+
+const contentcss = {
+    fontSize: values.fontsize + 'px',
+    fontWeight: values.fontweight,
+    color: values.textcolor,
+    fontFamily: values.fontfamily,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+
+}
+
+const textcss = {
+    position: 'absolute',
+    top: values.TextH + "px",
+    left: values.TextW + "px",
+}
+
+const numbercss = {
+    position: 'relative',
+    top: values.NumberH + "px",
+    left: values.NumberW + "px",
+    display: 'inline'
+}
+
+return (
+    <>
+        <ToastContainer
+            autoClose={2000}
+            position="top-right"
+            className="toast-container"
+            toastClassName="dark-toast"
+            theme="colored"
+            width='400px'
+            toastStyle={{ backgroundColor: '#6F0A12' }}
+        />
+
+        <Wrapper >
+            <div>
+                {image.media === "video" ?
+                    <div>
+
+                        {/* <ReactPlayer width={400} height={400} playing url={image.invitation ? image.invitation : ""}  /> */}
+                        <Video controls>
+                            <source src={image.invitation} type="video/mp4" />
+                            <source src={image.invitation} type="video/ogg" />
+                        </Video>
+                        {/* <Video controls src={image.invitation} type="video/ogg" autoPlay muted="true" playsInline/> */}
+                    </div>
                     :
-                    <WrapperButton>
-                        <Button type="none" className='btn1' onClick={() => showModal("Accepted")} >Accept</Button>
-                        <Button type="none" className='btn2' onClick={() => showModalRejected("Rejected")} >Reject</Button>
-                    </WrapperButton>
+                    <Image src={image.invitation} alt="/" />
                 }
+            </div>
+            {params.lang === "ar" ?
+                <WrapperButton>
+                    <Button type="none" className='btn4' onClick={() => showModalRejected("Rejected")} >رفض</Button>
+                    <Button type="none" className='btn3' onClick={() => showModal("Accepted")} >قبول</Button>
+                </WrapperButton>
+                :
+                <WrapperButton>
+                    <Button type="none" className='btn1' onClick={() => showModal("Accepted")}  >Accept</Button>
+                    <Button type="none" className='btn2' onClick={() => showModalRejected("Rejected")} >Reject</Button>
+                </WrapperButton>
+            }
+            {params.lang === "ar" ?
+                <FooterBar>
+                    <div>
+                        لمزيد من المعلومات ، يرجى الاتصال عبر  <a href={url}>WhatsApp</a><br />
+                        <p>{footer.FooterAR} </p>
+                    </div>
+                </FooterBar>
+                :
+                <FooterBar>
+                    <div>
+                        For more information, please contact via <a href={url}>WhatsApp</a><br />
+                        <p>{footer.FooterEN} </p>
+                    </div>
+                </FooterBar>
+            }
+        </Wrapper>
+
+        {/*  select guest modal start */}
+
+        <Modal
+            open={isModalOpentwo}
+            onCancel={handleCancel}
+            footer={[]}
+            centered
+            onOk={handleOk}
+            closable={false}
+            className="newStylemodeltwo"
+        >
+            <div>
+                <br />
                 {params.lang === "ar" ?
-                    // <FooterBar>
-                    //     <div>
-                    //         <p>
-                    //             لمزيد من المعلومات ، يرجى الاتصال عبر  <a href={url}>WhatsApp</a><br />
-                    //             جميع الحقوق محفوظة  @ Hayyacomapp
-
-                    //         </p>
-                    //     </div>
-                    // </FooterBar>
-                    // :
-                    // <FooterBar>
-                    //     <div>
-                    //         <p>
-                    //             For more information, please contact via <a href={url}>WhatsApp</a><br />
-                    //             all rights reserved @ Hayyacomapp
-                    //         </p>
-                    //     </div>
-                    // </FooterBar>
-                    <FooterBar>
-                        <div>
-                            لمزيد من المعلومات ، يرجى الاتصال عبر  <a href={url}>WhatsApp</a><br />
-                            <p>{footer.FooterAR} @Hayyacomapp</p>
-                        </div>
-                    </FooterBar>
+                    <p>فضلاً اختر عدد المدعوين القادمين</p>
                     :
-                    <FooterBar>
-                        <div>
-                            For more information, please contact via <a href={url}>WhatsApp</a><br />
-                            <p>{footer.FooterEN} @Hayyacomapp</p>
-                        </div>
-                    </FooterBar>
-                }
-            </Wrapper>
+                    <p>Please select total guest coming !&nbsp;</p>}
+                {params.lang === "ar"
+                    ?
+                    <p>عدد القادمين
+                        &nbsp;
+                        {optiontwo
+                            &&
+                            <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                changeData(e.target.value)
+                            }}>
 
-            {/*  select guest modal start */}
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        }
+                        {optionthree
+                            &&
+                            <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                changeData(e.target.value)
+                            }}>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        }
+                        {optionfour
+                            &&
+                            <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                changeData(e.target.value)
+                            }}>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        }
+                        {optionfive
+                            &&
+                            <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                changeData(e.target.value)
+                            }}>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        }
+                        {/* </p> */}
+                        {/* <input type="number" name='number' onChange={(e) => changeData(e.target.value)} value={change} min="0" max={totalguest} style={{ width: '40px' }} /> */}
+                        {/* <small>you can select max: {totalguest}</small> */}
+                    </p>
+                    :
+                    <p>Total Guest &nbsp;
+                        {optiontwo
+                            &&
+                            <select name="number" id="cars" className='cars' value={change}
+                                onChange={(e) => {
+                                    changeData(e.target.value)
+                                }}>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        }
+                        {optionthree
+                            &&
+                            <select name="number" id="cars" className='cars' value={change}
+                                onChange={(e) => {
+                                    changeData(e.target.value)
+                                }}>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        }
+                        {optionfour
+                            &&
+                            <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                changeData(e.target.value)
+                            }}>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        }
+                        {optionfive
+                            &&
+                            <select style={{ width: '27px' }} name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                changeData(e.target.value)
+                            }}>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
 
-            <Modal
-                open={isModalOpentwo}
-                onCancel={handleCancel}
-                footer={[]}
-                centered
-                // width="100%"
-                onOk={handleOk}
-                closable={false}
-                className="newStylemodeltwo"
-            >
-                <div>
-                    <br />
-                    {params.lang === "ar" ?
-                        <p>فضلاً اختر عدد المدعوين القادمين</p>
-                        :
-                        <p>Please select total guest coming !&nbsp;</p>}
-                    {params.lang === "ar"
-                        ?
-                        <p>عدد القادمين
-                            &nbsp;
-                            {optiontwo
-                                &&
-                                <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
-                                    changeData(e.target.value)
-                                }}>
-
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                </select>
-                            }
-                            {optionthree
-                                &&
-                                <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
-                                    changeData(e.target.value)
-                                }}>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                </select>
-                            }
-                            {optionfour
-                                &&
-                                <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
-                                    changeData(e.target.value)
-                                }}>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                            }
-                            {optionfive
-                                &&
-                                <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
-                                    changeData(e.target.value)
-                                }}>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                            }
-                            {/* </p> */}
-                            {/* <input type="number" name='number' onChange={(e) => changeData(e.target.value)} value={change} min="0" max={totalguest} style={{ width: '40px' }} /> */}
-                            {/* <small>you can select max: {totalguest}</small> */}
-                        </p>
-                        :
-                        <p>Total Guest &nbsp;
-                            {optiontwo
-                                &&
-                                <select name="number" id="cars" className='cars' value={change}
-                                    onChange={(e) => {
-                                        changeData(e.target.value)
-                                    }}>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                </select>
-                            }
-                            {optionthree
-                                &&
-                                <select name="number" id="cars" className='cars' value={change}
-                                    onChange={(e) => {
-                                        changeData(e.target.value)
-                                    }}>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                </select>
-                            }
-                            {optionfour
-                                &&
-                                <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
-                                    changeData(e.target.value)
-                                }}>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                </select>
-                            }
-                            {optionfive
-                                &&
-                                <select style={{ width: '27px' }} name="number" id="cars" className='cars' value={change} onChange={(e) => {
-                                    changeData(e.target.value)
-                                }}>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-
-                            }
-                            {/* <br/>
+                        }
+                        {/* <br/>
                             <select className='newmodel' style={{width:'25px'}}>
                             <option  value="1">1</option>
                                     <option  value="2">2</option>
@@ -541,158 +576,182 @@ const Invitation = () => {
                                     <option  value="4">4</option>
                                     <option  value="5">5</option>
                             </select> */}
-                            {/* </p> */}
-                            {/* <input type="number" name='number' onChange={(e) => changeData(e.target.value)} value={change} min="0" max={totalguest} style={{ width: '40px' }} /> */}
-                            {/* <small>you can select max: {totalguest}</small> */}
-                        </p>
-                    }
-                    <br />
-                    {params.lang === "ar" ?
-                        <Button
-                            style={{ width: '100%', height: '50px', backgroundColor: '#6F0A12', color: 'white', borderRadius: '0px', fontWeight: 'bold' }} type="none" onClick={statusApi}><p style={{ lineHeight: "0px" }}>حفظ</p></Button>
-                        :
-                        <Button
-                            style={{ width: '100%', height: '50px', backgroundColor: '#6F0A12', color: 'white', borderRadius: '0px', fontWeight: 'bold' }} type="none" onClick={statusApi}><p style={{ lineHeight: "0px" }}>Send</p></Button>
-                    }
-                </div>
-            </Modal>
+                        {/* </p> */}
+                        {/* <input type="number" name='number' onChange={(e) => changeData(e.target.value)} value={change} min="0" max={totalguest} style={{ width: '40px' }} /> */}
+                        {/* <small>you can select max: {totalguest}</small> */}
+                    </p>
+                }
+                <br />
+                {params.lang === "ar" ?
+                    <Button
+                        style={{ width: '100%', height: '50px', backgroundColor: '#6F0A12', color: 'white', borderRadius: '0px', fontWeight: 'bold' }} type="none" onClick={statusApi}><p style={{ lineHeight: "0px" }}>حفظ</p></Button>
+                    :
+                    <Button
+                        style={{ width: '100%', height: '50px', backgroundColor: '#6F0A12', color: 'white', borderRadius: '0px', fontWeight: 'bold' }} type="none" onClick={statusApi}><p style={{ lineHeight: "0px" }}>Send</p></Button>
+                }
+            </div>
+        </Modal>
 
-            {/*  select guest modal end */}
+        {/*  select guest modal end */}
 
 
-            {/*  QR Code modal start */}
+        {/*  QR Code modal start */}
 
-            <Modal
-                centered
-                open={isModalOpen}
-                onCancel={handleCancel}
-                footer={[]}
-                // width="100%"
-                // width={'100vw'}
+        <Modal
+            centered
+            open={isModalOpen}
+            onCancel={handleCancel}
+            footer={[]}
+            closable={false}
+            className="qrcodeModal"
 
-                closable={false}
-                className="qrcodeModal"
-
-            >
+        >
+            <div>
                 <img src="/closeicon1.png" alt=""
                     width={20}
                     height={20}
-                    style={{ margin: '6px', marginLeft: '8px' }}
+                    style={{ margin: '6px', marginLeft: '8px', display: 'inline' }}
                     onClick={handleCancel}
                 />
-                {/* <AiOutlineClose style={{ color: '#6F0A12', width: '30px', height: '30px', cursor: 'pointer', fontWeight: 'bold' }} onClick={handleCancel} /> */}
-                <p style={{ fontSize: "16px", marginTop: '-14px', marginBottom: 2, textAlign: 'center' }}
+            </div>
+            <div style={{ fontSize: "16px", marginTop: '-14px', marginBottom: 2, textAlign: 'center' }}>
+                &nbsp;&nbsp;&nbsp;{msgdata.save_qr_message}&nbsp;&nbsp;&nbsp;
+            </div>
+            <div style={{ position: 'relative' }}>
+                <InviteImage src={image.entrance} />
+                <div
+                    style={qrcss}
+                    className="qrcss"
+                // style={{
+                //     position: 'absolute',
+                //     top: '150px',
+                //     left: '170px',
+                //     display: 'flex',
+                //     alignItems: 'center',
+                // }}
                 >
-                    &nbsp;&nbsp;&nbsp;{msgdata.save_qr_message}&nbsp;&nbsp;&nbsp;
-                </p>
-                <InviteImage className="ivitecard-img" src={image.entrance} />
-                <InviteBody>
-                    <Space
-                        direction="horizontal"
-                        style={{
-                            // justifyContent: 'center',
-                            // width: values.QRW + "px" ,
-                            // height: values.QRH + "px",
-                            width:'100px',
-                            height:'100px',
-                        }}
+                    <QRCode
+                        value={"" + invite.invitationId}
+                        size={values.QRsize}
+                        fgColor={values.QRcolor}
+                        bgColor={values.bgcolorQR === null ? 'white' : values.bgcolorQR}
+                    />
+                </div>
+                {/* <InviteBody> */}
+                <div
+                    style={sncss}
+                // style={{
+                //     position: 'absolute',
+                //     top: '300px',
+                //     left: '210px',
+                // }}
+                >
+                    {demo.id}
+                </div>
+                <div
+                    style={contentcss}
+                // style={{
+                //     fontSize: values.fontsize + 'px',
+                //     fontWeight: values.fontweight,
+                //     color: values.textcolor,
+                //     fontFamily: values.fontfamily,
+                //     justifyContent: 'center',
+                //     alignItems: 'center',
+                //     textAlign: 'center',
+                // }}
+                >
+                    {/* <InfoContainer > */}
+                    <div
+                        style={textcss}
+                        className="textcss"
+                    // style={{
+                    //     position: 'absolute',
+                    //     top: '320px',
+                    //     left: '150px',
+                    // }}
                     >
-                        <QRCode
-                            value={"" + invite.invitationId}
-                            size={values.QRsize}
-                            // style ={{margin:"0"}}
-                            fgColor={values.QRcolor}
-                            bgColor={values.bgcolorQR === null ? 'white' : values.bgcolorQR}
-                        />
-                    </Space>
-                    <div style={{color: values.textcolor}}>{demo.id}</div>
-
-                    <InfoContainer style={{ fontSize: values.fontsize + 'px', fontWeight: values.fontweight, color: values.textcolor, fontFamily: values.fontfamily }}>
-                        <div className="invitename" style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center' }}>
-                            {msgdata.Guest_name_title}&nbsp;
+                        <div>
+                            {msgdata.Guest_name_title}&nbsp;&nbsp;
                             {udata.name}
-                        </div>
-                        {params.lang === "ar" ?
-                            // <div style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center',display:'grid' ,gridTemplateColumns: "auto auto"}}>
-                            //     {values.numberMessage}&nbsp;&nbsp;
-                            // <div style={{width:values.NumberW + "px",height:values.NumberH + "px",gridTemplateColumns: "auto "}}>{udata.totalGuest}</div>
-
-
-                            // </div>
-                            <div className="invitename-1">
-                                <div className="guestname" style={{height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center',float:'left'}}>{values.numberMessage}: {udata.totalGuest}</div>
-									{/*<div className="guestname" style={{width:values.NumberW + "px",height:values.NumberH + "px", textAlign: 'center',float:'left'}}></div>*/}
-                            </div> 
-                            
-
-
-                            :
-                                <div className="invitename" style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center'}}>
-                                    {values.numberMessage}&nbsp;&nbsp;{change || udata.totalGuest}
+                            <div>{values.numberMessage}{/* &nbsp;&nbsp;{udata.totalGuest} */}&nbsp;&nbsp;
+                                <div style={numbercss}>{udata.totalGuest}
                                 </div>
-                        }
+                            </div>
+                        </div>
+
                         {udata.totalChildren === 0 ?
                             ""
                             :
                             params.lang === "ar" ?
-                                    <div className="child-box " style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center' }}>
-                                        عدد الأطفال&nbsp;{udata.totalChildren}
-                                    {/* <div style={{ height: values.NumberH + "px", width: values.NumberW + "px", display: 'inline' }}>{udata.totalChildren}</div> */}
-
+                                <div
+                                    style={{ textAlign: 'center' }}>
+                                    عدد الأطفال{/* &nbsp;&nbsp;{udata.totalChildren} */}&nbsp;&nbsp;
+                                    <div
+                                        style={numbercss}>
+                                        {udata.totalChildren}
                                     </div>
+                                </div>
                                 :
                                 <>
-                                    <div className="child-box " style={{ height: values.TextH + "px", width: values.TextW + "px", textAlign: 'center' }}>
-                                        Total Children&nbsp;{udata.totalChildren}
-                                    {/* <div style={{ height: values.NumberH + "px", width: values.NumberW + "px", display: 'inline' }}>{udata.totalChildren}</div> */}
-
+                                    <div
+                                        style={{ textAlign: 'center' }}>
+                                        Total Children&nbsp;&nbsp;
+                                        <div
+                                            style={numbercss}
+                                        >{udata.totalChildren}
+                                        </div>
                                     </div>
                                 </>
                         }
-                    </InfoContainer>
-                </InviteBody>
-            </Modal>
+                    </div>
 
-            {/*  QR Code modal end */}
+                    {/* </InfoContainer> */}
+                </div>
+            </div>
+
+            {/* </InviteBody> */}
+        </Modal>
+
+        {/*  QR Code modal end */}
 
 
-            {/*  reject modal start */}
+        {/*  reject modal start */}
 
-            <Modal open={isrejectedModalOpen}
-                centered
-                onOk={handleOkreject}
-                onCancel={handleCancelreject}
-                closable={false}
-                footer={[]}
-                className="newStyle"
+        <Modal open={isrejectedModalOpen}
+            centered
+            onOk={handleOkreject}
+            onCancel={handleCancelreject}
+            closable={false}
+            footer={[]}
+            className="newStyle"
 
-            >
-                <img src="/closeicon.png" alt=""
-                    width={30}
-                    height={30}
-                    style={{ margin: '5px' }}
-                    onClick={handleCancelreject}
-                />
-                {/* <AiOutlineClose style={{ color: '#6F0A12', width: '30px', height: '30px', cursor: 'pointer' }} onClick={handleCancelreject} /> */}
-                {params.lang === "ar" ?
-                    <div>
-                        <p>تم حفظ حالة الدعوة برفض</p>
-                        <p>شكراً لردكم</p>
-                        <br />
-                        <br />
-                    </div> :
-                    <div>
-                        <p>Your status has been saved as Rejected !</p>
-                        <p>Thank you for your response !    </p>
-                        <br />
-                        <br />
-                    </div>}
-            </Modal>
+        >
+            <img src="/closeicon.png" alt=""
+                width={30}
+                height={30}
+                style={{ margin: '5px' }}
+                onClick={handleCancelreject}
+            />
+            {/* <AiOutlineClose style={{ color: '#6F0A12', width: '30px', height: '30px', cursor: 'pointer' }} onClick={handleCancelreject} /> */}
+            {params.lang === "ar" ?
+                <div>
+                    <p>تم حفظ حالة الدعوة برفض</p>
+                    <p>شكراً لردكم</p>
+                    <br />
+                    <br />
+                </div> :
+                <div>
+                    <p>Your status has been saved as Rejected !</p>
+                    <p>Thank you for your response !    </p>
+                    <br />
+                    <br />
+                </div>}
+        </Modal>
 
-            {/*  reject modal end */}
+        {/*  reject modal end */}
 
-        </>
-    )
+    </>
+)
 }
 
 export default Invitation
