@@ -9,9 +9,10 @@ import QRCode from "react-qr-code";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom';
-import ReactPlayer from 'react-player';
-
 import '../index.css';
+import { Helmet } from "react-helmet";
+import WebFont from 'webfontloader';
+import { formatMuiErrorMessage } from '@mui/utils';
 
 
 // css
@@ -80,10 +81,7 @@ const InfoContainer = styled.div`
     display: inline;
     // padding: 10px;
     justify-content:center;
-    align-items:center;
-    
-
-  
+    align-items:center;      
 `
 
 const FooterBar = styled.footer`
@@ -91,6 +89,7 @@ const FooterBar = styled.footer`
   font-size:14px;
   color:rgba(0,0,0,.85);
   text-align:center;
+ 
   @media only screen and (max-width: 480px) {
    width:100%;
    font-size:10px;
@@ -98,9 +97,11 @@ const FooterBar = styled.footer`
   a{
      color:#1890ff;
      text-decoration: none;
-  }`
+  }
 
+  `
 const WrapperButton = styled.div`
+
 .btn1{
     margin: 10px; color: white; background-color: #145629; width:48%;height:50px;
 }
@@ -154,6 +155,8 @@ const Text = styled.div`
 }
 `
 
+
+
 const Invitation = () => {
 
 
@@ -174,7 +177,6 @@ const Invitation = () => {
     const [optionfour, setOptionfour] = useState('')
     const [optionfive, setOptionfive] = useState('')
     const [footer, setFooter] = useState([]);
-
 
     // Reject Modal State
     const [isrejectedModalOpen, setIsRjectedModalOpen] = useState(false);
@@ -214,52 +216,7 @@ const Invitation = () => {
 
 
     const showModal = async (type) => {
-        if (change === 2) {
-            setOptiontwo(true)
-        }
-        else if (change === 3) {
-            setOptionthree(true)
-        }
-        else if (change === 4) {
-            setOptionfour(true)
-
-        }
-        else if (change === 5) {
-            setOptionfive(true)
-
-        }
-        // console.log(type)
-        setdatadata(type)
-        let data = {
-            InvitationId: demo.id,
-            status: type,
-            total_guest: totalguest,
-        }
-        // console.log(datadata)
-        // console.log(demo.status)
-        if (totalguest < 2 && type === "Accepted" && demo.status === null) {
-            setIsModalOpen(true);
-            const response = await axios.put(`${BASE_URL}invitationPage/update-status`, (data))
-            console.log(response)
-        }
-        else if (totalguest > 1 && type === "Accepted" && demo.status === null) {
-
-            setIsModalOpentwo(true);
-        } else if (demo.status === "Accepted") {
-            // console.log(true)
-            setIsModalOpen(true);
-
-        }
-        else if (demo.status === "Rejected") {
-            setIsModalOpen(false);
-            if (params.lang === "ar") {
-                rejectarabic();
-            }
-            else {
-                reject();
-            }
-        }
-        else if (demo.status === "Attend") {
+        if (demo.attended > 0) {
             setIsModalOpen(false)
             setIsRjectedModalOpen(false)
             setIsModalOpentwo(false)
@@ -268,6 +225,64 @@ const Invitation = () => {
             }
             else {
                 attendToast();
+            }
+        }
+        else {
+            if (change === 2) {
+                setOptiontwo(true)
+            }
+            else if (change === 3) {
+                setOptionthree(true)
+            }
+            else if (change === 4) {
+                setOptionfour(true)
+
+            }
+            else if (change === 5) {
+                setOptionfive(true)
+
+            }
+            // console.log(type)
+            setdatadata(type)
+            let data = {
+                InvitationId: demo.id,
+                status: type,
+                total_guest: totalguest,
+            }
+            // console.log(datadata)
+            // console.log(demo.status)
+            if (totalguest < 2 && type === "Accepted" && demo.status === null) {
+                setIsModalOpen(true);
+                const response = await axios.put(`${BASE_URL}invitationPage/update-status`, (data))
+                console.log(response)
+            }
+            else if (totalguest > 1 && type === "Accepted" && demo.status === null) {
+
+                setIsModalOpentwo(true);
+            } else if (demo.status === "Accepted") {
+                // console.log(true)
+                setIsModalOpen(true);
+
+            }
+            // else if (demo.attended.length > 0 ) {
+            //     setIsModalOpen(false)
+            //     setIsRjectedModalOpen(false)
+            //     setIsModalOpentwo(false)
+            //     if (params.lang === "ar") {
+            //         arabicattendToast();
+            //     }
+            //     else {
+            //         attendToast();
+            //     }
+            // }
+            else if (demo.status === "Rejected") {
+                setIsModalOpen(false);
+                if (params.lang === "ar") {
+                    rejectarabic();
+                }
+                else {
+                    reject();
+                }
             }
         }
 
@@ -298,16 +313,27 @@ const Invitation = () => {
 
     }
     const showModalRejected = async (type) => {
+
         let reject = {
             InvitationId: demo.id,
             status: "Rejected",
             total_guest: change,
         }
-        const response = await axios.put(`${BASE_URL}invitationPage/update-status`, (reject))
-        console.log(response)
-        setIsRjectedModalOpen(true)
-        InvitationApidata()
-
+        if (demo.attended > 0) {
+            console.log('greater than 0 ')
+            if (params.lang === "ar") {
+                arabicattendToast();
+            }
+            else {
+                attendToast();
+            }
+        }
+        else {
+            const response = await axios.put(`${BASE_URL}invitationPage/update-status`, (reject))
+            console.log(response)
+            setIsRjectedModalOpen(true)
+            InvitationApidata()
+        }
     }
     const handleOk = () => {
         setIsModalOpen(false);
@@ -320,6 +346,7 @@ const Invitation = () => {
     };
     useEffect(() => {
         InvitationApidata();
+        // loadFonts();
     }, [totalguest])
 
 
@@ -354,6 +381,7 @@ const Invitation = () => {
     //     fontSize: values.fontsize,
     // }
 
+
     const qrcss = {
         position: 'absolute',
         // top: '150px',
@@ -376,22 +404,21 @@ const Invitation = () => {
         color: values.textcolor,
 
     }
-
     const contentcss = {
-        fontSize: values.fontsize + 'px',
-        fontWeight: values.fontweight,
         color: values.textcolor,
-        fontFamily: values.fontfamily,
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-
     }
+    // const hello = 'Noto Nastaliq Urdu'
 
     const textcss = {
         position: 'absolute',
         top: values.TextH + "px",
         left: values.TextW + "px",
+        fontFamily: values.fontfamily,
+        fontWeight: values.fontweight,
+        fontSize: values.fontsize + "px",
     }
 
     const numbercss = {
@@ -400,6 +427,16 @@ const Invitation = () => {
         left: values.NumberW + "px",
         display: 'inline'
     }
+    
+
+    WebFont.load({
+        google: {
+            families: [`BlakaInk-Regular`],
+            // urls:[`https://app.hayyacom.net:3009/Font/BlakaInk-Regular.ttf`]
+        }
+    })
+
+
 
     return (
         <>
@@ -413,17 +450,16 @@ const Invitation = () => {
                 toastStyle={{ backgroundColor: '#6F0A12' }}
             />
 
+
             <Wrapper >
-                <div>
+                <div >
                     {image.media === "video" ?
                         <div>
 
-                            {/* <ReactPlayer width={400} height={400} playing url={image.invitation ? image.invitation : ""}  /> */}
                             <Video controls>
                                 <source src={image.invitation} type="video/mp4" />
                                 <source src={image.invitation} type="video/ogg" />
                             </Video>
-                            {/* <Video controls src={image.invitation} type="video/ogg" autoPlay muted="true" playsInline/> */}
                         </div>
                         :
                         <Image src={image.invitation} alt="/" />
@@ -442,14 +478,14 @@ const Invitation = () => {
                 }
                 {params.lang === "ar" ?
                     <FooterBar>
-                        <div>
+                        <div style={{ fontFamily:'BlakaInk-Regular'}}>
                             لمزيد من المعلومات ، يرجى الاتصال عبر  <a href={url}>WhatsApp</a><br />
                             <p>{footer.FooterAR} </p>
                         </div>
                     </FooterBar>
                     :
                     <FooterBar>
-                        <div>
+                        <div >
                             For more information, please contact via <a href={url}>WhatsApp</a><br />
                             <p>{footer.FooterEN} </p>
                         </div>
@@ -654,25 +690,19 @@ const Invitation = () => {
                     </div>
                     <div
                         style={contentcss}
-                    // style={{
-                    //     fontSize: values.fontsize + 'px',
-                    //     fontWeight: values.fontweight,
-                    //     color: values.textcolor,
-                    //     fontFamily: values.fontfamily,
-                    //     justifyContent: 'center',
-                    //     alignItems: 'center',
-                    //     textAlign: 'center',
-                    // }}
                     >
                         {/* <InfoContainer > */}
                         <Text
-                            style={textcss}
-                            className="textcss"
-                        // style={{
-                        //     position: 'absolute',
-                        //     top: '320px',
-                        //     left: '150px',
-                        // }}
+                            // style={textcss}
+                            style={{
+                                position: 'absolute',
+                                top: values.TextH + "px",
+                                left: values.TextW + "px",
+                                fontFamily: values.fontfamily,
+                                // fontFamily:'BlakaInk-Regular',
+                                fontWeight: values.fontweight,
+                                fontSize: values.fontsize + "px",
+                            }}
                         >
                             <div>
                                 {msgdata.Guest_name_title}&nbsp;&nbsp;
