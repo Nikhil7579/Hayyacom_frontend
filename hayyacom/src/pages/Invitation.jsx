@@ -10,14 +10,12 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom';
 import '../index.css';
-import { Helmet } from "react-helmet";
 import WebFont from 'webfontloader';
-import { formatMuiErrorMessage } from '@mui/utils';
 
 
 // css
 const Wrapper = styled.div`
-padding:0px 0px;
+// padding:20px;
 // font-family:sans-serif;
 @media only screen and (max-width: 480px) {
     max-height:1000px;
@@ -56,8 +54,9 @@ const Video = styled.video`
 `
 const InviteImage = styled.img`
 //   max-width: 95%;
-  width: 100%;
+     max-width: 100%;
 //   margin:8px;
+
 `
 const InviteBody = styled.div`
     position: absolute;
@@ -154,9 +153,6 @@ const Text = styled.div`
 
 }
 `
-
-
-
 const Invitation = () => {
 
 
@@ -389,7 +385,7 @@ const Invitation = () => {
         top: values.QRH + "px",
         // left: '170px',
         left: values.QRW + "px",
-        display: 'flex',
+        display: 'block',
         alignItems: 'center',
     }
 
@@ -427,16 +423,14 @@ const Invitation = () => {
         left: values.NumberW + "px",
         display: 'inline'
     }
-    
+
 
     WebFont.load({
         google: {
-            families: [`BlakaInk-Regular`],
+            families: [`${values.fontfamily}`],
             // urls:[`https://app.hayyacom.net:3009/Font/BlakaInk-Regular.ttf`]
         }
     })
-
-
 
     return (
         <>
@@ -478,7 +472,7 @@ const Invitation = () => {
                 }
                 {params.lang === "ar" ?
                     <FooterBar>
-                        <div style={{ fontFamily:'BlakaInk-Regular'}}>
+                        <div>
                             لمزيد من المعلومات ، يرجى الاتصال عبر  <a href={url}>WhatsApp</a><br />
                             <p>{footer.FooterAR} </p>
                         </div>
@@ -654,11 +648,14 @@ const Invitation = () => {
                         onClick={handleCancel}
                     />
                 </div>
+
                 <div style={{ fontSize: "16px", marginTop: '-14px', marginBottom: 2, textAlign: 'center' }}>
                     &nbsp;&nbsp;&nbsp;{msgdata.save_qr_message}&nbsp;&nbsp;&nbsp;
                 </div>
+
                 <div style={{ position: 'relative' }}>
                     <InviteImage src={image.entrance} />
+
                     <div
                         style={qrcss}
                         className="qrcss"
@@ -688,59 +685,54 @@ const Invitation = () => {
                     >
                         {demo.id}
                     </div>
-                    <div
+                    {/* <div
                         style={contentcss}
+                    > */}
+                    {/* <InfoContainer > */}
+                    <div
+                        // style={textcss}
+                        style={{
+                            color: values.textcolor,
+                            position: 'absolute',
+                            top: values.TextH + "px",
+                            left: values.TextW + "px",
+                            fontFamily: values.fontfamily,
+                            fontWeight: values.fontweight,
+                            fontSize: values.fontsize + "px",
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            textAlign: 'center'
+                        }}
                     >
-                        {/* <InfoContainer > */}
-                        <Text
-                            // style={textcss}
-                            style={{
-                                position: 'absolute',
-                                top: values.TextH + "px",
-                                left: values.TextW + "px",
-                                fontFamily: values.fontfamily,
-                                // fontFamily:'BlakaInk-Regular',
-                                fontWeight: values.fontweight,
-                                fontSize: values.fontsize + "px",
-                            }}
-                        >
-                            <div>
-                                {msgdata.Guest_name_title}&nbsp;&nbsp;
-                                {udata.name}
-                                <div>{values.numberMessage}{/* &nbsp;&nbsp;{udata.totalGuest} */}&nbsp;&nbsp;
-                                    <div style={numbercss}>{udata.totalGuest}
-                                    </div>
-                                </div>
-                            </div>
+                        <div>{msgdata.Guest_name_title}&nbsp;&nbsp;{udata.name}
+                        </div>
+                        <div>{values.numberMessage}&nbsp;&nbsp;{udata.totalGuest}
+                        </div>
 
-                            {udata.totalChildren === 0 ?
-                                ""
-                                :
-                                params.lang === "ar" ?
-                                    <div
-                                        style={{ textAlign: 'center' }}>
-                                        عدد الأطفال{/* &nbsp;&nbsp;{udata.totalChildren} */}&nbsp;&nbsp;
-                                        <div
-                                            style={numbercss}>
+                        {udata.totalChildren === 0 ?
+                            ""
+                            :
+                            params.lang === "ar" ?
+                                <div>عدد الأطفال&nbsp;&nbsp;{udata.totalChildren}
+                                    {/* <div
+                                            style={{ display: 'inline' }} >
                                             {udata.totalChildren}
-                                        </div>
-                                    </div>
-                                    :
-                                    <>
-                                        <div
-                                            style={{ textAlign: 'center' }}>
-                                            Total Children&nbsp;&nbsp;
-                                            <div
-                                                style={numbercss}
+                                        </div> */}
+                                </div>
+                                :
+                                <>
+                                    <div>Total Children&nbsp;&nbsp;{udata.totalChildren}
+                                        {/* <div
+                                                style={{ display: 'inline' }}
                                             >{udata.totalChildren}
-                                            </div>
-                                        </div>
-                                    </>
-                            }
-                        </Text>
-
-                        {/* </InfoContainer> */}
+                                            </div> */}
+                                    </div>
+                                </>
+                        }
                     </div>
+
+                    {/* </InfoContainer> */}
+                    {/* </div> */}
                 </div>
 
                 {/* </InviteBody> */}

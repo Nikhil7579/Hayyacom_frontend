@@ -12,6 +12,7 @@ body {
   border-radius: 0px;
   padding: 0px 0px;
 }
+
 /* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -68,24 +69,100 @@ body {
   font-family: 'CairoPlay-VariableFont_slnt\,wght';
 } */
 
+
+@font-face {
+  font-family: 'BlakaInk-Regular';
+  src: url(/src/Font/BlakaInk-Regular.ttf);
+}
+
 @font-face {
   font-family: 'decotype-thuluth';
   src: url(/src/Font/decotype-thuluth.ttf);
 }
- 
- @font-face {
-  font-family: 'DINNextLTArabic-Regular';
-  src: url(/src/Font/DINNextLTArabic-Regular-3.ttf);
-} 
+
 @font-face {
-  font-family: 'GS SS Light';
+  font-family: 'decotype-thuluth';
+  src: url(/src/Font/decotype-thuluth.ttf);
+}
+
+@font-face {
+  font-family: 'DINNextLTArabic-Regular-3';
+  src: url(/src/Font/DINNextLTArabic-Regular-3.ttf);
+}
+
+@font-face {
+  font-family: 'GE SS Light';
   src: url(/src/Font/GE\ SS\ Light.otf);
 }
-/* @font-face {
-  font-family: 'BlakaInk-Regular';
-  src: url(/src/Font/BlakaInk-Regular.ttf);
+@font-face {
+  font-family: 'IBMPlexSansArabic-Bold';
+  src: url(/src/Font/IBMPlexSansArabic-Bold.ttf);
 }
-  */
+
+@font-face {
+  font-family: 'IBMPlexSansArabic-ExtraLight';
+  src: url(/src/Font/IBMPlexSansArabic-ExtraLight.ttf);
+}
+
+@font-face {
+  font-family: 'IBMPlexSansArabic-Light';
+  src: url(/src/Font/IBMPlexSansArabic-Light.ttf);
+}
+
+@font-face {
+  font-family: 'IBMPlexSansArabic-Medium';
+  src: url(/src/Font/IBMPlexSansArabic-Medium.ttf);
+}
+@font-face {
+  font-family: 'IBMPlexSansArabic-Regular';
+  src: url(/src/Font/IBMPlexSansArabic-Regular.ttf);
+}
+@font-face {
+  font-family: 'IBMPlexSansArabic-SemiBold';
+  src: url(/src/Font/IBMPlexSansArabic-SemiBold.ttf);
+}
+@font-face {
+  font-family: 'IBMPlexSansArabic-Thin';
+  src: url(/src/Font/IBMPlexSansArabic-Thin.ttf);
+}
+@font-face {
+  font-family: 'MoonDance-Regular';
+  src: url(/src/Font/MoonDance-Regular.ttf);
+}
+@font-face {
+  font-family: 'NotoNastaliqUrdu-VariableFont_wght';
+  src: url(/src/Font/NotoNastaliqUrdu-VariableFont_wght.ttf);
+}
+@font-face {
+  font-family: 'NotoSansJP-Black';
+  src: url(/src/Font/NotoSansJP-Black.otf);
+}
+@font-face {
+  font-family: 'NotoSansJP-Bold';
+  src: url(/src/Font/NotoSansJP-Bold.otf);
+}
+@font-face {
+  font-family: 'NotoSansJP-Light';
+  src: url(/src/Font/NotoSansJP-Light.otf);
+}
+@font-face {
+  font-family: 'NotoSansJP-Medium';
+  src: url(/src/Font/NotoSansJP-Medium.otf);
+}
+@font-face {
+  font-family: 'NotoSansJP-Thin';
+  src: url(/src/Font/NotoSansJP-Thin.otf);
+}
+@font-face {
+  font-family: 'RubikBubbles-Regular';
+  src: url(/src/Font/RubikBubbles-Regular.ttf);
+}
+@font-face {
+  font-family: 'Shrikhand-Regular';
+  src: url(/src/Font/Shrikhand-Regular.ttf);
+}
+
+
 .newStyle .ant-modal-content p {
   padding: 0px;
   text-align: center;
