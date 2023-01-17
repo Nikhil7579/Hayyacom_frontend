@@ -11,15 +11,20 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom';
 import '../index.css';
 import WebFont from 'webfontloader';
+import { Helmet } from 'react-helmet';
+
 
 
 // css
 const Wrapper = styled.div`
-// padding:20px;
-// font-family:sans-serif;
+padding:50px 50px 0px 50px;
+margin:0px;
+max-width:100%;
 @media only screen and (max-width: 480px) {
     max-height:1000px;
     min-height:450px;
+    max-width:100%;
+    padding:20px 20px 0px 20px;
 .toast-container{
 background:#6f0a12;
 }
@@ -27,13 +32,12 @@ background:#6f0a12;
   `
 const Image = styled.img`
   display:block;
-  margin-top:20px;
-  width:97%;
-  margin:22px;
+//   margin-top:20px;
+  width:100%;
+//   margin:22px;
   @media only screen and (max-width: 480px) {
-  max-width:93%;
-  margin-top:20px;
-  margin:10px;
+  width:100%;
+  margin:0px;
   min-height:350px;
   max-height:750px;
       }
@@ -41,13 +45,13 @@ const Image = styled.img`
   `
 const Video = styled.video`
   display:block;
-  margin-top:20px;
-  width:97%;
-  margin:22px;
+//   margin-top:20px;
+  width:100%;
+//   margin:22px;
   @media only screen and (max-width: 480px) {
-  max-width:93%;
-  margin-top:20px;
-  margin:10px;
+  width:100%;
+//   margin-top:20px;
+  margin:0px;
   min-height:350px;
   max-height:750px;
       }
@@ -55,6 +59,7 @@ const Video = styled.video`
 const InviteImage = styled.img`
 //   max-width: 95%;
      max-width: 100%;
+     max-height:100%;
 //   margin:8px;
 
 `
@@ -91,58 +96,69 @@ const FooterBar = styled.footer`
  
   @media only screen and (max-width: 480px) {
    width:100%;
-   font-size:10px;
+   font-size:11px;
   }
   a{
      color:#1890ff;
      text-decoration: none;
   }
+  p{
+    margin:5px 0px;
+  }
 
   `
 const WrapperButton = styled.div`
+display:flex;
+margin:0px;
+padding:30px 20px 20px 20px;
 
 .btn1{
-    margin: 10px; color: white; background-color: #145629; width:48%;height:50px;
+    margin:0px 10px 0px 0px; color: white; background-color: #145629; width:50%;height:50px;
 }
 .btn2{
-    margin: 10px; color: white; background-color: #6f0a12; width:48%;height:50px;
+    margin: 0px 0px 0px 10px; color: white; background-color: #6f0a12; width:50%;height:50px;
 }
 .btn3{
-    margin: 10px; color: white; background-color: #145629; width:48%;height:50px;
+    margin: 0px 0px 0px 10px; color: white; background-color: #145629; width:50%;height:50px;
 }
 .btn4{
-    margin: 10px; color: white; background-color: #6f0a12; width:48%;height:50px;
+    margin: 0px 10px 0px 0px; color: white; background-color: #6f0a12; width:50%;height:50px;
+}
+
+@media only screen and (max-width: 480px) {
+    padding:30px 20px 20px 20px;
+    margin:0px;
 }
 @media only screen and (max-width: 480px) {
     display:flex;
     align-items: center;
 
     .btn1{
-     max-width:40%;
-     margin:10px 0px 10px 30px;
-     margin-top:25px;
+     width:50%;
+     margin:0px 10px 0px 0px;
+    //  margin-top:25px;
      height:40px;
      font-weight:bold;
     }
     .btn2{
-        max-width:40%;
+        width:50%;
         height:40px;
-        margin:10px;
-        margin-top:25px;
+        margin:0px 0px 0px 10px;
+        // margin-top:25px;
         font-weight:bold;
        }
        .btn3{
-        max-width:40%;
-        margin:10px;
-        margin-top:25px;
+        width:50%;
+        margin:0px 0px 0px 10px;
+        // margin-top:25px;
         height:40px;
         font-weight:bold;
        }
        .btn4{
-           max-width:40%;
+           width:50%;
            height:40px;
-           margin:10px 0px 10px 30px;
-           margin-top:25px;
+           margin:0px 10px 0px 0px;
+        //    margin-top:25px;
            font-weight:bold;
 
           }
@@ -173,6 +189,7 @@ const Invitation = () => {
     const [optionfour, setOptionfour] = useState('')
     const [optionfive, setOptionfive] = useState('')
     const [footer, setFooter] = useState([]);
+
 
     // Reject Modal State
     const [isrejectedModalOpen, setIsRjectedModalOpen] = useState(false);
@@ -337,12 +354,13 @@ const Invitation = () => {
 
     };
     const handleCancel = () => {
-        setIsModalOpen(false);
-        setIsModalOpentwo(false);
+            setIsModalOpen(false);
+            setIsModalOpentwo(false);
+        
     };
     useEffect(() => {
         InvitationApidata();
-        // loadFonts();
+
     }, [totalguest])
 
 
@@ -388,8 +406,6 @@ const Invitation = () => {
         display: 'block',
         alignItems: 'center',
     }
-
-
 
     const sncss = {
         position: 'absolute',
@@ -443,8 +459,6 @@ const Invitation = () => {
                 width='400px'
                 toastStyle={{ backgroundColor: '#6F0A12' }}
             />
-
-
             <Wrapper >
                 <div >
                     {image.media === "video" ?
@@ -479,7 +493,7 @@ const Invitation = () => {
                     </FooterBar>
                     :
                     <FooterBar>
-                        <div >
+                        <div>
                             For more information, please contact via <a href={url}>WhatsApp</a><br />
                             <p>{footer.FooterEN} </p>
                         </div>
@@ -655,7 +669,6 @@ const Invitation = () => {
 
                 <div style={{ position: 'relative' }}>
                     <InviteImage src={image.entrance} />
-
                     <div
                         style={qrcss}
                         className="qrcss"
@@ -683,7 +696,7 @@ const Invitation = () => {
                     //     left: '210px',
                     // }}
                     >
-                        {demo.id}
+                        {demo.InvitationID}
                     </div>
                     {/* <div
                         style={contentcss}
@@ -699,9 +712,8 @@ const Invitation = () => {
                             fontFamily: values.fontfamily,
                             fontWeight: values.fontweight,
                             fontSize: values.fontsize + "px",
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            textAlign: 'center'
+                            textAlign: 'center',
+                            width: '250px',
                         }}
                     >
                         <div>{msgdata.Guest_name_title}&nbsp;&nbsp;{udata.name}
