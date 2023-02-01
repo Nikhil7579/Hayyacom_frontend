@@ -5,163 +5,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-
 .newStyle .ant-modal-header,
 
 .newStyle .ant-modal-content {
   border-radius: 0px;
   padding: 0px 0px;
 }
-
-/* code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-} */
-
-/* @font-face {
-  font-family: 'IBMPlexSansArabic-Bold';
-  src: url(../src/Font/IBMPlexSansArabic-Bold.ttf);
-}
-
-@font-face {
-  font-family: 'Shrikhand-Regular';
-  src: url(../src/Font/Shrikhand-Regular.ttf);
-}
-
-@font-face {
-  font-family: 'MoonDance-Regular';
-  src: url(../src/Font/MoonDance-Regular.ttf);
-}
-
-@font-face {
-  font-family: 'BungeeSpice-Regular';
-  src: url(../src/Font/BungeeSpice-Regular.ttf);
-}
-
-@font-face {
-  font-family: 'Qahiri-Regular';
-  src: url(../src/Font/Qahiri-Regular.ttf);
-}
-@font-face {
-  font-family: 'CairoPlay-VariableFont_slnt\,wght';
-  src: url(../src/Font/CairoPlay-VariableFont_slnt\,wght.ttf);
-}
-
-
-
-.textcss {
-  font-family: 'IBMPlexSansArabic-Bold', serif;
-}
-
-.textcss1 {
-  font-family: 'Shrikhand-Regular';
-}
-.textcsstwo {
-  font-family: 'MoonDance-Regular';
-}
-.textcssthree {
-  font-family: 'BungeeSpice-Regular';
-}
-.qahirifontfamily{
-  font-family: 'Qahiri-Regular';
-}
-.cairoplayfontfamily{
-  font-family: 'CairoPlay-VariableFont_slnt\,wght';
-} */
-
-
-@font-face {
-  font-family: 'BlakaInk-Regular';
-  src: url(/src/Font/BlakaInk-Regular.ttf);
-}
-
-@font-face {
-  font-family: 'decotype-thuluth';
-  src: url(/src/Font/decotype-thuluth.ttf);
-}
-
-@font-face {
-  font-family: 'decotype-thuluth';
-  src: url(/src/Font/decotype-thuluth.ttf);
-}
-
-@font-face {
-  font-family: 'DINNextLTArabic-Regular-3';
-  src: url(/src/Font/DINNextLTArabic-Regular-3.ttf);
-}
-
-@font-face {
-  font-family: 'GE SS Light';
-  src: url(/src/Font/GE\ SS\ Light.otf);
-}
-@font-face {
-  font-family: 'IBMPlexSansArabic-Bold';
-  src: url(/src/Font/IBMPlexSansArabic-Bold.ttf);
-}
-
-@font-face {
-  font-family: 'IBMPlexSansArabic-ExtraLight';
-  src: url(/src/Font/IBMPlexSansArabic-ExtraLight.ttf);
-}
-
-@font-face {
-  font-family: 'IBMPlexSansArabic-Light';
-  src: url(/src/Font/IBMPlexSansArabic-Light.ttf);
-}
-
-@font-face {
-  font-family: 'IBMPlexSansArabic-Medium';
-  src: url(/src/Font/IBMPlexSansArabic-Medium.ttf);
-}
-@font-face {
-  font-family: 'IBMPlexSansArabic-Regular';
-  src: url(/src/Font/IBMPlexSansArabic-Regular.ttf);
-}
-@font-face {
-  font-family: 'IBMPlexSansArabic-SemiBold';
-  src: url(/src/Font/IBMPlexSansArabic-SemiBold.ttf);
-}
-@font-face {
-  font-family: 'IBMPlexSansArabic-Thin';
-  src: url(/src/Font/IBMPlexSansArabic-Thin.ttf);
-}
-@font-face {
-  font-family: 'MoonDance-Regular';
-  src: url(/src/Font/MoonDance-Regular.ttf);
-}
-@font-face {
-  font-family: 'NotoNastaliqUrdu-VariableFont_wght';
-  src: url(/src/Font/NotoNastaliqUrdu-VariableFont_wght.ttf);
-}
-@font-face {
-  font-family: 'NotoSansJP-Black';
-  src: url(/src/Font/NotoSansJP-Black.otf);
-}
-@font-face {
-  font-family: 'NotoSansJP-Bold';
-  src: url(/src/Font/NotoSansJP-Bold.otf);
-}
-@font-face {
-  font-family: 'NotoSansJP-Light';
-  src: url(/src/Font/NotoSansJP-Light.otf);
-}
-@font-face {
-  font-family: 'NotoSansJP-Medium';
-  src: url(/src/Font/NotoSansJP-Medium.otf);
-}
-@font-face {
-  font-family: 'NotoSansJP-Thin';
-  src: url(/src/Font/NotoSansJP-Thin.otf);
-}
-@font-face {
-  font-family: 'RubikBubbles-Regular';
-  src: url(/src/Font/RubikBubbles-Regular.ttf);
-}
-@font-face {
-  font-family: 'Shrikhand-Regular';
-  src: url(/src/Font/Shrikhand-Regular.ttf);
-}
-
 
 .newStyle .ant-modal-content p {
   padding: 0px;
@@ -170,7 +19,6 @@ body {
   font-size: 18px;
 
 }
-
 .newStylemodeltwo .ant-modal-content {
   border-radius: 0px;
   padding: 0px 0px;
@@ -220,7 +68,6 @@ body {
   }
 }
 
-
 select {
   appearance: none;
   -moz-appearance: none;
@@ -231,68 +78,3 @@ select {
   background-position: calc(100%) center;
   background-size: 10px;
 }
-
-.videoplayer {
-  display: block;
-  margin-top: 20px;
-  width: 97%;
-  margin: 22px;
-
-
-  @media only screen and (max-width: 480px) {
-    max-width: 93%;
-    margin-top: 20px;
-    margin: 10px;
-    min-height: 350px;
-    max-height: 750px;
-  }
-}
-
-
-
-/* .invitename {
-	height: auto !important;
-    width: 100% !important;
-    text-align: center !important;
-    padding-top: 0px !important;
-        font-family: sans-serif !important;
-} */
-/* .invitename-1 {
-    height: auto !important;
-    width: 100% !important;
-    text-align: center !important;
-    padding-bottom: 18px !important;
-        font-family: sans-serif !important;
-} */
-/* .guestname {
-    height: auto !important;
-    width: 100% !important;
-    text-align: center !important;
-    padding-top: 0px !important;
-    font-family: sans-serif !important;
-} */
-/* .guestname-1 {
-    height: auto !important;
-    width: 20% !important;
-    text-align: left !important;
-    padding-top: 0px !important;
-    font-size: 20px !important;
-    font-family: unset;
-    padding-left: 15px;
-} */
-/* .child-box {
-	  height: auto !important;
-    width: 100% !important;
-    padding-top: 0px !important;
-    font-family: unset;
-    padding-left: 0px;
-} */
-/* .ivitecard-img {
-    max-width: 100% !important;
-    width: 100% !important;
-    margin: 0px !important;
-} */
-
-/* .sc-gKPRtg {
-	width: 100% !important;
-} */

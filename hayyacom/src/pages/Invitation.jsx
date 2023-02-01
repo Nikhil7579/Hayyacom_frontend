@@ -1,8 +1,7 @@
 import axios from 'axios'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-// import { AiOutlineClose } from 'react-icons/ai'
-import { Button, Space } from 'antd'
+import { Button } from 'antd'
 import { Modal } from 'antd';
 import { BASE_URL } from '../Config/api'
 import QRCode from "react-qr-code";
@@ -10,10 +9,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom';
 import '../index.css';
-import WebFont from 'webfontloader';
 import { Helmet } from 'react-helmet';
-
-
 
 // css
 const Wrapper = styled.div`
@@ -32,9 +28,7 @@ background:#6f0a12;
   `
 const Image = styled.img`
   display:block;
-//   margin-top:20px;
   width:100%;
-//   margin:22px;
   @media only screen and (max-width: 480px) {
   width:100%;
   margin:0px;
@@ -45,48 +39,20 @@ const Image = styled.img`
   `
 const Video = styled.video`
   display:block;
-//   margin-top:20px;
   width:100%;
-//   margin:22px;
   @media only screen and (max-width: 480px) {
   width:100%;
-//   margin-top:20px;
   margin:0px;
   min-height:350px;
   max-height:750px;
       }
 `
 const InviteImage = styled.img`
-//   max-width: 95%;
      max-width: 100%;
      max-height:100%;
-//   margin:8px;
 
 `
-const InviteBody = styled.div`
-    position: absolute;
-    // z-index: 1;
-    width: 100%;
-    height: 100%;
-    top: 30px;
-    left:2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction:column;
- `
-const QRContainer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-`
-const InfoContainer = styled.div`
-    text-align: center;
-    display: inline;
-    // padding: 10px;
-    justify-content:center;
-    align-items:center;      
-`
+
 
 const FooterBar = styled.footer`
 
@@ -113,17 +79,34 @@ margin:0px;
 padding:30px 20px 20px 20px;
 
 .btn1{
-    margin:0px 10px 0px 0px; color: white; background-color: #145629; width:50%;height:50px;
+    margin:0px 10px 0px 0px; 
+    color: white; 
+    background-color: #145629; 
+    width:50%;
+    height:50px;
 }
 .btn2{
-    margin: 0px 0px 0px 10px; color: white; background-color: #6f0a12; width:50%;height:50px;
+    margin: 0px 0px 0px 10px; 
+    color: white; 
+    background-color: #6f0a12; 
+    width:50%;
+    height:50px;
 }
 .btn3{
-    margin: 0px 0px 0px 10px; color: white; background-color: #145629; width:50%;height:50px;
+    margin: 0px 0px 0px 10px; 
+    color: white; 
+    background-color: #145629; 
+    width:50%;
+    height:50px;
 }
 .btn4{
-    margin: 0px 10px 0px 0px; color: white; background-color: #6f0a12; width:50%;height:50px;
+    margin: 0px 10px 0px 0px; 
+    color: white; 
+    background-color: #6f0a12; 
+    width:50%;
+    height:50px;
 }
+
 
 @media only screen and (max-width: 480px) {
     padding:30px 20px 20px 20px;
@@ -136,7 +119,6 @@ padding:30px 20px 20px 20px;
     .btn1{
      width:50%;
      margin:0px 10px 0px 0px;
-    //  margin-top:25px;
      height:40px;
      font-weight:bold;
     }
@@ -144,13 +126,11 @@ padding:30px 20px 20px 20px;
         width:50%;
         height:40px;
         margin:0px 0px 0px 10px;
-        // margin-top:25px;
         font-weight:bold;
        }
        .btn3{
         width:50%;
         margin:0px 0px 0px 10px;
-        // margin-top:25px;
         height:40px;
         font-weight:bold;
        }
@@ -158,17 +138,41 @@ padding:30px 20px 20px 20px;
            width:50%;
            height:40px;
            margin:0px 10px 0px 0px;
-        //    margin-top:25px;
            font-weight:bold;
 
           }
    }
 `
-const Text = styled.div`
-@media only screen and (max-width: 480px) {
-
+const SelectButttonWrapper = styled.div`
+.btn5{
+    width: 100%; 
+    height: 50px ; 
+    background-color: #6F0A12 ; 
+    color: white ; 
+    border-radius: 0px ; 
+    font-weight: bold ;
+    line-height:0px;
 }
 `
+const CloseIconimg = styled.img`
+width:20px;
+height:20px;
+margin: 6px;
+margin-left: 8px; 
+display: inline;
+`
+const RejectCloseIconimg = styled.img`
+width:30px;
+height:30px;
+margin: 5px;
+`
+const CardMassage = styled.div`
+font-size: 16px; 
+margin-top: -14px; 
+margin-bottom: 2px;
+text-align: center;
+`
+
 const Invitation = () => {
 
 
@@ -177,19 +181,17 @@ const Invitation = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isModalOpentwo, setIsModalOpentwo] = useState(false);
     const [invite, setInvite] = useState([])
-    const [value, setValue] = useState()
+    // const [value, setValue] = useState()
     const [values, setValues] = useState([])
     const [udata, setData] = useState([])
     const [demo, setDemo] = useState([])
     const [msgdata, setMsgdata] = useState([])
-    const [datadata, setdatadata] = useState()
-    const [change, changeData] = useState('');
+    const [change, changeData] = useState([]);
     const [optiontwo, setOptiontwo] = useState('')
     const [optionthree, setOptionthree] = useState('')
     const [optionfour, setOptionfour] = useState('')
     const [optionfive, setOptionfive] = useState('')
     const [footer, setFooter] = useState([]);
-
 
     // Reject Modal State
     const [isrejectedModalOpen, setIsRjectedModalOpen] = useState(false);
@@ -202,14 +204,15 @@ const Invitation = () => {
 
     // Param
     const params = useParams();
+    // console.log(params)
     const id = params.id;
-    const lang = params.lang;
+    // const lang = params.lang;
 
     // whatsapp link
     const url = `https://api.whatsapp.com/send/?phone=${footer.WhatsappnumberURL}&text&type=phone_number&app_absent=0whatsApp`
 
 
-    // reject toast language wise
+    // reject toast according to language 
     const reject = () => {
         toast.error("Invitation has been Rejected, You cannot change invitation status. Please contact inviter to modify your status")
     };
@@ -226,7 +229,6 @@ const Invitation = () => {
     const arabicattendToast = () => {
         toast.error("تم حضور الدعوة ولا يمكنك تغيير حالة الدعوة")
     };
-
 
     const showModal = async (type) => {
         if (demo.attended > 0) {
@@ -255,39 +257,33 @@ const Invitation = () => {
                 setOptionfive(true)
 
             }
-            // console.log(type)
-            setdatadata(type)
+            // setdatadata(type)
             let data = {
                 InvitationId: demo.id,
                 status: type,
                 total_guest: totalguest,
             }
-            // console.log(datadata)
-            // console.log(demo.status)
+
             if (totalguest < 2 && type === "Accepted" && demo.status === null) {
+
                 setIsModalOpen(true);
-                const response = await axios.put(`${BASE_URL}invitationPage/update-status`, (data))
-                console.log(response)
+
+                await axios.put(`${BASE_URL}invitationPage/update-status`, (data)).then((response) => {
+                    console.log(response)
+
+                }).catch((err) => {
+                    console.log(err);
+                })
             }
             else if (totalguest > 1 && type === "Accepted" && demo.status === null) {
 
                 setIsModalOpentwo(true);
-            } else if (demo.status === "Accepted") {
-                // console.log(true)
-                setIsModalOpen(true);
 
+            } else if (demo.status === "Accepted") {
+
+                setIsModalOpen(true);
             }
-            // else if (demo.attended.length > 0 ) {
-            //     setIsModalOpen(false)
-            //     setIsRjectedModalOpen(false)
-            //     setIsModalOpentwo(false)
-            //     if (params.lang === "ar") {
-            //         arabicattendToast();
-            //     }
-            //     else {
-            //         attendToast();
-            //     }
-            // }
+
             else if (demo.status === "Rejected") {
                 setIsModalOpen(false);
                 if (params.lang === "ar") {
@@ -299,33 +295,27 @@ const Invitation = () => {
             }
         }
 
-        // console.log(data)
     };
-    const statusApi = async (datadata, type) => {
-        // console.log(change)
-        // console.log(datadata)
-        // console.log(type)
+    const statusApi = async () => {
+
         let data = {
             InvitationId: demo.id,
             status: "Accepted",
             total_guest: change,
         }
-        // console.log(data)
 
-        const response = await axios.put(`${BASE_URL}invitationPage/update-status`, (data))
-        console.log(response)
-
-        if (response.status === 200) {
-            // toast.info(response.data.message)
-            setIsModalOpentwo(false);
-            setIsModalOpen(true);
-            InvitationApidata();
-
-
-        }
-
+        await axios.put(`${BASE_URL}invitationPage/update-status`, (data))
+            .then((response) => {
+                if (response.status === 200) {
+                    setIsModalOpentwo(false);
+                    setIsModalOpen(true);
+                    InvitationApidata();
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
     }
-    const showModalRejected = async (type) => {
+    const showModalRejected = async () => {
 
         let reject = {
             InvitationId: demo.id,
@@ -333,7 +323,6 @@ const Invitation = () => {
             total_guest: change,
         }
         if (demo.attended > 0) {
-            console.log('greater than 0 ')
             if (params.lang === "ar") {
                 arabicattendToast();
             }
@@ -342,10 +331,14 @@ const Invitation = () => {
             }
         }
         else {
-            const response = await axios.put(`${BASE_URL}invitationPage/update-status`, (reject))
-            console.log(response)
-            setIsRjectedModalOpen(true)
-            InvitationApidata()
+            await axios.put(`${BASE_URL}invitationPage/update-status`, (reject))
+                .then((response) => {
+                    console.log(response)
+                    setIsRjectedModalOpen(true)
+                    InvitationApidata()
+                }).catch((err) => {
+                    console.log(err);
+                })
         }
     }
     const handleOk = () => {
@@ -354,54 +347,39 @@ const Invitation = () => {
 
     };
     const handleCancel = () => {
-            setIsModalOpen(false);
-            setIsModalOpentwo(false);
-        
+        setIsModalOpen(false);
+        setIsModalOpentwo(false);
+
     };
-    useEffect(() => {
-        InvitationApidata();
-
-    }, [totalguest])
-
 
     // invitation data api Integration
     const InvitationApidata = async () => {
-        let res = await axios.get(`${BASE_URL}invitationPage/invitation-page-details/${id}`)
-        // http://178.128.35.221:6000/invitationPage/invitation-page-details/2100
-        setimage(res.data.CardData);
-        setTotalguest(res.data.ContactData.totalGuest)
-        const article = res.data.ContactData
-        changeData(article.totalGuest)
-        // setDatacontact(res.data.ContactData.totalGuest)
-        setValue(res.data.invitationData.total_guest)
-        setData(res.data.ContactData)
-        setMsgdata(res.data.MessageData)
-        setValues(res.data.DesignData)
-        setInvite(res.data.QRData)
-        setDemo(res.data.invitationData)
-        console.log(res);
-        setFooter(res.data.InvitationPageData);
-        // console.log(invite.invitationId)
-        // console.log('values', values);
-        // console.log(values.QRsize)
+        await axios.get(`${BASE_URL}invitationPage/invitation-page-details/${id}`)
+            .then((res) => {
+                setimage(res.data.CardData);
+                setTotalguest(res.data.ContactData.totalGuest)
+                const article = res.data.ContactData
+                changeData(article.totalGuest)
+                setData(res.data.ContactData)
+                setMsgdata(res.data.MessageData)
+                setValues(res.data.DesignData)
+                setInvite(res.data.QRData)
+                setDemo(res.data.invitationData)
+                setFooter(res.data.InvitationPageData);
+                console.log(res);
+            }).catch((err) => {
+                console.log(err);
+            })
     }
 
-    // const mystyle = {
-    //     position: 'absolute',
-    //     top: '150px',
-    //     left: '170px',
-    //     display: 'flex',
-    //     alignItems: 'center',
-    //     fontSize: values.fontsize,
-    // }
-
+    useEffect(() => {
+        InvitationApidata();
+    }, [])
 
     const qrcss = {
         position: 'absolute',
-        // top: '150px',
         margin: 'auto',
         top: values.QRH + "px",
-        // left: '170px',
         left: values.QRW + "px",
         display: 'block',
         alignItems: 'center',
@@ -409,47 +387,23 @@ const Invitation = () => {
 
     const sncss = {
         position: 'absolute',
-        // top: '300px',
         top: values.SNH + "px",
-        // left: '210px',
         left: values.SNW + "px",
         color: values.textcolor,
-
     }
-    const contentcss = {
-        color: values.textcolor,
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center',
-    }
-    // const hello = 'Noto Nastaliq Urdu'
-
-    const textcss = {
-        position: 'absolute',
-        top: values.TextH + "px",
-        left: values.TextW + "px",
-        fontFamily: values.fontfamily,
-        fontWeight: values.fontweight,
-        fontSize: values.fontsize + "px",
-    }
-
-    const numbercss = {
-        position: 'relative',
-        top: values.NumberH + "px",
-        left: values.NumberW + "px",
-        display: 'inline'
-    }
-
-
-    WebFont.load({
-        google: {
-            families: [`${values.fontfamily}`],
-            // urls:[`https://app.hayyacom.net:3009/Font/BlakaInk-Regular.ttf`]
-        }
-    })
-
+    const fonturls = values.fontUrl;
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>Hayyacom Mobile</title>
+                <style>{`
+                         @font-face {
+                            font-family: ${values.fontfamily};
+                            src: url(${fonturls});
+                          }
+                  `}</style>
+            </Helmet>
             <ToastContainer
                 autoClose={2000}
                 position="top-right"
@@ -459,11 +413,10 @@ const Invitation = () => {
                 width='400px'
                 toastStyle={{ backgroundColor: '#6F0A12' }}
             />
-            <Wrapper >
-                <div >
+            <Wrapper>
+                <div>
                     {image.media === "video" ?
                         <div>
-
                             <Video controls>
                                 <source src={image.invitation} type="video/mp4" />
                                 <source src={image.invitation} type="video/ogg" />
@@ -480,7 +433,7 @@ const Invitation = () => {
                     </WrapperButton>
                     :
                     <WrapperButton>
-                        <Button type="none" className='btn1' onClick={() => showModal("Accepted")}  >Accept</Button>
+                        <Button type="none" className='btn1' onClick={() => showModal("Accepted")} >Accept</Button>
                         <Button type="none" className='btn2' onClick={() => showModalRejected("Rejected")} >Reject</Button>
                     </WrapperButton>
                 }
@@ -499,6 +452,7 @@ const Invitation = () => {
                         </div>
                     </FooterBar>
                 }
+
             </Wrapper>
 
             {/*  select guest modal start */}
@@ -527,7 +481,6 @@ const Invitation = () => {
                                 <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
                                     changeData(e.target.value)
                                 }}>
-
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                 </select>
@@ -565,9 +518,6 @@ const Invitation = () => {
                                     <option value="5">5</option>
                                 </select>
                             }
-                            {/* </p> */}
-                            {/* <input type="number" name='number' onChange={(e) => changeData(e.target.value)} value={change} min="0" max={totalguest} style={{ width: '40px' }} /> */}
-                            {/* <small>you can select max: {totalguest}</small> */}
                         </p>
                         :
                         <p>Total Guest &nbsp;
@@ -605,7 +555,7 @@ const Invitation = () => {
                             }
                             {optionfive
                                 &&
-                                <select style={{ width: '27px' }} name="number" id="cars" className='cars' value={change} onChange={(e) => {
+                                <select name="number" id="cars" className='cars' value={change} onChange={(e) => {
                                     changeData(e.target.value)
                                 }}>
                                     <option value="1">1</option>
@@ -616,32 +566,22 @@ const Invitation = () => {
                                 </select>
 
                             }
-                            {/* <br/>
-                            <select className='newmodel' style={{width:'25px'}}>
-                            <option  value="1">1</option>
-                                    <option  value="2">2</option>
-                                    <option  value="3">3</option>
-                                    <option  value="4">4</option>
-                                    <option  value="5">5</option>
-                            </select> */}
-                            {/* </p> */}
-                            {/* <input type="number" name='number' onChange={(e) => changeData(e.target.value)} value={change} min="0" max={totalguest} style={{ width: '40px' }} /> */}
-                            {/* <small>you can select max: {totalguest}</small> */}
                         </p>
                     }
                     <br />
                     {params.lang === "ar" ?
-                        <Button
-                            style={{ width: '100%', height: '50px', backgroundColor: '#6F0A12', color: 'white', borderRadius: '0px', fontWeight: 'bold' }} type="none" onClick={statusApi}><p style={{ lineHeight: "0px" }}>حفظ</p></Button>
+                        <SelectButttonWrapper>
+                            <Button className='btn5' type="none" onClick={statusApi}><p>حفظ</p></Button>
+                        </SelectButttonWrapper>
                         :
-                        <Button
-                            style={{ width: '100%', height: '50px', backgroundColor: '#6F0A12', color: 'white', borderRadius: '0px', fontWeight: 'bold' }} type="none" onClick={statusApi}><p style={{ lineHeight: "0px" }}>Send</p></Button>
+                        <SelectButttonWrapper>
+                            <Button className='btn5' type="none" onClick={statusApi}><p>Send</p></Button>
+                        </SelectButttonWrapper>
                     }
                 </div>
             </Modal>
 
             {/*  select guest modal end */}
-
 
             {/*  QR Code modal start */}
 
@@ -655,30 +595,17 @@ const Invitation = () => {
 
             >
                 <div>
-                    <img src="/closeicon1.png" alt=""
-                        width={20}
-                        height={20}
-                        style={{ margin: '6px', marginLeft: '8px', display: 'inline' }}
-                        onClick={handleCancel}
-                    />
+                    <CloseIconimg src="/closeicon1.png" alt="/" onClick={handleCancel} />
                 </div>
 
-                <div style={{ fontSize: "16px", marginTop: '-14px', marginBottom: 2, textAlign: 'center' }}>
+                <CardMassage>
                     &nbsp;&nbsp;&nbsp;{msgdata.save_qr_message}&nbsp;&nbsp;&nbsp;
-                </div>
+                </CardMassage>
 
                 <div style={{ position: 'relative' }}>
                     <InviteImage src={image.entrance} />
                     <div
                         style={qrcss}
-                        className="qrcss"
-                    // style={{
-                    //     position: 'absolute',
-                    //     top: '150px',
-                    //     left: '170px',
-                    //     display: 'flex',
-                    //     alignItems: 'center',
-                    // }}
                     >
                         <QRCode
                             value={"" + invite.invitationId}
@@ -687,23 +614,14 @@ const Invitation = () => {
                             bgColor={values.bgcolorQR === null ? 'white' : values.bgcolorQR}
                         />
                     </div>
-                    {/* <InviteBody> */}
                     <div
                         style={sncss}
-                    // style={{
-                    //     position: 'absolute',
-                    //     top: '300px',
-                    //     left: '210px',
-                    // }}
                     >
                         {demo.InvitationID}
                     </div>
-                    {/* <div
-                        style={contentcss}
-                    > */}
-                    {/* <InfoContainer > */}
                     <div
                         // style={textcss}
+                        // className='hello'
                         style={{
                             color: values.textcolor,
                             position: 'absolute',
@@ -716,38 +634,19 @@ const Invitation = () => {
                             width: '250px',
                         }}
                     >
-                        <div>{msgdata.Guest_name_title}&nbsp;&nbsp;{udata.name}
-                        </div>
-                        <div>{values.numberMessage}&nbsp;&nbsp;{udata.totalGuest}
-                        </div>
-
-                        {udata.totalChildren === 0 ?
-                            ""
-                            :
-                            params.lang === "ar" ?
-                                <div>عدد الأطفال&nbsp;&nbsp;{udata.totalChildren}
-                                    {/* <div
-                                            style={{ display: 'inline' }} >
-                                            {udata.totalChildren}
-                                        </div> */}
-                                </div>
+                        <div>{msgdata.Guest_name_title}&nbsp;&nbsp;{udata.name}</div>
+                        <div>{values.numberMessage}&nbsp;&nbsp;{udata.totalGuest}</div>
+                        {
+                            udata.totalChildren === 0 ?
+                                ""
                                 :
-                                <>
-                                    <div>Total Children&nbsp;&nbsp;{udata.totalChildren}
-                                        {/* <div
-                                                style={{ display: 'inline' }}
-                                            >{udata.totalChildren}
-                                            </div> */}
-                                    </div>
-                                </>
+                                params.lang === "ar" ?
+                                    <div>عدد الأطفال&nbsp;&nbsp;{udata.totalChildren}</div>
+                                    :
+                                    <div>Total Children&nbsp;&nbsp;{udata.totalChildren}</div>
                         }
                     </div>
-
-                    {/* </InfoContainer> */}
-                    {/* </div> */}
                 </div>
-
-                {/* </InviteBody> */}
             </Modal>
 
             {/*  QR Code modal end */}
@@ -764,20 +663,16 @@ const Invitation = () => {
                 className="newStyle"
 
             >
-                <img src="/closeicon.png" alt=""
-                    width={30}
-                    height={30}
-                    style={{ margin: '5px' }}
-                    onClick={handleCancelreject}
+                <RejectCloseIconimg src="/closeicon.png" alt="/" onClick={handleCancelreject}
                 />
-                {/* <AiOutlineClose style={{ color: '#6F0A12', width: '30px', height: '30px', cursor: 'pointer' }} onClick={handleCancelreject} /> */}
                 {params.lang === "ar" ?
                     <div>
                         <p>تم حفظ حالة الدعوة برفض</p>
                         <p>شكراً لردكم</p>
                         <br />
                         <br />
-                    </div> :
+                    </div>
+                    :
                     <div>
                         <p>Your status has been saved as Rejected !</p>
                         <p>Thank you for your response !    </p>
