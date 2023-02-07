@@ -7,23 +7,40 @@ const FooterBar = styled.footer`
   color:rgba(0,0,0,.85);
   text-align:center;
 
-  a{
-     color:#1890ff;
-     text-decoration: none;
-  }`
+  @media only screen and (max-width: 480px) {
+    width:100%;
+    font-size:11px;
+   }
+   a{
+      color:#1890ff;
+      text-decoration: none;
+   }
+   p{
+     margin:5px 0px;
+   }
+   `
 
-const Footer = ({udata}) => {
-  const url = `https://api.whatsapp.com/send/?phone=${udata.phoneNumber}&text&type=phone_number&app_absent=0whatsApp`
+const Footer = ({ lang, footer }) => {
+  // console.log(lang);
+  console.log(footer);
+  const url = `https://api.whatsapp.com/send/?phone=${footer.WhatsappnumberURL}&text&type=phone_number&app_absent=0whatsApp`
   return (
     <>
-     <FooterBar>
-        <div>
-          <p>
+      {lang === "ar" ?
+        <FooterBar>
+          <div>
+            لمزيد من المعلومات ، يرجى الاتصال عبر  <a href={url}>WhatsApp</a>
+            <p>{footer.FooterAR} </p>
+          </div>
+        </FooterBar>
+        :
+        <FooterBar>
+          <div>
             For more information, please contact via <a href={url}>WhatsApp</a>
-          </p>
-          <p>all rights reserved @ Hayyacomapp</p>
-        </div>
-      </FooterBar>
+            <p>{footer.FooterEN} </p>
+          </div>
+        </FooterBar>
+      }
     </>
   )
 }
