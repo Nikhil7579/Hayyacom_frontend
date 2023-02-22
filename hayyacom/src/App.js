@@ -1,5 +1,6 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import Image from './pages/Image'
 import Invitation from './pages/Invitation'
 
 const App = () => {
@@ -8,6 +9,7 @@ const App = () => {
     <>
       <Routes>
         <Route path="/invitation/:id/:lang" element={<Invitation />}></Route>
+        <Route path="/image" element={<Image />}></Route>
       </Routes>
     </>
   )

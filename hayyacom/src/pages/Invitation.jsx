@@ -356,7 +356,9 @@ const Invitation = () => {
                     footer={[]}
                     closable={false}
                     className="qrcodeModal"
-
+                    maskStyle={{
+                        backgroundColor: '#ffffff50'
+                    }}
                 >
                     <div>
                         <CloseIconimg src="/closeicon1.png" alt="/" onClick={handleCancel} />
@@ -367,7 +369,7 @@ const Invitation = () => {
                     </CardMassage>
 
                     <div style={{ position: 'relative' }}>
-                        <InviteImage src={image.entrance}  />
+                        <InviteImage src={image.entrance} />
                         <div
                             style={qrcss}
                         >
@@ -492,8 +494,8 @@ const Video = styled.video`
   margin-left: auto;
   margin-right: auto;
   @media only screen and (max-width: 480px) {
-  width:100%;
-  margin:0px;
+  max-width:100%;
+//   margin:0px;
   min-height:350px;
   max-height:750px;
       }
@@ -507,7 +509,7 @@ const InviteImage = styled.img`
 const WrapperButton = styled.div`
 display:flex;
 margin:0px;
-padding:30px 20px 20px 20px;
+padding:30px 20px 20px 20px;    
 justify-content:center;
 align-items:center;
 
@@ -515,28 +517,28 @@ align-items:center;
     margin:0px 10px 0px 0px; 
     color: white; 
     background-color: #145629; 
-    width:15%;
+    width:12%;
     height:50px;
 }
 .btn2{
     margin: 0px 0px 0px 10px; 
     color: white; 
     background-color: #6f0a12; 
-    width:15%;
+    width:12%;
     height:50px;
 }
 .btn3{
     margin: 0px 0px 0px 10px; 
     color: white; 
     background-color: #145629; 
-    width:15%;
+    width:12%;
     height:50px;
 }
 .btn4{
     margin: 0px 10px 0px 0px; 
     color: white; 
     background-color: #6f0a12; 
-    width:15%;
+    width:12%;
     height:50px;
 }
 
@@ -545,6 +547,35 @@ align-items:center;
     padding:30px 20px 20px 20px;
     margin:0px;
 }
+@media only screen and (max-width: 1080px) {
+    display:flex;
+    align-items: center;
+
+    .btn1{
+     width:150px;
+     margin:0px 10px 0px 0px;
+     height:40px;
+     font-weight:bold;
+    }
+    .btn2{
+        width:150px;
+        height:40px;
+        margin:0px 0px 0px 10px;
+        font-weight:bold;
+       }
+       .btn3{
+        width:150px;
+        margin:0px 0px 0px 10px;
+        height:40px;
+        font-weight:bold;
+       }
+       .btn4{
+           width:150px;
+           height:40px;
+           margin:0px 10px 0px 0px;
+           font-weight:bold;
+
+          }
 @media only screen and (max-width: 480px) {
     display:flex;
     align-items: center;
