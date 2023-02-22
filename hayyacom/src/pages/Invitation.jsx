@@ -12,168 +12,7 @@ import '../index.css';
 import { Helmet } from 'react-helmet';
 import Footer from '../Component/Footer';
 
-// css
-const Wrapper = styled.div`
-padding:50px 50px 0px 50px;
-margin:0px;
-max-width:100%;
-@media only screen and (max-width: 480px) {
-    max-height:1000px;
-    min-height:450px;
-    max-width:100%;
-    padding:20px 20px 0px 20px;
-
-
-  `
-const Image = styled.img`
-  display:block;
-  width:100%;
-  @media only screen and (max-width: 480px) {
-  width:100%;
-  margin:0px;
-  min-height:350px;
-  max-height:750px;
-      }
-
-  `
-const Video = styled.video`
-  display:block;
-  width:100%;
-  @media only screen and (max-width: 480px) {
-  width:100%;
-  margin:0px;
-  min-height:350px;
-  max-height:750px;
-      }
-`
-const InviteImage = styled.img`
-     max-width: 100%;
-     max-height:100%;
-
-`
-
-// const FooterBar = styled.footer`
-
-//   font-size:14px;
-//   color:rgba(0,0,0,.85);
-//   text-align:center;
-
-//   @media only screen and (max-width: 480px) {
-//    width:100%;
-//    font-size:11px;
-//   }
-//   a{
-//      color:#1890ff;
-//      text-decoration: none;
-//   }
-//   p{
-//     margin:5px 0px;
-//   }
-
-//   `
-
-const WrapperButton = styled.div`
-display:flex;
-margin:0px;
-padding:30px 20px 20px 20px;
-
-.btn1{
-    margin:0px 10px 0px 0px; 
-    color: white; 
-    background-color: #145629; 
-    width:50%;
-    height:50px;
-}
-.btn2{
-    margin: 0px 0px 0px 10px; 
-    color: white; 
-    background-color: #6f0a12; 
-    width:50%;
-    height:50px;
-}
-.btn3{
-    margin: 0px 0px 0px 10px; 
-    color: white; 
-    background-color: #145629; 
-    width:50%;
-    height:50px;
-}
-.btn4{
-    margin: 0px 10px 0px 0px; 
-    color: white; 
-    background-color: #6f0a12; 
-    width:50%;
-    height:50px;
-}
-
-
-@media only screen and (max-width: 480px) {
-    padding:30px 20px 20px 20px;
-    margin:0px;
-}
-@media only screen and (max-width: 480px) {
-    display:flex;
-    align-items: center;
-
-    .btn1{
-     width:50%;
-     margin:0px 10px 0px 0px;
-     height:40px;
-     font-weight:bold;
-    }
-    .btn2{
-        width:50%;
-        height:40px;
-        margin:0px 0px 0px 10px;
-        font-weight:bold;
-       }
-       .btn3{
-        width:50%;
-        margin:0px 0px 0px 10px;
-        height:40px;
-        font-weight:bold;
-       }
-       .btn4{
-           width:50%;
-           height:40px;
-           margin:0px 10px 0px 0px;
-           font-weight:bold;
-
-          }
-   }
-`
-const SelectButttonWrapper = styled.div`
-.btn5{
-    width: 100%; 
-    height: 50px ; 
-    background-color: #6F0A12 ; 
-    color: white ; 
-    border-radius: 0px ; 
-    font-weight: bold ;
-    line-height:0px;
-}
-`
-const CloseIconimg = styled.img`
-width:20px;
-height:20px;
-margin: 6px;
-margin-left: 8px; 
-display: inline;
-`
-const RejectCloseIconimg = styled.img`
-width:30px;
-height:30px;
-margin: 5px;
-`
-const CardMassage = styled.div`
-font-size: 16px; 
-margin-top: -14px; 
-margin-bottom: 2px;
-text-align: center;
-`
-
 const Invitation = () => {
-
 
     const [image, setimage] = useState([]);
     const [totalguest, setTotalguest] = useState([]);
@@ -194,7 +33,6 @@ const Invitation = () => {
     // const [optionthree, setOptionthree] = useState('')
     // const [optionfour, setOptionfour] = useState('')
     // const [optionfive, setOptionfive] = useState('')
-
     // Reject Modal State
     // const handleOkreject = () => {
     //     setIsRjectedModalOpen(false);
@@ -231,53 +69,53 @@ const Invitation = () => {
     };
 
     const showModal = async (type) => {
-        if (demo.attended > 0) {
-            setIsModalOpen(false)
-            setIsRjectedModalOpen(false)
-            setIsModalOpentwo(false)
+        // if (demo.attended > 0) {
+        //     setIsModalOpen(false)
+        //     setIsRjectedModalOpen(false)
+        //     setIsModalOpentwo(false)
+        //     if (params.lang === "ar") {
+        //         arabicattendToast();
+        //     }
+        //     else {
+        //         attendToast();
+        //     }
+        // }
+        // else {
+        let data = {
+            InvitationId: demo.id,
+            status: type,
+            total_guest: totalguest,
+        }
+
+        if (totalguest < 2 && type === "Accepted" && demo.status === null) {
+
+            setIsModalOpen(true);
+            await axios.put(`${BASE_URL}invitationPage/update-status`, (data)).then((response) => {
+                console.log(response)
+
+            }).catch((err) => {
+                console.log(err);
+            })
+        }
+        else if (totalguest > 1 && type === "Accepted" && demo.status === null) {
+
+            setIsModalOpentwo(true);
+
+        } else if (demo.status === "Accepted") {
+
+            setIsModalOpen(true);
+        }
+
+        else if (demo.status === "Rejected") {
+            setIsModalOpen(false);
             if (params.lang === "ar") {
-                arabicattendToast();
+                rejectarabic();
             }
             else {
-                attendToast();
+                reject();
             }
         }
-        else {
-            let data = {
-                InvitationId: demo.id,
-                status: type,
-                total_guest: totalguest,
-            }
-
-            if (totalguest < 2 && type === "Accepted" && demo.status === null) {
-
-                setIsModalOpen(true); 
-                await axios.put(`${BASE_URL}invitationPage/update-status`, (data)).then((response) => {
-                    console.log(response)
-
-                }).catch((err) => {
-                    console.log(err);
-                })
-            }
-            else if (totalguest > 1 && type === "Accepted" && demo.status === null) {
-
-                setIsModalOpentwo(true);
-
-            } else if (demo.status === "Accepted") {
-
-                setIsModalOpen(true);
-            }
-
-            else if (demo.status === "Rejected") {
-                setIsModalOpen(false);
-                if (params.lang === "ar") {
-                    rejectarabic();
-                }
-                else {
-                    reject();
-                }
-            }
-        }
+        // }
 
     };
     const statusApi = async () => {
@@ -352,6 +190,7 @@ const Invitation = () => {
                 setInvite(res.data.QRData)
                 setDemo(res.data.invitationData)
                 setFooter(res.data.InvitationPageData);
+                console.log(res);
             }).catch((err) => {
                 console.log(err);
             })
@@ -381,6 +220,7 @@ const Invitation = () => {
         color: values.textcolor,
     }
     const fonturls = values.fontUrl;
+
     const small = (i) => {
         setChangeone(i)
         setSmallcss("removesmall")
@@ -435,21 +275,6 @@ const Invitation = () => {
                         <Button type="none" className='btn2' onClick={() => showModalRejected("Rejected")} >Reject</Button>
                     </WrapperButton>
                 }
-                {/* {params.lang === "ar" ?
-                    <FooterBar>
-                        <div>
-                            لمزيد من المعلومات ، يرجى الاتصال عبر  <a href={url}>WhatsApp</a><br />
-                            <p>{footer.FooterAR} </p>
-                        </div>
-                    </FooterBar>
-                    :
-                    <FooterBar>
-                        <div>
-                            For more information, please contact via <a href={url}>WhatsApp</a><br />
-                            <p>{footer.FooterEN} </p>
-                        </div>
-                    </FooterBar>
-                } */}
                 <Footer lang={lang} footer={footer} />
             </Wrapper>
 
@@ -471,16 +296,6 @@ const Invitation = () => {
                                 <div>
                                     <p>فضلاً اختر عدد المدعوين القادمين</p>
                                     <div className='total_guest'>عدد القادمين&nbsp;&nbsp;</div>
-                                    {/* <select className="cars" name="number" id="cars" value={changeone} onChange={(e) => {
-                                        setChangeone(e.target.value)
-                                    }}
-                                    >
-                                        {generateArray(change).map((item, i) => {
-                                            return (
-                                                <option value={i + 1} key={i}>{i + 1}</option>
-                                            )
-                                        })}
-                                    </select> */}
                                     <div className="dropdown" tabIndex="1" >
                                         <div className="dropbtn" onClick={() => setSmallcss("small")}>
                                             {changeone}&nbsp;&nbsp;
@@ -496,23 +311,15 @@ const Invitation = () => {
                                         </div>
                                     </div>
                                 </div>
-
                                 :
                                 <div>
                                     <p>Please select total guest coming !</p>
                                     <div className='total_guest'>Total Guest &nbsp;&nbsp;</div>
-                                    {/* <select className="cars" name="number" id="cars" value={changeone} onChange={(e) => {
-                                        setChangeone(e.target.value)
-                                    }}
-                                    >
-                                        {generateArray(change).map((item, i) => {
-                                            return (
-                                                <option value={i + 1} key={i}>{i + 1}</option>
-                                            )
-                                        })}
-                                    </select> */}
                                     <div className="dropdown" tabIndex="1" >
-                                        <div className="dropbtn" onClick={() => setSmallcss("small")}>{changeone}&nbsp;&nbsp;<img src="/dropdownicon.png" alt="/" width={10} height={10} /></div>
+                                        <div className="dropbtn" onClick={() => setSmallcss("small")}>
+                                            {changeone}&nbsp;&nbsp;
+                                            <img src="/dropdownicon.png" alt="/" width={10} height={10} />
+                                        </div>
                                         <div className="dropdown-content">
                                             {generateArray(change).map((item, i) => {
                                                 return (
@@ -524,36 +331,6 @@ const Invitation = () => {
                                     </div>
                                 </div>
                         }
-                        {/* {
-                        params.lang === "ar"
-                            ?
-                            <p>عدد القادمين
-                                &nbsp;
-                                <select className="cars" name="number" id="cars" value={changeone} onChange={(e) => {
-                                    setChangeone(e.target.value)
-                                }}
-                                >
-                                    {generateArray(change).map((item, i) => {
-                                        return (
-                                            <option value={i + 1} key={i}>{i + 1}</option>
-                                        )
-                                    })}
-                                </select>
-                            </p>
-                            :
-                            <p>Total Guest &nbsp;
-                                <select className="cars" name="number" id="cars" value={changeone} onChange={(e) => {
-                                    setChangeone(e.target.value)
-                                }}
-                                >
-                                    {generateArray(change).map((item, i) => {
-                                        return (
-                                            <option value={i + 1} key={i}>{i + 1}</option>
-                                        )
-                                    })}
-                                </select>
-                            </p>
-                    } */}
                         <br />
                         {params.lang === "ar" ?
                             <SelectButttonWrapper>
@@ -590,7 +367,7 @@ const Invitation = () => {
                     </CardMassage>
 
                     <div style={{ position: 'relative' }}>
-                        <InviteImage src={image.entrance} />
+                        <InviteImage src={image.entrance}  />
                         <div
                             style={qrcss}
                         >
@@ -622,7 +399,7 @@ const Invitation = () => {
                             }}
                         >
                             <div>{msgdata.Guest_name_title}&nbsp;&nbsp;{udata.name}</div>
-                            <div>{values.numberMessage}&nbsp;&nbsp;{udata.totalGuest}</div>
+                            <div>{msgdata.numberMessage}&nbsp;&nbsp;{udata.totalGuest}</div>
                             {
                                 udata.totalChildren === 0 ?
                                     ""
@@ -636,7 +413,6 @@ const Invitation = () => {
                     </div>
                 </Modal>
             }
-
             {/*  QR Code modal end */}
 
 
@@ -677,3 +453,155 @@ const Invitation = () => {
 }
 
 export default Invitation
+
+// css
+const Wrapper = styled.div`
+padding:50px 50px 0px 50px;
+margin:0px;
+max-width:100%;
+@media only screen and (max-width: 480px) {
+    max-height:1000px;
+    min-height:450px;
+    max-width:100%;
+    padding:30px 20px 0px 20px;
+
+  `
+const Image = styled.img`
+  display:block;
+//   width:50%;
+  height:550px;
+  margin-left: auto;
+  margin-right: auto;
+//   background-position: center;
+//   background-size: cover;
+//   background-repeat: no-repeat;
+  @media only screen and (max-width: 480px) {
+  width:100%;
+  margin:0px;
+  min-height:400px;
+  max-height:750px;
+      }
+
+  `
+const Video = styled.video`
+  display:block;
+//   width:100%;
+//   min-height:350px;
+//   max-height:700px;
+  height:550px;
+  margin-left: auto;
+  margin-right: auto;
+  @media only screen and (max-width: 480px) {
+  width:100%;
+  margin:0px;
+  min-height:350px;
+  max-height:750px;
+      }
+`
+const InviteImage = styled.img`
+     max-width: 100%;
+     max-height:100%;
+
+`
+
+const WrapperButton = styled.div`
+display:flex;
+margin:0px;
+padding:30px 20px 20px 20px;
+justify-content:center;
+align-items:center;
+
+.btn1{
+    margin:0px 10px 0px 0px; 
+    color: white; 
+    background-color: #145629; 
+    width:15%;
+    height:50px;
+}
+.btn2{
+    margin: 0px 0px 0px 10px; 
+    color: white; 
+    background-color: #6f0a12; 
+    width:15%;
+    height:50px;
+}
+.btn3{
+    margin: 0px 0px 0px 10px; 
+    color: white; 
+    background-color: #145629; 
+    width:15%;
+    height:50px;
+}
+.btn4{
+    margin: 0px 10px 0px 0px; 
+    color: white; 
+    background-color: #6f0a12; 
+    width:15%;
+    height:50px;
+}
+
+
+@media only screen and (max-width: 480px) {
+    padding:30px 20px 20px 20px;
+    margin:0px;
+}
+@media only screen and (max-width: 480px) {
+    display:flex;
+    align-items: center;
+
+    .btn1{
+     width:50%;
+     margin:0px 10px 0px 0px;
+     height:40px;
+     font-weight:bold;
+    }
+    .btn2{
+        width:50%;
+        height:40px;
+        margin:0px 0px 0px 10px;
+        font-weight:bold;
+       }
+       .btn3{
+        width:50%;
+        margin:0px 0px 0px 10px;
+        height:40px;
+        font-weight:bold;
+       }
+       .btn4{
+           width:50%;
+           height:40px;
+           margin:0px 10px 0px 0px;
+           font-weight:bold;
+
+          }
+   }
+`
+const SelectButttonWrapper = styled.div`
+.btn5{
+    width: 100%; 
+    height: 50px ; 
+    background-color: #6F0A12 ; 
+    color: white ; 
+    border-radius: 0px ; 
+    font-weight: bold ;
+    line-height:0px;
+}
+`
+const CloseIconimg = styled.img`
+width:20px;
+height:20px;
+margin: 6px;
+margin-left: 8px; 
+display: inline;
+`
+const RejectCloseIconimg = styled.img`
+width:30px;
+height:30px;
+margin: 5px;
+`
+const CardMassage = styled.div`
+font-size: 16px; 
+margin-top: -14px; 
+margin-bottom: 2px;
+text-align: center;
+`
