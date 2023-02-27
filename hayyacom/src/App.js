@@ -1,7 +1,8 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
-import Image from './pages/Image'
+import EventDetails from './pages/EventDetails'
 import Invitation from './pages/Invitation'
+import Preview from './pages/Preview'
 
 const App = () => {
 
@@ -9,7 +10,8 @@ const App = () => {
     <>
       <Routes>
         <Route path="/invitation/:id/:lang" element={<Invitation />}></Route>
-        <Route path="/image" element={<Image />}></Route>
+        <Route path="/previewdetails/:id" element={<Preview />}></Route>
+        <Route path="/eventdetails/:id/:lang" element={<EventDetails />}></Route>
       </Routes>
     </>
   )

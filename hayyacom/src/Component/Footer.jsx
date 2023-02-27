@@ -10,7 +10,7 @@ const Footer = ({ lang, footer }) => {
       {lang === "ar" ?
         <FooterBar>
           <div>
-            لمزيد من المعلومات ، يرجى الاتصال عبر  <a href={url}>WhatsApp</a>
+          <a href={url}>WhatsApp</a> لمزيد من المعلومات ، يرجى الاتصال عبر  
             <p>{footer.FooterAR} </p>
           </div>
         </FooterBar>

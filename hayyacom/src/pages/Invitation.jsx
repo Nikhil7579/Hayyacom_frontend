@@ -38,10 +38,6 @@ const Invitation = () => {
     //     setIsRjectedModalOpen(false);
     // };
 
-    const handleCancelreject = () => {
-        setIsRjectedModalOpen(false);
-    };
-
     // Param
     const params = useParams();
     const id = params.id;
@@ -167,12 +163,10 @@ const Invitation = () => {
     const handleOk = () => {
         setIsModalOpen(false);
         setIsModalOpentwo(false);
-
     };
     const handleCancel = () => {
         setIsModalOpen(false);
         setIsModalOpentwo(false);
-
     };
 
     // invitation data api Integration
@@ -356,9 +350,6 @@ const Invitation = () => {
                     footer={[]}
                     closable={false}
                     className="qrcodeModal"
-                    maskStyle={{
-                        backgroundColor: '#ffffff50'
-                    }}
                 >
                     <div>
                         <CloseIconimg src="/closeicon1.png" alt="/" onClick={handleCancel} />
@@ -420,7 +411,8 @@ const Invitation = () => {
 
             {/*  reject modal start */}
             {isrejectedModalOpen &&
-                <Modal open={isrejectedModalOpen}
+                <Modal
+                    open={isrejectedModalOpen}
                     centered
                     // onOk={handleOkreject}
                     // onCancel={handleCancelreject}
@@ -501,8 +493,8 @@ const Video = styled.video`
       }
 `
 const InviteImage = styled.img`
-     max-width: 100%;
-     max-height:100%;
+     width: 100%;
+     height:100%;
 
 `
 
