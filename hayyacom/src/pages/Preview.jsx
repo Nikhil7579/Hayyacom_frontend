@@ -1,170 +1,125 @@
-import { Col, Row } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Helmet } from 'react-helmet';
+import QRCode from 'react-qr-code';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { BASE_URL } from '../Config/api';
 
-
 const Preview = () => {
-    const [carddata, setCardData] = useState([]);
-    const [designdata, setDesignData] = useState([]);
+    const [cardData, setCardData] = useState([]);
+    const [designData, setDesignData] = useState([]);
+    const [loaded, setLoaded] = useState(false);
     const param = useParams();
-    let id = param.id
+    const id = param.id;
     useEffect(() => {
-        Previewdata();
+        PreviewDetails();
     }, [])
-    const Previewdata = async () => {
+
+    const PreviewDetails = async () => {
         await axios.get(`${BASE_URL}invitationPage/preview-page/${id}`)
-            .then((res) => {
-                console.log(res);
-                setCardData(res.data.CardData);
-                setDesignData(res.data.DesignData);
-                console.log(designdata.fontUrl.length)
-            })
-            .catch((err) => {
-                console.log(err);
+            .then((response) => {
+                console.log(response);
+                setCardData(response.data.CardData);
+                setDesignData(response.data.DesignData);
+            }).catch((error) => {
+                console.log(error);
             })
     }
+
+    const qrcss = {
+        position: 'absolute',
+        margin: 'auto',
+        top: designData.QRH + "px",
+        left: designData.QRW + "px",
+        display: 'block',
+        alignItems: 'center',
+    }
+
+    const sncss = {
+        position: 'absolute',
+        top: designData.SNH + "px",
+        left: designData.SNW + "px",
+        color: designData.textcolor,
+    }
+
+    const fonturls = designData.fontUrl;
+
     return (
         <>
-            <div>
-                <div>
-                    <EntranceImage src={carddata.entrance} alt="preview image" />
-                </div>
-            </div>
-            <PreviewWrapper>
-                <div>
-                    <QrDesignHeading>QRcolor</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>{designdata.QRcolor}</QrDesignValue>
-                </div>
-                <hr />
-                <div>
-                    <QrDesignHeading>
-                        bgcolorQR</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>
-                        {designdata.bgcolorQR}
-                    </QrDesignValue>
-                </div>
-                <hr />
+            <Helmet>
+                <meta charSet="utf-8"></meta>
+                <title>Gold Preview</title>
+                <style>
+                    {`
+                         @font-face {
+                            font-family: ${designData.fontfamily};
+                            src: url(${fonturls});
+                          }
+                  `}
+                </style>
+            </Helmet>
+            <Wrapper >
+                <InviteImage src={cardData.entrance} onLoad={() => setLoaded(true)} />
+                {loaded &&
+                    <div
+                        style={qrcss}
+                    >
+                        <QRCode
+                            value={"hello"}
+                            size={designData.QRsize}
+                            fgColor={designData.QRcolor}
+                            bgColor={designData.bgcolorQR === null ? 'white' : designData.bgcolorQR}
+                        />
+                    </div>
+                }
+                {loaded &&
+                    <div
+                        style={sncss}
+                    >
+                        {cardData.id + '100'}
+                    </div>
+                }
+                {loaded &&
+                    <div
+                        // style={textcss}
+                        // className='hello'
+                        style={{
+                            color: designData.textcolor,
+                            position: 'absolute',
+                            top: designData.TextH + "px",
+                            left: designData.TextW + "px",
+                            fontFamily: designData.fontfamily,
+                            fontWeight: designData.fontweight,
+                            fontSize: designData.fontsize + "px",
+                            textAlign: 'center',
+                            width: '250px',
+                        }}
+                    >
+                        <div>Guest Name&nbsp;&nbsp;</div>
+                        <div>2&nbsp;&nbsp;إجمالي الضيف</div>
+                        <div>2&nbsp;&nbsp;عدد الأطفال</div>
 
-                <div>
-                    <QrDesignHeading>infocolor</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>{designdata.infocolor}</QrDesignValue>
-                </div>
-                <hr />
-
-                <div>
-                    <QrDesignHeading>Text color</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>{designdata.textcolor}</QrDesignValue>
-
-                </div>
-                <hr />
-
-                <div>
-                    <QrDesignHeading>Fontsize</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>{designdata.fontsize}</QrDesignValue>
-
-                </div>
-                <hr />
-
-                <div>
-                    <QrDesignHeading>Font family</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>{designdata.fontfamily}</QrDesignValue>
-
-                </div>
-                <hr />
-
-                <div>
-                    <QrDesignHeading >Font url</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <div style={{ display: 'inline', fontSize: '12px',whiteSpace:"nowrap" }}>{designdata.fontUrl}</div>
-                </div>
-                <hr />
-
-                <div>
-                    <QrDesignHeading>Font weight</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>{designdata.fontweight}</QrDesignValue>
-
-                    <hr />
-                </div>
-                <div>
-                    <QrDesignHeading>TextH</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>{designdata.TextH}</QrDesignValue>
-
-                    <hr />
-                </div>
-                <div>
-                    <QrDesignHeading>TextW</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>{designdata.TextW}</QrDesignValue>
-
-                    <hr />
-                </div>
-                <div>
-                    <QrDesignHeading>SNW</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>{designdata.SNW}</QrDesignValue>
-
-                    <hr />
-                </div>
-                <div>
-                    <QrDesignHeading>SNH</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>{designdata.SNH}</QrDesignValue>
-
-                    <hr />
-                </div>
-                <div>
-                    <QrDesignHeading>QR size</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>{designdata.QRsize}</QrDesignValue>
-
-                    <hr />
-                </div><div>
-                    <QrDesignHeading>QRH
-                    </QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>{designdata.QRH  }</QrDesignValue>
-                    <hr />
-                </div><div>
-                    <QrDesignHeading>QRW</QrDesignHeading>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <QrDesignValue>{designdata.QRW}</QrDesignValue>
-
-                    <hr />
-                </div>
-             
-            </PreviewWrapper>
+                    </div>
+                }
+            </Wrapper>
         </>
     )
 }
 
 export default Preview
-const PreviewWrapper = styled.div`
-width:100%;
-margin:0px`
-const EntranceImage = styled.img`
-width:100%;
-height:100%;
+const Wrapper = styled.div`
+    position : relative;
+    width :350px;
+    margin-left:auto;
+    margin-right:auto;
+    @media only screen and (max-width: 480px) {
+        margin-left:0;
+    margin-right:0;
+    width:100%;
+    }
 `
-const QrDesignHeading = styled.div`
-display:inline;
-color:#6F0A12;
-font-weight:600;
-padding:5px;
-font-size:14px
-`
-const QrDesignValue = styled.div`
-display:inline;
-font-size:14px
-
+const InviteImage = styled.img`
+     width: 100%;
+     height:100%;
 `

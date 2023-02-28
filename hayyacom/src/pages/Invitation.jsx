@@ -197,7 +197,7 @@ const Invitation = () => {
     useEffect(() => {
         InvitationApidata();
     }, [])
-
+    
     const qrcss = {
         position: 'absolute',
         margin: 'auto',
