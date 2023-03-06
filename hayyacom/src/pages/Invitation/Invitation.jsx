@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Button } from 'antd'
 import { Modal } from 'antd';
-import { BASE_URL } from '../Config/api'
 import QRCode from "react-qr-code";
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom';
-import '../index.css';
+import '../../index.css';
 import { Helmet } from 'react-helmet';
-import Footer from '../Component/Footer';
+import Footer from '../../Component/Footer';
+import { getInvitationDetails, putUpdateStatus } from '../../api/Invitation';
 
 const Invitation = () => {
 
@@ -84,14 +84,15 @@ const Invitation = () => {
         }
 
         if (totalguest < 2 && type === "Accepted" && demo.status === null) {
-
             setIsModalOpen(true);
-            await axios.put(`${BASE_URL}invitationPage/update-status`, (data)).then((response) => {
-                console.log(response)
+            const status = await putUpdateStatus(data)
+            console.log(status)
+            // await axios.put(`${BASE_URL}invitationPage/update-status`, (data)).then((response) => {
+            //     console.log(response)
 
-            }).catch((err) => {
-                console.log(err);
-            })
+            // }).catch((err) => {
+            //     console.log(err);
+            // })
         }
         else if (totalguest > 1 && type === "Accepted" && demo.status === null) {
 
@@ -122,21 +123,27 @@ const Invitation = () => {
             // total_guest: change,
             total_guest: changeone,
         }
-
-        await axios.put(`${BASE_URL}invitationPage/update-status`, (data))
-            .then((response) => {
-                if (response.status === 200) {
-                    setIsModalOpentwo(false);
-                    setIsModalOpen(true);
-                    InvitationApidata();
-                }
-            }).catch((err) => {
-                console.log(err)
-            })
+        const acceptedstatus = await putUpdateStatus(data)
+        console.log(acceptedstatus)
+        if (acceptedstatus.status === 200) {
+            setIsModalOpentwo(false);
+            setIsModalOpen(true);
+            InvitationApidata();
+        }
+        // await axios.put(`${BASE_URL}invitationPage/update-status`, (data))
+        //     .then((response) => {
+        //         if (response.status === 200) {
+        //             setIsModalOpentwo(false);
+        //             setIsModalOpen(true);
+        //             InvitationApidata();
+        //         }
+        //     }).catch((err) => {
+        //         console.log(err)
+        //     })
     }
     const showModalRejected = async () => {
 
-        let reject = {
+        let data = {
             InvitationId: demo.id,
             status: "Rejected",
             total_guest: change,
@@ -150,14 +157,18 @@ const Invitation = () => {
             }
         }
         else {
-            await axios.put(`${BASE_URL}invitationPage/update-status`, (reject))
-                .then((response) => {
-                    // console.log(response)
-                    setIsRjectedModalOpen(true)
-                    InvitationApidata()
-                }).catch((err) => {
-                    console.log(err);
-                })
+            const rejectstatus = await putUpdateStatus(data)
+            console.log("reject.....", rejectstatus)
+            setIsRjectedModalOpen(true)
+            InvitationApidata()
+            // await axios.put(`${BASE_URL}invitationPage/update-status`, (reject))
+            //     .then((response) => {
+            //          console.log(response)
+            //         setIsRjectedModalOpen(true)
+            //         InvitationApidata()
+            //     }).catch((err) => {
+            //         console.log(err);
+            //     })
         }
     }
     const handleOk = () => {
@@ -171,23 +182,36 @@ const Invitation = () => {
 
     // invitation data api Integration
     const InvitationApidata = async () => {
-        await axios.get(`${BASE_URL}invitationPage/invitation-page-details/${id}`)
-            .then((res) => {
-                setimage(res.data.CardData);
-                setTotalguest(res.data.ContactData.totalGuest)
-                const article = res.data.ContactData
-                changeData(article.totalGuest)
-                setChangeone(article.totalGuest)
-                setData(res.data.ContactData)
-                setMsgdata(res.data.MessageData)
-                setValues(res.data.DesignData)
-                setInvite(res.data.QRData)
-                setDemo(res.data.invitationData)
-                setFooter(res.data.InvitationPageData);
-                console.log(res);
-            }).catch((err) => {
-                console.log(err);
-            })
+        const invitations = await getInvitationDetails(id)
+        setimage(invitations.CardData);
+        setTotalguest(invitations.ContactData.totalGuest)
+        const article = invitations.ContactData
+        changeData(article.totalGuest)
+        setChangeone(article.totalGuest)
+        setData(invitations.ContactData)
+        setMsgdata(invitations.MessageData)
+        setValues(invitations.DesignData)
+        setInvite(invitations.QRData)
+        setDemo(invitations.invitationData)
+        setFooter(invitations.InvitationPageData);
+        console.log(invitations);
+        // await axios.get(`${BASE_URL}invitationPage/invitation-page-details/${id}`)
+        //     .then((res) => {
+        //         setimage(res.data.CardData);
+        //         setTotalguest(res.data.ContactData.totalGuest)
+        //         const article = res.data.ContactData
+        //         changeData(article.totalGuest)
+        //         setChangeone(article.totalGuest)
+        //         setData(res.data.ContactData)
+        //         setMsgdata(res.data.MessageData)
+        //         setValues(res.data.DesignData)
+        //         setInvite(res.data.QRData)
+        //         setDemo(res.data.invitationData)
+        //         setFooter(res.data.InvitationPageData);
+        //         console.log(res);
+        //     }).catch((err) => {
+        //         console.log(err);
+        //     })
     }
 
     const generateArray = (change) => {
@@ -197,7 +221,7 @@ const Invitation = () => {
     useEffect(() => {
         InvitationApidata();
     }, [])
-    
+
     const qrcss = {
         position: 'absolute',
         margin: 'auto',
@@ -392,7 +416,19 @@ const Invitation = () => {
                             }}
                         >
                             <div>{msgdata.Guest_name_title}&nbsp;&nbsp;{udata.name}</div>
+                            {udata.description !== null &&
+                                <div>{udata.description}</div>
+                            }
                             <div>{msgdata.numberMessage}&nbsp;&nbsp;{udata.totalGuest}</div>
+                            {
+                                udata.table_number == null ?
+                                    ""
+                                    :
+                                    params.lang === "ar" ?
+                                        <div>رقم الطاولة&nbsp;&nbsp;{udata.table_number}</div>
+                                        :
+                                        <div>Table number&nbsp;&nbsp;{udata.table_number}</div>
+                            }
                             {
                                 udata.totalChildren === 0 ?
                                     ""
@@ -419,7 +455,6 @@ const Invitation = () => {
                     closable={false}
                     footer={[]}
                     className="newStyle"
-
                 >
                     <RejectCloseIconimg src="/closeicon.png" alt="/" onClick={() => setIsRjectedModalOpen(false)}
                     />
@@ -462,32 +497,24 @@ max-width:100%;
   `
 const Image = styled.img`
   display:block;
-//   width:50%;
   height:550px;
   margin-left: auto;
   margin-right: auto;
-//   background-position: center;
-//   background-size: cover;
-//   background-repeat: no-repeat;
+
   @media only screen and (max-width: 480px) {
   width:100%;
   margin:0px;
   min-height:400px;
   max-height:750px;
       }
-
   `
 const Video = styled.video`
   display:block;
-//   width:100%;
-//   min-height:350px;
-//   max-height:700px;
   height:550px;
   margin-left: auto;
   margin-right: auto;
   @media only screen and (max-width: 480px) {
   max-width:100%;
-//   margin:0px;
   min-height:350px;
   max-height:750px;
       }
@@ -566,7 +593,6 @@ align-items:center;
            height:40px;
            margin:0px 10px 0px 0px;
            font-weight:bold;
-
           }
 @media only screen and (max-width: 480px) {
     display:flex;

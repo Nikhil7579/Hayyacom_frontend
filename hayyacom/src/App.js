@@ -1,18 +1,11 @@
 import React from 'react'
-import { Route, Routes } from 'react-router-dom'
-import EventDetails from './pages/EventDetails'
-import Invitation from './pages/Invitation'
-import Preview from './pages/Preview'
+import Index from './Routes/Index'
 
 const App = () => {
 
   return (
     <>
-      <Routes>
-        <Route path="/invitation/:id/:lang" element={<Invitation />}></Route>
-        <Route path="/goldUser/preview/:id" element={<Preview />}></Route>
-        <Route path="/eventdetails/:id/:lang" element={<EventDetails />}></Route>
-      </Routes>
+    <Index />
     </>
   )
 }

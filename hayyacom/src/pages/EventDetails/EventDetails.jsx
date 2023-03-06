@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet';
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components';
-import Footer from '../Component/Footer';
-import { BASE_URL } from '../Config/api';
+import { getEventDetails } from '../../api/Event';
+import Footer from '../../Component/Footer'
+import '../../index.css'
 
 const EventDetails = () => {
     const [cardData, setCardData] = useState([]);
@@ -16,19 +17,16 @@ const EventDetails = () => {
 
     useEffect(() => {
         EventData();
-    }, [])
+    }, []);
 
     const EventData = async () => {
-        await axios.get(`${BASE_URL}invitationPage/Event-page-details/${id}`)
-            .then((response) => {
-                console.log(response);
-                setCardData(response.data.CardData)
-                setEventdetails(response.data.EventDetailsData)
-                setFooterDetails(response.data.InvitationPage)
-                console.log(Eventdetails.LocationURL)
-            }).catch((error) => {
-                console.log(error);
-            })
+        const event = await getEventDetails(id);
+        console.log(event);
+        setCardData(event.CardData)
+        setEventdetails(event.EventDetailsData)
+        // setFooterDetails(event.InvitationPage)
+        if (Eventdetails.SnapchatURL !== 'null' || Eventdetails.SnapchatURL !== null)
+            console.log(event);
     }
     return (
         <>
@@ -50,58 +48,63 @@ const EventDetails = () => {
                         <Image src={cardData.invitation} />
                     </ImageWrapper>
                 }
-                {lang === "en" ?
+                {lang === "en" &&
                     <div>
                         <Title>Event Details</Title>
                         <EngDetailsWrapperone>
-                            <div style={{ padding: '5px', color: '#79000B' }}>Event Title:</div>
+                            <EnTitle>Event Title:</EnTitle>
                             <div style={{ padding: '3px', color: '#575454' }}>{Eventdetails.EventTitle}</div>
                         </EngDetailsWrapperone>
                         <EngDetailsWrapper >
-                            <div style={{ padding: '5px', color: '#79000B' }}>Date:</div>
+                            <EnTitle /* style={{ padding: '5px', color: '#79000B' }} */>Date:</EnTitle>
                             <div style={{ padding: '5px', color: '#575454' }}>{Eventdetails.EventDate}</div>
                         </EngDetailsWrapper>
                         <EngDetailsWrapperone >
-                            <div style={{ padding: '5px', color: '#79000B' }}> Time:</div>
+                            <EnTitle /* style={{ padding: '5px', color: '#79000B' }} */> Time:</EnTitle>
                             <div style={{ padding: '5px', color: '#575454' }}>{Eventdetails.EventTime}</div>
                         </EngDetailsWrapperone>
                         <EngDetailsWrapper>
-                            <div style={{ padding: '5px', color: '#79000B' }}>Location Name:</div>
+                            <EnTitle /* style={{ padding: '5px', color: '#79000B' }} */>Location Name:</EnTitle>
                             <div style={{ padding: '3px', color: '#575454' }}>
                                 {Eventdetails.LocationName}</div>
                         </EngDetailsWrapper>
                         <EngDetailsWrapperone >
                             <div style={{ width: '80px', padding: '5px', color: '#79000B' }}>Location Url:</div>
                             <div style={{ overflowWrap: 'anywhere', padding: "3px" }}>
-                                <a href={Eventdetails.LocationURL} style={{ textDecoration: 'none', color: '#575454' }} target='_blank'>{Eventdetails.LocationURL}</a>
+                                <a href={Eventdetails.LocationURL} style={{ color: '#575454' }} target='_blank'>{Eventdetails.LocationURL}</a>
                             </div>
                         </EngDetailsWrapperone>
                         <EngDetailsWrapper>
-                            <div style={{ padding: '5px', color: '#79000B' }}>City:</div>
+                            <EnTitle /* style={{ padding: '5px', color: '#79000B' }} */>City:</EnTitle>
                             <div style={{ padding: '3px', color: '#575454' }}>
                                 {Eventdetails.City}</div>
                         </EngDetailsWrapper>
                         <EngDetailsWrapperone>
-                            <div style={{ padding: '5px', color: '#79000B' }}>Country:</div>
+                            <EnTitle /* style={{ padding: '5px', color: '#79000B' }} */>Country:</EnTitle>
                             <div style={{ padding: '3px', color: '#575454' }}>{Eventdetails.Country}</div>
                         </EngDetailsWrapperone>
-                        <EngDetailsWrapper >
-                            <div style={{ padding: '5px', color: '#79000B' }}>Inviters:</div>
+                        <EngDetailsWrapper>
+                            <EnTitle /* style={{ padding: '5px', color: '#79000B' }} */>Inviters:</EnTitle>
                             <div style={{ padding: '5px', color: '#575454' }}>
                                 {Eventdetails.Inviters}</div>
                         </EngDetailsWrapper>
                         <EngDetailsWrapperone >
-                            <div style={{ padding: '5px', color: '#79000B' }}>Inviters Contact:</div>
+                            <EnTitle /* style={{ padding: '5px', color: '#79000B' }} */>Inviters Contact:</EnTitle>
                             <div style={{ padding: '5px', color: '#575454' }}>{Eventdetails.InvitersContact}</div>
                         </EngDetailsWrapperone>
-                        <EngDetailsWrapper style={{ borderBottom: '0.5px solid #c9c9c9' }}>
-                            <div style={{ width: '93px', padding: '5px', color: '#79000B' }}>Snapchat Lense:</div>
-                            <div style={{ overflowWrap: 'anywhere', padding: "5px" }}>
-                                <a href={Eventdetails.SnapchatURL} style={{ textDecoration: 'none', color: '#575454' }} target='_blank'>{Eventdetails.SnapchatURL}</a>
-                            </div>
-                        </EngDetailsWrapper>
+                        {Eventdetails.SnapchatURL !== null &&
+                            <EngDetailsWrapper
+                                style={{ borderBottom: '0.5px solid #c9c9c9' }}>
+                                <div style={{ width: '93px', padding: '5px', color: '#79000B' }}>Snapchat Lense:</div>
+                                <div style={{ overflowWrap: 'anywhere', padding: "5px" }}>
+                                    <a href={Eventdetails.SnapchatURL} style={{ color: '#575454' }} target='_blank'>{Eventdetails.SnapchatURL}</a>
+                                </div>
+                            </EngDetailsWrapper>
+                        }
+                        <br />
                     </div>
-                    :
+                }
+                {lang === "ar" &&
                     <div>
                         <Title>تفاصيل الحدث</Title>
                         <ArabicdetailsWrapperone >
@@ -122,7 +125,7 @@ const EventDetails = () => {
                         </ArabicdetailsWrapper>
                         <ArabicdetailsWrapperone >
                             <div style={{ overflowWrap: 'anywhere', padding: "5px" }}>
-                                <a href={Eventdetails.LocationURL} style={{ textDecoration: 'none', color: '#575454' }} target='_blank'>{Eventdetails.LocationURL}</a>
+                                <a href={Eventdetails.LocationURL} style={{ color: '#575454' }} target='_blank'>{Eventdetails.LocationURL}</a>
                             </div>
                             <div style={{ width: '68x', padding: '3px', direction: 'rtl', color: '#79000B' }}>رابط الموقع:</div>
                         </ArabicdetailsWrapperone>
@@ -142,19 +145,22 @@ const EventDetails = () => {
                             <div style={{ padding: '5px', color: '#575454' }}>{Eventdetails.InvitersContact}</div>
                             <div style={{ padding: '3px', direction: 'rtl', color: '#79000B' }}>رقم التواصل للداعيين:</div>
                         </ArabicdetailsWrapperone>
-                        <ArabicdetailsWrapper style={{ borderBottom: '0.5px solid #c9c9c9' }}>
-                            <div style={{ overflowWrap: 'anywhere', padding: "5px" }}>
-                                <a href={Eventdetails.SnapchatURL} style={{ textDecoration: 'none', color: '#575454' }} target='_blank'>{Eventdetails.SnapchatURL}</a>
-                            </div>
-                            <div style={{ width: '120px', padding: '3px', direction: 'rtl', color: '#79000B' }}>رابط عدسة سناب شات:</div>
-                        </ArabicdetailsWrapper>
+                        {Eventdetails.SnapchatURL !== null &&
+                            <ArabicdetailsWrapper
+                                style={{ borderBottom: '0.5px solid #c9c9c9' }}>
+                                <div style={{ overflowWrap: 'anywhere', padding: "5px" }}>
+                                    <a href={Eventdetails.SnapchatURL} style={{ color: '#575454' }} target='_blank'>{Eventdetails.SnapchatURL}</a>
+                                </div>
+                                <div style={{ width: '128px', padding: '3px', direction: 'rtl', color: '#79000B' }}>رابط عدسة سناب شات:</div>
+                            </ArabicdetailsWrapper>
+                        }
+                        <br />
                     </div>
                 }
-                <div style={{ marginTop: '10px' }}>
+                {/* <div style={{ marginTop: '10px' }}>
                     <Footer lang={lang} footer={FooterDetails} />
-                </div>
+                </div> */}
             </EventWrapper>
-
         </>
     )
 }
@@ -174,10 +180,15 @@ font-family:AdobeCleanRegular;
     background-color:#FFFFFF;
     `
 const Title = styled.div`
-    text-align: center;
-     color: #79000B;
+width:100%;
+height:30px;
+line-height:30px;
+background-color:#79000B;
+     text-align: center;
+     color: white;
+     font-weight:bold;
      `
-     const ImageWrapper = styled.div`
+const ImageWrapper = styled.div`
      padding: 10px 50px 10px 50px;
      `
 const Video = styled.video`
@@ -188,10 +199,11 @@ const Video = styled.video`
     margin-right: auto;
     @media only screen and (max-width: 480px) {
     padding:10px 50px 10px 50px;
-     margin-left: auto;
+    margin-left: auto;
     margin-right: auto;
-    max-width:300px;
-    height:350px;
+    max-width:100%;
+    // height:350px;
+    max-height:100%;
         }
   `
 const Image = styled.img`
@@ -202,22 +214,26 @@ const Image = styled.img`
   margin-right: auto;
   @media only screen and (max-width: 480px) {
 //   padding:10px 50px 10px 50px;
-  max-height:400px;
-width:100%;
+       max-height:100%;
+       max-width:100%;
 // margin:0px;
 //     margin-left: auto;
-//   margin-right: auto;
+//     margin-right: auto;
       }
       `
 
 const EngDetailsWrapper = styled.div`
-     display: flex; 
-     font-size: 14px; 
-     border-style: solid; 
-     border-width: 0px 0;
-     background-color:#FFFFFF;
-     border-color: #c9c9c9;
-    //  color: #79000b
+      display: flex; 
+      font-size: 14px; 
+      border-style: solid; 
+      border-width: 0px 0;
+      background-color:#FFFFFF;
+      border-color: #c9c9c9;
+      font-weight:bold;
+      `
+const EnTitle = styled.div`
+      padding: 5px;
+      color: #79000B;
       `
 const EngDetailsWrapperone = styled.div`
       display: flex; 
@@ -226,61 +242,25 @@ const EngDetailsWrapperone = styled.div`
       border-width: 0.5px 0;
       background-color:#FAFAFA;
       border-color: #c9c9c9;
-    //   color: #79000b
+      font-weight:bold;
        `
 const ArabicdetailsWrapper = styled.div`
-       display: flex; 
-       font-size: 14px;
-        border-style: solid;
-        border-width: 0px 0;
-         background-color: #FFFFFF; 
-         border-color: #c9c9c9;
-        //   color: #79000b;
-       justify-content: right;
+      display: flex; 
+      font-size: 14px;
+      border-style: solid;
+      border-width: 0px 0;
+      background-color: #FFFFFF; 
+        border-color: #c9c9c9;
+        justify-content: right;
+        font-weight:bold;
         `
 const ArabicdetailsWrapperone = styled.div`
         display: flex; 
         font-size: 14px;
-         border-style: solid;
-         border-width: 0.5px 0;
-          background-color: #FAFAFA; 
-          border-color: #c9c9c9;
-        //    color: #79000b;
+        border-style: solid;
+        border-width: 0.5px 0;
+        background-color: #FAFAFA; 
+        border-color: #c9c9c9;
         justify-content: right; 
+        font-weight:bold;
         `
-const Heading = styled.div`
-      padding-left:5px;
-      font-size:14px;
-    //   color:#6F0A12;
-    color:#7d0812;
-      display:inline;
-      `
-const EnglishWrapper = styled.div`
-      display:flex;
-      margin: auto;
-      `
-const ArabicWrapper = styled.div`
-      display:flex;
-        margin: auto;
-       justify-content: right;
-     `
-const ArabicHeading = styled.div`
-      padding-right:5px;
-      font-size:14px;
-    //   color:#6F0A12;
-    color:#7d0812;
-      direction: rtl;
-      `
-const Data = styled.div`
-      padding-left:5px;
-      font-size:14px;
-    //   color:#6F0A12;
-    color:#7d0812;
-      display:inline;
-      `
-const ArabicData = styled.div`
-      font-size:14px; 
-      padding-right:5px;
-    //   color:#6F0A12;
-    color:#7d0812;
-      `
