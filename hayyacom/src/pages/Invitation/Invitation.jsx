@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { Button } from 'antd'
+import { Button, Space, Spin } from 'antd'
 import { Modal } from 'antd';
 import QRCode from "react-qr-code";
 import { toast, ToastContainer } from 'react-toastify';
@@ -11,6 +11,9 @@ import '../../index.css';
 import { Helmet } from 'react-helmet';
 import Footer from '../../Component/Footer';
 import { getInvitationDetails, putUpdateStatus } from '../../api/Invitation';
+import { Typography } from 'antd'
+
+const { Title } = Typography
 
 const Invitation = () => {
 
@@ -29,6 +32,9 @@ const Invitation = () => {
     const [footer, setFooter] = useState([]);
     const [changeone, setChangeone] = useState([]);
     const [smallcss, setSmallcss] = useState("small")
+    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState('');
+    const [errmsg, setErrmsg] = useState(false)
     // const [optiontwo, setOptiontwo] = useState('')
     // const [optionthree, setOptionthree] = useState('')
     // const [optionfour, setOptionfour] = useState('')
@@ -182,36 +188,26 @@ const Invitation = () => {
 
     // invitation data api Integration
     const InvitationApidata = async () => {
-        const invitations = await getInvitationDetails(id)
-        setimage(invitations.CardData);
-        setTotalguest(invitations.ContactData.totalGuest)
-        const article = invitations.ContactData
-        changeData(article.totalGuest)
-        setChangeone(article.totalGuest)
-        setData(invitations.ContactData)
-        setMsgdata(invitations.MessageData)
-        setValues(invitations.DesignData)
-        setInvite(invitations.QRData)
-        setDemo(invitations.invitationData)
-        setFooter(invitations.InvitationPageData);
-        console.log(invitations);
-        // await axios.get(`${BASE_URL}invitationPage/invitation-page-details/${id}`)
-        //     .then((res) => {
-        //         setimage(res.data.CardData);
-        //         setTotalguest(res.data.ContactData.totalGuest)
-        //         const article = res.data.ContactData
-        //         changeData(article.totalGuest)
-        //         setChangeone(article.totalGuest)
-        //         setData(res.data.ContactData)
-        //         setMsgdata(res.data.MessageData)
-        //         setValues(res.data.DesignData)
-        //         setInvite(res.data.QRData)
-        //         setDemo(res.data.invitationData)
-        //         setFooter(res.data.InvitationPageData);
-        //         console.log(res);
-        //     }).catch((err) => {
-        //         console.log(err);
-        //     })
+        try {
+            const invitations = await getInvitationDetails(id, setLoading)
+            setimage(invitations.CardData);
+            setTotalguest(invitations.ContactData.totalGuest)
+            const article = invitations.ContactData
+            changeData(article.totalGuest)
+            setChangeone(article.totalGuest)
+            setData(invitations.ContactData)
+            setMsgdata(invitations.MessageData)
+            setValues(invitations.DesignData)
+            setInvite(invitations.QRData)
+            setDemo(invitations.invitationData)
+            setFooter(invitations.InvitationPageData);
+            console.log(invitations);
+            setErrmsg(false)
+        } catch (error) {
+            setErrors(error.response.data)
+            setErrmsg(true)
+        }
+
     }
 
     const generateArray = (change) => {
@@ -259,6 +255,27 @@ const Invitation = () => {
                 </style>
             </Helmet>
 
+            {errmsg &&
+                <div>
+                    <Title level={2} style={{ color: '#79000B' }} align="center">ERROR :{errors.status}</Title>
+                    <Title level={4} style={{ color: 'gray' }} align="center">{errors.message}</Title>
+                </div>
+            }
+
+            {loading && lang === "en" &&
+                <div>
+                    <Spin className='spinner' tip="Loading" size="small" style={{ color: '#79000B', position: 'fixed', top: '20%' }}>
+                        <div className="content" />
+                    </Spin>
+                </div>
+            }
+            {loading && lang === "ar" &&
+                <div>
+                    <Spin className='spinner' tip="تحميل" size="small" style={{ color: '#79000B', position: 'fixed', top: '20%' }}>
+                        <div className="content" />
+                    </Spin>
+                </div>
+            }
             <ToastContainer
                 autoClose={2000}
                 position="top-right"
@@ -271,29 +288,33 @@ const Invitation = () => {
 
             <Wrapper>
                 <div>
-                    {image.media === "video" ?
+                    {image.media === "video" && loading === false &&
                         <div>
                             <Video controls>
                                 <source src={image.invitation} type="video/mp4" />
                                 <source src={image.invitation} type="video/ogg" />
                             </Video>
                         </div>
-                        :
-                        <Image src={image.invitation} alt="/" />
+                        // :
+                        // <Image src={image.invitation} alt="/" />
                     }
                 </div>
-                {params.lang === "ar" ?
+                {image.media === "image" && loading === false && errmsg === false &&
+                    <Image src={image.invitation} alt="/" />
+                }
+                {params.lang === "ar" && loading === false && errmsg === false &&
                     <WrapperButton>
                         <Button type="none" className='btn4' onClick={() => showModalRejected("Rejected")} >رفض</Button>
                         <Button type="none" className='btn3' onClick={() => showModal("Accepted")} >قبول</Button>
                     </WrapperButton>
-                    :
+                }
+                {params.lang === "en" && loading === false && errmsg === false &&
                     <WrapperButton>
                         <Button type="none" className='btn1' onClick={() => showModal("Accepted")} >Accept</Button>
                         <Button type="none" className='btn2' onClick={() => showModalRejected("Rejected")} >Reject</Button>
                     </WrapperButton>
                 }
-                <Footer lang={lang} footer={footer} />
+                <Footer lang={lang} footer={footer} loading={loading} errmsg={errmsg} />
             </Wrapper>
 
             {/*  select guest modal start */}

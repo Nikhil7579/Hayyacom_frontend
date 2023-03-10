@@ -1,3 +1,4 @@
+import { Space, Spin } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet';
@@ -6,11 +7,15 @@ import styled from 'styled-components';
 import { getEventDetails } from '../../api/Event';
 import Footer from '../../Component/Footer'
 import '../../index.css'
+import { Col, Row } from 'antd';
 
 const EventDetails = () => {
     const [cardData, setCardData] = useState([]);
     const [Eventdetails, setEventdetails] = useState([]);
     const [FooterDetails, setFooterDetails] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState(false);
+    const [showerrmsg, setShowerrmsg] = useState('')
     const param = useParams();
     const id = param.id;
     const lang = param.lang;
@@ -20,13 +25,20 @@ const EventDetails = () => {
     }, []);
 
     const EventData = async () => {
-        const event = await getEventDetails(id);
-        console.log(event);
-        setCardData(event.CardData)
-        setEventdetails(event.EventDetailsData)
-        // setFooterDetails(event.InvitationPage)
-        if (Eventdetails.SnapchatURL !== 'null' || Eventdetails.SnapchatURL !== null)
+        try {
+            const event = await getEventDetails(id, setLoading);
             console.log(event);
+            setCardData(event.CardData)
+            setEventdetails(event.EventDetailsData)
+            // setFooterDetails(event.InvitationPage)
+            if (Eventdetails.SnapchatURL !== 'null' || Eventdetails.SnapchatURL !== null)
+                console.log(event);
+        } catch (error) {
+                console.log("error 400");
+                setErr(true);
+                setShowerrmsg(error.response.data);
+        }
+
     }
     return (
         <>
@@ -34,6 +46,31 @@ const EventDetails = () => {
                 <meta charSet="utf-8" />
                 <title>Event Details</title>
             </Helmet>
+            {err &&
+                <div >
+                    <Row style={{textAlign:'center',color:'#79000B',fontFamily:'AdobeCleanRegular'}}>
+                        <Col span={24}><h1>ERROR :{showerrmsg.status}</h1></Col>
+                    </Row>
+                    <Row style={{color:'gray',textAlign:'center'}}>
+                        <Col span={24}><h3>{showerrmsg.message}</h3></Col>
+                    </Row>
+                </div>
+                // <div>{showerrmsg}</div>
+            }
+            {loading && lang === "en" &&
+                <div>
+                    <Spin className='spinner' tip="Loading" size="small" style={{ color: '#79000B', position: 'fixed', top: '20%' }}>
+                        <div className="content" />
+                    </Spin>
+                </div>
+            }
+            {loading && lang === "ar" &&
+                <div>
+                    <Spin className='spinner' tip="تحميل" size="small" style={{ color: '#79000B', position: 'fixed', top: '20%' }}>
+                        <div className="content" />
+                    </Spin>
+                </div>
+            }
             <EventWrapper>
                 {cardData.media === "video" &&
                     <div>
@@ -48,7 +85,7 @@ const EventDetails = () => {
                         <Image src={cardData.invitation} />
                     </ImageWrapper>
                 }
-                {lang === "en" &&
+                {lang === "en" && loading === false && err === false &&
                     <div>
                         <Title>Event Details</Title>
                         <EngDetailsWrapperone>
@@ -104,7 +141,7 @@ const EventDetails = () => {
                         <br />
                     </div>
                 }
-                {lang === "ar" &&
+                {lang === "ar" && loading === false && err === false &&
                     <div>
                         <Title>تفاصيل الحدث</Title>
                         <ArabicdetailsWrapperone >
@@ -168,99 +205,99 @@ const EventDetails = () => {
 export default EventDetails
 
 const EventWrapper = styled.div`
-// padding:50px 50px 0px 50px;
-margin:0px;
-max-width:100%;
-font-family:AdobeCleanRegular;
-@media only screen and (max-width: 480px) {
-    max-height:1000px;
-    min-height:450px;
-    font-family:AdobeCleanRegular;
-    max-width:100%;
-    background-color:#FFFFFF;
-    `
+                // padding:50px 50px 0px 50px;
+                margin:0px;
+                max-width:100%;
+                font-family:AdobeCleanRegular;
+                @media only screen and (max-width: 480px) {
+                    max - height:1000px;
+                min-height:450px;
+                font-family:AdobeCleanRegular;
+                max-width:100%;
+                background-color:#FFFFFF;
+                `
 const Title = styled.div`
-width:100%;
-height:30px;
-line-height:30px;
-background-color:#79000B;
-     text-align: center;
-     color: white;
-     font-weight:bold;
-     `
+                width:100%;
+                height:30px;
+                line-height:30px;
+                background-color:#79000B;
+                text-align: center;
+                color: white;
+                font-weight:bold;
+                `
 const ImageWrapper = styled.div`
-     padding: 10px 50px 10px 50px;
-     `
+                padding: 10px 50px 10px 50px;
+                `
 const Video = styled.video`
-    padding:10px 50px 10px 50px;
-    display:block;
-    height:400px;
-    margin-left: auto;
-    margin-right: auto;
-    @media only screen and (max-width: 480px) {
-    padding:10px 50px 10px 50px;
-    margin-left: auto;
-    margin-right: auto;
-    max-width:100%;
-    // height:350px;
-    max-height:100%;
+                padding:10px 50px 10px 50px;
+                display:block;
+                height:400px;
+                margin-left: auto;
+                margin-right: auto;
+                @media only screen and (max-width: 480px) {
+                    padding:10px 50px 10px 50px;
+                margin-left: auto;
+                margin-right: auto;
+                max-width:100%;
+                // height:350px;
+                max-height:100%;
         }
-  `
+                `
 const Image = styled.img`
-    // padding:10px 50px 10px 50px;
-  display:block;
-  height:400px;
-  margin-left: auto;
-  margin-right: auto;
-  @media only screen and (max-width: 480px) {
-//   padding:10px 50px 10px 50px;
-       max-height:100%;
-       max-width:100%;
+                // padding:10px 50px 10px 50px;
+                display:block;
+                height:400px;
+                margin-left: auto;
+                margin-right: auto;
+                @media only screen and (max-width: 480px) {
+                    //   padding:10px 50px 10px 50px;
+                    max - height:100%;
+                max-width:100%;
 // margin:0px;
 //     margin-left: auto;
 //     margin-right: auto;
       }
-      `
+                `
 
 const EngDetailsWrapper = styled.div`
-      display: flex; 
-      font-size: 14px; 
-      border-style: solid; 
-      border-width: 0px 0;
-      background-color:#FFFFFF;
-      border-color: #c9c9c9;
-      font-weight:bold;
-      `
+                display: flex;
+                font-size: 14px;
+                border-style: solid;
+                border-width: 0px 0;
+                background-color:#FFFFFF;
+                border-color: #c9c9c9;
+                font-weight:bold;
+                `
 const EnTitle = styled.div`
-      padding: 5px;
-      color: #79000B;
-      `
+                padding: 5px;
+                color: #79000B;
+                `
 const EngDetailsWrapperone = styled.div`
-      display: flex; 
-      font-size: 14px; 
-      border-style: solid; 
-      border-width: 0.5px 0;
-      background-color:#FAFAFA;
-      border-color: #c9c9c9;
-      font-weight:bold;
-       `
+                display: flex;
+                font-size: 14px;
+                border-style: solid;
+                border-width: 0.5px 0;
+                background-color:#FAFAFA;
+                border-color: #c9c9c9;
+                font-weight:bold;
+                `
 const ArabicdetailsWrapper = styled.div`
-      display: flex; 
-      font-size: 14px;
-      border-style: solid;
-      border-width: 0px 0;
-      background-color: #FFFFFF; 
-        border-color: #c9c9c9;
-        justify-content: right;
-        font-weight:bold;
-        `
+                display: flex;
+                font-size: 14px;
+                border-style: solid;
+                border-width: 0px 0;
+                background-color: #FFFFFF;
+                border-color: #c9c9c9;
+                justify-content: right;
+                font-weight:bold;
+                `
 const ArabicdetailsWrapperone = styled.div`
-        display: flex; 
-        font-size: 14px;
-        border-style: solid;
-        border-width: 0.5px 0;
-        background-color: #FAFAFA; 
-        border-color: #c9c9c9;
-        justify-content: right; 
-        font-weight:bold;
-        `
+                display: flex;
+                font-size: 14px;
+                border-style: solid;
+                border-width: 0.5px 0;
+                background-color: #FAFAFA;
+                border-color: #c9c9c9;
+                justify-content: right;
+                font-weight:bold;
+                `

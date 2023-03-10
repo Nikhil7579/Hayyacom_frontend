@@ -152,3 +152,7 @@ option {
   font-family: 'AdobeCleanRegular';
   src: url(./Font/AdobeCleanRegular.otf);
 }
+
+.ant-spin-dot-item {
+  background-color: #79000B !important;
+}

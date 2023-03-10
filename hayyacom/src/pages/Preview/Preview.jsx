@@ -1,14 +1,19 @@
+import { Spin } from 'antd';
 import React, { useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet';
 import QRCode from 'react-qr-code';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { getPreviewDetails } from '../../api/Preview';
+import '../../index.css';
+import { Table } from 'antd';
+import axios from 'axios';
 
 const Preview = () => {
     const [cardData, setCardData] = useState([]);
     const [designData, setDesignData] = useState([]);
     const [loaded, setLoaded] = useState(false);
+    const [loading, setLoading] = useState(false);
     const param = useParams();
     const id = param.id;
 
@@ -17,7 +22,7 @@ const Preview = () => {
     }, [])
 
     const PreviewDetails = async () => {
-        const preview = await getPreviewDetails(id);
+        const preview = await getPreviewDetails(id, setLoading);
         console.log(preview)
         setCardData(preview.CardData);
         setDesignData(preview.DesignData);
@@ -41,6 +46,8 @@ const Preview = () => {
 
     const fonturls = designData.fontUrl;
 
+
+
     return (
         <>
             <Helmet>
@@ -55,8 +62,15 @@ const Preview = () => {
                   `}
                 </style>
             </Helmet>
+            {loading &&
+                <div>
+                    <Spin className='spinner' tip="تحميل" size="small" style={{ color: '#79000B', position: 'fixed', top: '20%' }}>
+                        <div className="content" />
+                    </Spin>
+                </div>
+            }
             <Wrapper>
-                <div style={{ position: 'relative',margin:'100px 0px' }}>
+                <div style={{ position: 'relative', margin: '100px 0px' }}>
                     <InviteImage src={cardData.entrance} onLoad={() => setLoaded(true)} />
                     {loaded &&
                         <div

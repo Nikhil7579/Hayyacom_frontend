@@ -2,19 +2,20 @@ import React from 'react'
 import styled from 'styled-components'
 
 
-const Footer = ({ lang, footer }) => {
+const Footer = ({ lang, footer, loading ,errmsg}) => {
   // console.log(lang);
   const url = `https://api.whatsapp.com/send/?phone=${footer.WhatsappnumberURL}&text&type=phone_number&app_absent=0whatsApp`
   return (
     <>
-      {lang === "ar" ?
+      {lang === "ar" && loading === false && errmsg===false &&
         <FooterBar>
           <div>
-          <a href={url}>WhatsApp</a> لمزيد من المعلومات ، يرجى الاتصال عبر  
+            <a href={url}>WhatsApp</a> لمزيد من المعلومات ، يرجى الاتصال عبر
             <p>{footer.FooterAR} </p>
           </div>
         </FooterBar>
-        :
+      }
+      {lang === "en" && loading === false && errmsg===false &&
         <FooterBar>
           <div>
             For more information, please contact via <a href={url}>WhatsApp</a>
